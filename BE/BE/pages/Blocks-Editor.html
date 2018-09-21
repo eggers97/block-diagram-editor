@@ -1,0 +1,75 @@
+﻿<!-- Version 2.1 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blockbildeditor</title>
+	<meta charset="utf-8" />
+
+    <link rel="stylesheet" href="../styles/diagramControls.css" />
+    <link rel="stylesheet" href="../styles/dynamicConfigurationManagement.css" />
+    <link href="../frameworks/jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet" />
+    <link href="../styles/styleTable.css" rel="stylesheet" />
+
+    <script src="../frameworks/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+    <script src="../frameworks/jquery-ui-1.11.4/jquery-ui.js"></script>
+    <script src="../scripts/contextmenu.js"></script>
+    <script src="../scripts/autogrowinput.js"></script>
+    <script src="../scripts/uniqueSelector.js"></script>
+    <script src="../scripts/timer.js"></script>
+    <script src="../scripts/fileSaver.js"></script>
+    <script src="../scripts/styleTable.js"></script>
+    <script src="../scripts/tabbable.js"></script>
+
+    <script src="../scripts/englishLanguagePack.js"></script>
+    <script src="../scripts/configurations.js"></script>
+    <script src="../scripts/simulation.js"></script>
+    <script src="../scripts/saveAndLoad.js"></script>
+    <script src="../scripts/diagramUtil.js"></script>
+    <script src="../scripts/diagramControls.js"></script>
+    <script src="../scripts/blockDiagramEditor.js"></script>
+</head>
+<body>
+    <div id="applicationContainer">
+        <div id="statementsToolbar" class="ui-widget-header ui-corner-all">
+        </div>
+        <br />
+        <div id="toolsToolbar" class="ui-widget-header ui-corner-all">
+        </div>
+        <br />
+
+        <div id="tabs">
+            <ul>
+                <li><a href="#main">main</a></li>
+                <li><a href="">+</a></li>
+            </ul>
+            <div id="main"></div>
+        </div>
+
+        <div id="visualStackContainer">
+            <table>
+                <thead>
+                    <tr><th></th><th></th><th></th></tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <input id="fileChooser" type="file" />
+    <a id="fileDownload"></a>
+    <div id="configurationsDialog">
+        <table>
+            <tbody>
+                <tr><td><label style="white-space: nowrap"> </label></td><td><input type="number" autocomplete="off" value="1000" step="500" min="500" /></td></tr>
+                <tr><td><label> </label></td><td><input type="checkbox" autocomplete="off" /></td></tr>
+                <tr><td><label> </label></td><td><input type="checkbox" checked="checked" autocomplete="off" /></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="loadDialog">
+        <p> </p>
+        <p> </p>
+    </div>
+</body>
+</html>

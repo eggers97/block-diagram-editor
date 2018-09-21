@@ -1,0 +1,230 @@
+﻿/* general styles */
+
+#tabs input {
+    border: 0px;
+}
+
+#tabs input::-ms-clear {
+    display: none;
+}
+
+#tabs input:focus {
+    outline-width: 0px;
+}
+
+.statementInsertionPoint {
+    height:10px; 
+    width: inherit;
+}
+
+.componentInsertionPoint {
+    height:10px;
+    width:inherit;
+}
+
+.statements {
+    border: 1px solid black;
+    min-width:100px; 
+    min-height:20px;
+}
+
+.statements > * {
+    border-bottom: 1px solid black;
+}
+
+.statements > *:last-child {
+    border-bottom: 0px;
+}
+
+/* components */
+
+.ifStatement {
+    display:block;
+}
+
+.ifStatement > table {
+    width: 100%;
+    padding-right: 3px;
+    padding-left: 2px;
+}
+
+.ifStatement > table > tbody    {
+    width: 100%;
+}
+
+.ifStatement > table > tbody > tr {
+    width: 100%;
+}
+
+.ifStatement > table > tbody > tr > td {
+    vertical-align: top;
+}
+
+.ifStatement > table > tbody > tr > td:first-child {
+    width:55px;
+}
+
+
+
+.whileStatement {
+    display: block;
+}
+
+.whileStatement > div:first-child {
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+.whileStatement > div:first-child > span {
+    margin-right: 5px;
+}
+
+.whileStatement > .statements {
+    margin-left: 64px;
+    border-right: 0px;
+    border-bottom: 0px;
+}
+
+
+
+.doWhileStatement {
+    display: block;
+}
+
+.doWhileStatement > .statements {
+    margin-left: 64px;
+    border-right: 0px;
+    border-top: 0px;
+}
+
+.doWhileStatement > span:first-child {
+    position:absolute;
+    padding-left: 5px;
+    margin-right: 5px;
+}
+
+.doWhileStatement > div:last-child {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.doWhileStatement > div:last-child > span:first-child {
+    padding-left: 5px;
+}
+
+.doWhileStatement > div:last-child > input {
+    margin-left: 18px;
+}
+
+
+
+.forStatement {
+    display: block;
+}
+
+.forStatement > div:first-child span {
+    margin-right: 4px;
+}
+
+.forStatement   {
+    padding-left: 5px;
+}
+
+.forStatement > .statements {
+    margin-left: 64px;
+    margin-top: 10px;
+    border-right: 0px;
+    border-bottom: 0px;
+}
+
+
+
+.declarationStatement {
+    display: block;
+}
+
+.declarationStatement > input {
+    padding-left: 5px;
+}
+
+
+
+.assignmentStatement {
+    display: block;
+}
+
+.assignmentStatement > input {
+    padding-left: 5px;
+}
+
+
+
+.switchStatement {
+    display: block;
+}
+
+.switchStatement > table {
+    width: 100%;
+    padding-right: 3px;
+    padding-left: 2px;
+}
+
+.switchStatement > table > thead {
+    width: 100%;
+}
+
+.switchStatement > table > thead > tr {
+    width: 100%;
+}
+
+.switchStatement > table > thead > tr > th {
+    text-align: left;
+    font-weight: 400;
+}
+
+.switchStatement > table > tbody > tr > td {
+    vertical-align: top;
+}
+
+.switchStatement > table > tbody > tr > td:first-child {
+    width: 55px;
+}
+
+
+
+.inputStatement > span:first-child {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.inputStatement > span:nth-child(2) {
+    padding-right: 5px;
+}
+
+
+
+.outputStatement > span:first-child {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.outputStatement > span:nth-child(2) {
+    padding-right: 5px;
+}
+
+
+
+.functionCallStatement {
+    padding-left: 5px;
+}
+
+
+
+.commentStatement {
+    display: block;
+    padding-left: 5px;
+}
+
+.commentStatement input, .commentStatement span {
+    color: grey;
+}

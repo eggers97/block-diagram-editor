@@ -1,0 +1,1 @@
+﻿{"main":{"type":"Statements","statements":[{"type":"OutputStatement","outputString":"\"hello blocks world!\""}]}}

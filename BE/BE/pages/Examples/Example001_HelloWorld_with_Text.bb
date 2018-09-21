@@ -1,0 +1,1 @@
+﻿{"main":{"type":"Statements","statements":[{"type":"DeclarationStatement","variableType":"Text","variableName":"msg","initializationValue":"\"Hello blocks world!\"","isArray":false},{"type":"OutputStatement","outputString":"msg"}]}}
