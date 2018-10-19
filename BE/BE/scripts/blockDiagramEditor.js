@@ -742,7 +742,7 @@ function droppedOnSwitchStatement(ui, switchStatement, droppableForStatementsPar
             break;
 
         default:
-            console.log("no component element for name given found");
+            console.warn("no component element for name given found");
             break;
     }
 }
@@ -799,7 +799,7 @@ function droppedOnSwitchStatement(ui, switchStatement, droppableForStatementsPar
         }
     }
     else {
-        console.log("no ui element for given name found");
+        console.warn("no ui element for given name found");
     }
 }
 

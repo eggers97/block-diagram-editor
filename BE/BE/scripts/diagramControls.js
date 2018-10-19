@@ -602,7 +602,7 @@ function IfStatement(statement, insertionMode, rootElement) {
 <div class="ifStatement">                                                               \                                            \
     <table>                                                                             \
         <tbody>                                                                         \
-            <tr><td><span>' + languagePack["if"] + '</span></td><td><input type="text" onchange="console.log($(this).closest(\'.ifStatement\').data(\'codebehindObject\'));$(this).closest(\'.ifStatement\').data(\'codebehindObject\').conditionChanged(this.value);"/></td></tr>            \
+            <tr><td><span>' + languagePack["if"] + '</span></td><td><input type="text" onchange="$(this).closest(\'.ifStatement\').data(\'codebehindObject\').conditionChanged(this.value);"/></td></tr>            \
             <tr><td><span>' + languagePack["then"] + '</span></td><td><div class="statements"></div></td></tr>  \
         </tbody>                                                                        \
     </table>\                                             \
@@ -1224,7 +1224,6 @@ function FunctionCallStatement(statement, insertionMode, rootElement) {
         simulationCode += "case " + returnValueAssignmentCaseId + ":";
 
         if (_underlyingFunctionPropertyHolder.getReturnType() != "void") {  // -> function call (not procedure call) -> return value must be assigned
-            simulationCode += "console.log(returnValue);";
             simulationCode += this.replaceVariableAccess(_variableName) + " = returnValue;";
         }
 
