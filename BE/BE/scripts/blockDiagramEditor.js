@@ -4,12 +4,11 @@
 
 "use strict";
 
-
-var finishDiagram;
-var unfinishDiagram;
-var onResultStatementsChanged;
-
 (function() {
+    var finishDiagram;
+    var unfinishDiagram;
+    var onResultStatementsChanged;
+
     $(document).ready(function () {
         initialize();
     });
@@ -419,7 +418,7 @@ function loadSelectedDiagram(withMain) {
             initializeApplication($("#tabs"), $("#main .statements"));
         }
 
-        parseSerializedDiagram(savedDiagram, $("#main .statements"), function (functionName) {
+        blockDiagramEditorGlobals.parseSerializedDiagram(savedDiagram, $("#main .statements"), function (functionName) {
             $("#tabs").children().first().children().last().before('<li><a href="#' + functionName + '">' + functionName + '</a><span style="float:right" class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>');
 
             return $("#tabs");
