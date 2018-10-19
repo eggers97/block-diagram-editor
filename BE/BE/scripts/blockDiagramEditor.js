@@ -4,14 +4,15 @@
 
 "use strict";
 
-$(document).ready(function () {
-    initialize();
-});
-
 
 var finishDiagram;
 var unfinishDiagram;
 var onResultStatementsChanged;
+
+(function() {
+    $(document).ready(function () {
+        initialize();
+    });
 
 function initialize() {
     var statementInsertionPoint = '<div class="statementInsertionPoint"></div>';
@@ -231,73 +232,91 @@ function openConfigurationsDialog() {
 }
 
 function generateTools() {
-    var saveButtonSkeleton = '<button onclick="saveDiagram();">' + languagePack.save + '</button>';
-    var loadButtonSkeleton = '<button onclick="$(\'#fileChooser\').trigger(\'click\');">' + languagePack.load + '</button>';
-    var generateCCodeButtonSkeleton = '<button onclick="generateCCode();">' + languagePack.generateCCode + '</button>';
-    var playButtonSkeleton = '<button id="playButton" onclick=" startSimulation();">' + languagePack.play + '</button>';
-    var stopButtonSkeleton = '<button onclick="stopSimulation();">' + languagePack.stop + '</button>';
-    var finishDiagramButtonSkeleton = '<button onclick="finishDiagram();">' + languagePack.finish + '</button>';
-    var unfinishDiagramButtonSkeleton = '<button onclick="unfinishDiagram();">' + languagePack.unfinish + '</button>';
-    var configurationsButtonSkeleton = '<button onclick="openConfigurationsDialog();">' + languagePack.configurations + '</button>';
-    var helpButtonSkeleton = '<button onclick="window.open(\'./help.html\')">' + languagePack.help + '</button>';
+    var saveButtonSkeleton = '<button>' + languagePack.save + '</button>';
+    var loadButtonSkeleton = '<button>' + languagePack.load + '</button>';
+    var generateCCodeButtonSkeleton = '<button>' + languagePack.generateCCode + '</button>';
+    var playButtonSkeleton = '<button id="playButton">' + languagePack.play + '</button>';
+    var stopButtonSkeleton = '<button>' + languagePack.stop + '</button>';
+    var finishDiagramButtonSkeleton = '<button>' + languagePack.finish + '</button>';
+    var unfinishDiagramButtonSkeleton = '<button>' + languagePack.unfinish + '</button>';
+    var configurationsButtonSkeleton = '<button>' + languagePack.configurations + '</button>';
+    var helpButtonSkeleton = '<button>' + languagePack.help + '</button>';
     
-    $(loadButtonSkeleton).appendTo("#toolsToolbar").button({
+    $(loadButtonSkeleton).click(function() {
+        $('#fileChooser').trigger('click');
+    }).appendTo("#toolsToolbar").button({
         icons: {
             primary: "ui-icon-folder-open"
         },
         text: false
     }).click();
 
-    $(saveButtonSkeleton).appendTo("#toolsToolbar").button({
+    $(saveButtonSkeleton).click(function() {
+        saveDiagram();
+    }).appendTo("#toolsToolbar").button({
         icons: {
             primary: "ui-icon-document"
         },
         text: false
     });
 
-    $(generateCCodeButtonSkeleton).appendTo("#toolsToolbar").button({
+    $(generateCCodeButtonSkeleton).click(function() {
+        generateCCode();
+    }).appendTo("#toolsToolbar").button({
         icons: {
             primary: "ui-icon-script"
         },
         text: false
     });
 
-    $(playButtonSkeleton).appendTo("#toolsToolbar").button({
+    $(playButtonSkeleton).click(function() {
+        startSimulation();
+    }).appendTo("#toolsToolbar").button({
         icons: {
             primary: "ui-icon-play"
         },
         text: false
     });
 
-    $(stopButtonSkeleton).appendTo("#toolsToolbar").button({
+    $(stopButtonSkeleton).click(function() {
+        stopSimulation();
+    }).appendTo("#toolsToolbar").button({
         icons: {
             primary: "ui-icon-stop"
         },
         text: false
     });
 
-    $(finishDiagramButtonSkeleton).appendTo("#toolsToolbar").button({
+    $(finishDiagramButtonSkeleton).click(function() {
+        finishDiagram();
+    }).appendTo("#toolsToolbar").button({
         icons: {
             primary: "ui-icon-locked"
         },
         text: false
     });
 
-    $(unfinishDiagramButtonSkeleton).appendTo("#toolsToolbar").button({
+    $(unfinishDiagramButtonSkeleton).click(function() {
+        unfinishDiagram();
+    }).appendTo("#toolsToolbar").button({
         icons: {
             primary: "ui-icon-unlocked"
         },
         text: false
     });
 
-    $(configurationsButtonSkeleton).appendTo("#toolsToolbar").button({
+    $(configurationsButtonSkeleton).click(function() {
+        openConfigurationsDialog();
+    }).appendTo("#toolsToolbar").button({
         icons: {
             primary: "ui-icon-gear"
         },
         text: false
     });
 
-    $(helpButtonSkeleton).appendTo("#toolsToolbar").button({
+    $(helpButtonSkeleton).click(function() {
+        window.open('./help.html');
+    }).appendTo("#toolsToolbar").button({
         icons: {
             primary: "ui-icon-help"
         },
@@ -433,13 +452,16 @@ function loadSelectedDiagram(withMain) {
 
 function startSimulation() {
     var delay = configurations.simulationDelay;
-    
+
     simulateDiagram(delay, $("#visualStackContainer"), function (functionName) {
         $("#tabs").tabs("refresh");
         $("#tabs").children("[id^=ui-id-]").remove();
         $("#tabs").tabs("option", "active", $("#" + functionName).parent().find($("#" + functionName)).index() - 1);
     }, function () {
-        $("#playButton")[0].onclick = resumeSimulation;
+        $("#playButton").off();
+        $("#playButton").click(function() {
+            resumeSimulation();
+        });
         $("#playButton").button("option", {
             icons: {
                 primary: "ui-icon-play"
@@ -447,7 +469,10 @@ function startSimulation() {
             text: false
         });
     }, function () {
-        $("#playButton")[0].onclick = pauseSimulation;
+        $("#playButton").off();
+        $("#playButton").click(function() {
+            pauseSimulation();
+        });
         $("#playButton").button("option", {
             icons: {
                 primary: "ui-icon-pause"
@@ -455,7 +480,10 @@ function startSimulation() {
             text: false
         });
     }, function () {
-        $("#playButton")[0].onclick = startSimulation;
+        $("#playButton").off();
+        $("#playButton").click(function() {
+            startSimulation();
+        });
         $("#playButton").button("option", {
             icons: {
                 primary: "ui-icon-play"
@@ -463,7 +491,10 @@ function startSimulation() {
             text: false
         });
     }, function () {
-        $("#playButton")[0].onclick = startSimulation;
+        $("#playButton").off();
+        $("#playButton").click(function() {
+            startSimulation();
+        });
         $("#playButton").button("option", {
             icons: {
                 primary: "ui-icon-play"
@@ -472,10 +503,10 @@ function startSimulation() {
         });
     });
 
-    $("#playButton")[0].onclick = function () {
+    $("#playButton").off();
+    $("#playButton").click(function() {
         pauseSimulation();
-    };
-
+    });
     $("#playButton").button("option", {
         icons: {
             primary: "ui-icon-pause"
@@ -835,48 +866,4 @@ function hideAddressColumnChanged() {
         $("#visualStackContainer table thead tr").append("<th>" + languagePack.address + "</th>");
         $("#visualStackContainer table").styleTable();
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}})();
