@@ -601,7 +601,7 @@ function generateDraggables() {
 
 function createContextmenus(droppableForStatementsParameters, droppableForIfComponentsParameters, droppableForSwitchComponentsParameters) {
     var ifComponentSelector = ".ifStatement > table > tbody > tr:nth-child(3)";
-    var switchComponentsSelector = ".switchStatement > table > tbody > tr";
+    var switchComponentsSelector = ".switchStatement > table > tbody > tr, .switchStatement > table > tfoot > tr";
     var declarationStatementSelector = ".declarationStatement";
     var otherStatementsSelector = ".ifStatement, .whileStatement, .doWhileStatement, .forStatement, .switchStatement, .assignmentStatement, .inputStatement, .outputStatement, .functionCallStatement, .commentStatement";
     var parametersSelector = ".parameter";
@@ -630,12 +630,13 @@ function createContextmenus(droppableForStatementsParameters, droppableForIfComp
                 }
                 else if (closestElement.is(switchComponentsSelector)) {
                     var parent = $(ui.target).closest("tr").parent().prop("tagName");
+                    var statements = $(ui.target).closest("tr").find(".statements").first().data("codebehindObject");
                     
                     if (parent == "TFOOT") {
-                        $(ui.target).closest("tr").remove();
+                        $(ui.target).closest(".switchStatement").data("codebehindObject").removeElseBlock();
                     }
                     else if (parent == "TBODY") {
-                        $(ui.target).closest("tr").remove();
+                        $(ui.target).closest(".switchStatement").data("codebehindObject").removeCaseBlock(statements);
                     }
                     else {
                         console.warn("tagname not possible in this case");

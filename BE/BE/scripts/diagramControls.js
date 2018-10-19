@@ -1560,7 +1560,7 @@ function SwitchStatement(statement, insertionMode, rootElement) {
     };
 
     this.removeElseBlock = function () {
-        $(_elseStatements.getDomElement()).remove();
+        $(_elseStatements.getDomElement()).closest("tr").remove();
 
         _elseStatements = null;
     };
