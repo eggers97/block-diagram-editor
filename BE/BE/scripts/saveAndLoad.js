@@ -46,9 +46,11 @@ function parseSerializedDiagram(savedDiagramObject, mainStatementsContainer, add
                     }
                 });
 
-                $(functionSkeleton).find(".resultInitializationValue")[0].value = savedDiagramObject[functionName].resultInitializationValue;
-                $(functionSkeleton).find(".functionResultDeclaration").data("codebehindObject").initializationValueChanged(savedDiagramObject[functionName].resultInitializationValue);
-                
+                if (savedDiagramObject[functionName].returnType !== "void") {
+                    $(functionSkeleton).find(".resultInitializationValue")[0].value = savedDiagramObject[functionName].resultInitializationValue;
+                    $(functionSkeleton).find(".functionResultDeclaration").data("codebehindObject").initializationValueChanged(savedDiagramObject[functionName].resultInitializationValue);
+                }
+
                 functionSkeletons[functionName] = functionSkeleton;
             }
         }
