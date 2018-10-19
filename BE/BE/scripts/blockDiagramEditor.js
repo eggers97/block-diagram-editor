@@ -249,7 +249,7 @@ function generateTools() {
             primary: "ui-icon-folder-open"
         },
         text: false
-    }).click();
+    });
 
     $(saveButtonSkeleton).click(function() {
         saveDiagram();
