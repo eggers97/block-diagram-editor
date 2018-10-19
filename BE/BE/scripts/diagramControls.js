@@ -997,9 +997,9 @@ function DeclarationStatement(statement, insertionMode, rootElement) {
         }
 
         simulationCode += "return {";
-        simulationCode += "caseId: " + nextStatementsCaseId + ","
+        simulationCode += "caseId: " + nextStatementsCaseId + ",";
         simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).getPath() + "'";
-        simulationCode += "};"
+        simulationCode += "};";
 
         return simulationCode;
     };

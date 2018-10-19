@@ -54,12 +54,6 @@ function beginSimulation(generatedCodes, firstId, delay, visualStackContainer, o
     var nextFreeAddress = 1;
     var returnValue;
 
-    /*var asdf;
-    for (asdf in generatedCodes) {
-        console.log(asdf);
-        console.log(generatedCodes[asdf]);
-    }*/
-
     try {
         eval(generatedCodes["main"]);
     }
