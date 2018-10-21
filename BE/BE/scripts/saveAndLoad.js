@@ -6,7 +6,7 @@
 "use strict";
 
 (function() {
-    var parseSerializedDiagram = function(savedDiagramObject, mainStatementsContainer, addFunctionFunction, onResultStatementsChanged) {
+    function parseSerializedDiagram(savedDiagramObject, mainStatementsContainer, addFunctionFunction, onResultStatementsChanged) {
         var functionSkeletons = {};
 
         for (var functionName in savedDiagramObject) {  // generate all function codebehind (otherwise generation of CALL-statements would fail)
@@ -334,7 +334,6 @@
         this.functionName = null;
         this.parameters = null;
     }
-
 
     $.extend(window.blockDiagramEditorGlobals, {
         parseSerializedDiagram: parseSerializedDiagram
