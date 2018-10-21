@@ -640,7 +640,7 @@ function IfStatement(statement, insertionMode, rootElement) {
         simulationCode += "case " + statementsCaseId + ":";
         simulationCode += "if (" + this.replaceVariableAccess(_condition) + ") {";
 
-        if (configurations.skipLoopChecks) {
+        if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
             simulationCode += "return simulation(" + thenStatementsCaseId + ", outParameters, parameters);";
         }
         else {
@@ -655,7 +655,7 @@ function IfStatement(statement, insertionMode, rootElement) {
         if (_elseStatements != null) {
             simulationCode += "else {";
 
-            if (configurations.skipLoopChecks) {
+            if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
                 simulationCode += "return simulation(" + elseStatementsCaseId + ", outParameters, parameters);";
             }
             else {
@@ -668,7 +668,7 @@ function IfStatement(statement, insertionMode, rootElement) {
             simulationCode += "}";
         }
         else {
-            if (configurations.skipLoopChecks) {
+            if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
                 simulationCode += "return simulation (" + nextStatementsCaseId + ", outParameters, parameters);";
             }
             else {
@@ -748,7 +748,7 @@ function WhileStatement(statement, insertionMode, rootElement) {
         simulationCode += "case " + statementsCaseId + ":";
         simulationCode += "if (" + this.replaceVariableAccess(_condition) + ") {";
 
-        if (configurations.skipLoopChecks) {
+        if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
             simulationCode += "return simulation(" + loopStatementsCaseId + ", outParameters, parameters);";
         }
         else {
@@ -761,7 +761,7 @@ function WhileStatement(statement, insertionMode, rootElement) {
         simulationCode += "}";
         simulationCode += "else {";
 
-        if (configurations.skipLoopChecks) {
+        if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
             simulationCode += "return simulation(" + nextStatementsCaseId + ", outParameters, parameters);";
         }
         else {
@@ -827,7 +827,7 @@ function DoWhileStatement(statement, insertionMode, rootElement) {
         simulationCode += "case " + conditionCheckCaseId + ":";
         simulationCode += "if (!(" + this.replaceVariableAccess(_condition) + ")) {";
 
-        if (configurations.skipLoopChecks) {
+        if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
             simulationCode += "return simulation(" + loopStatementsCaseId + ", outParameters, parameters);";
         }
         else {
@@ -840,7 +840,7 @@ function DoWhileStatement(statement, insertionMode, rootElement) {
         simulationCode += "}";
         simulationCode += "else {";
 
-        if (configurations.skipLoopChecks) {
+        if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
             simulationCode += "return simulation(" + nextStatementsCaseId + ", outParameters, parameters);";
         }
         else {
@@ -1329,7 +1329,7 @@ function ForStatement(statement, insertionMode, rootElement) {
         simulationCode += "case " + statementsCaseId + ":";
         simulationCode += this.replaceVariableAccess(_counterName) + "=" + this.replaceVariableAccess(_fromValue) + ";";
 
-        if (configurations.skipLoopChecks) {
+        if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
             simulationCode += "return simulation(" + conditionCheckCaseId + ", outParameters, parameters);";
         }
         else {
@@ -1342,7 +1342,7 @@ function ForStatement(statement, insertionMode, rootElement) {
         simulationCode += "case " + conditionCheckCaseId + ":";
         simulationCode += "if (" + this.replaceVariableAccess(_counterName) + "<=" + this.replaceVariableAccess(_toValue) + ") {";
 
-        if (configurations.skipLoopChecks) {
+        if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
             simulationCode += "return simulation(" + loopStatementsCaseId + ", outParameters, parameters);";
         }
         else {
@@ -1355,7 +1355,7 @@ function ForStatement(statement, insertionMode, rootElement) {
         simulationCode += "}";
         simulationCode += "else {";
 
-        if (configurations.skipLoopChecks) {
+        if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
             simulationCode += "return simulation(" + nextStatementsCaseId + ", outParameters, parameters);";
         }
         else {
@@ -1370,7 +1370,7 @@ function ForStatement(statement, insertionMode, rootElement) {
         simulationCode += "case " + counterShiftCaseId + ":";
         simulationCode += this.replaceVariableAccess(_counterName) + "+=" + this.replaceVariableAccess(_counterShift) + ";";
 
-        if (configurations.skipLoopChecks) {
+        if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
             simulationCode += "return simulation(" + conditionCheckCaseId + ", outParameters, parameters);";
         }
         else {
@@ -1579,7 +1579,7 @@ function SwitchStatement(statement, insertionMode, rootElement) {
 
             simulationCode += "case " + this.replaceVariableAccess(_casesStatements[i].caseValue) + ":";
 
-            if (configurations.skipLoopChecks) {
+            if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
                 simulationCode += "return simulation(" + caseId + ", outParameters, parameters);";
             }
             else {
@@ -1595,7 +1595,7 @@ function SwitchStatement(statement, insertionMode, rootElement) {
         if (_elseStatements != null) {
             simulationCode += "default:";
 
-            if (configurations.skipLoopChecks) {
+            if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
                 simulationCode += "return simulation(" + defaultCaseId + ", outParameters, parameters);";
             }
             else {

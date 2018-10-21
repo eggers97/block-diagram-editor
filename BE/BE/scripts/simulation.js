@@ -235,7 +235,7 @@ function updateStackTable(stackTable, stackFunctions, functionPropertyHolderTrac
                 var i = 0;
 
                 variables[variable].value.forEach(function (value) {
-                    stackFunctionContainer.append("<tr " + (currentParameter != null && currentParameter.getOnlyIn() == false ? "class='outParameter'" : "") + "><td>" + variable + "[" + i + "]</td><td>" + value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (configurations.hideAddressColumn ? "" : "<td>" + decimalToFixedWidthHex(address, 4) + "</td>") + "</tr>");
+                    stackFunctionContainer.append("<tr " + (currentParameter != null && currentParameter.getOnlyIn() == false ? "class='outParameter'" : "") + "><td>" + variable + "[" + i + "]</td><td>" + value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (blockDiagramEditorGlobals.configurations.hideAddressColumn ? "" : "<td>" + decimalToFixedWidthHex(address, 4) + "</td>") + "</tr>");
 
                     address += 8;
                     i++;
@@ -243,7 +243,7 @@ function updateStackTable(stackTable, stackFunctions, functionPropertyHolderTrac
                 });
             }
             else {
-                stackFunctionContainer.append("<tr " + (currentParameter != null && currentParameter.getOnlyIn() == false ? "class='outParameter'" : "") + "><td>" + variable + "</td><td>" + variables[variable].value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (configurations.hideAddressColumn ? "" : "<td>" + variables[variable].address + "</td>") + "</tr>");
+                stackFunctionContainer.append("<tr " + (currentParameter != null && currentParameter.getOnlyIn() == false ? "class='outParameter'" : "") + "><td>" + variable + "</td><td>" + variables[variable].value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (blockDiagramEditorGlobals.configurations.hideAddressColumn ? "" : "<td>" + variables[variable].address + "</td>") + "</tr>");
             }
             
             addFunctionName = false;

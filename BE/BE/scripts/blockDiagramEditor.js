@@ -170,11 +170,11 @@ function initializeDialogs() {
     buttonsObject[languagePack.ok] = function () {
         var configurationRows = $(this).find("tr");
 
-        configurations.simulationDelay = $(configurationRows[0]).find("input")[0].value;    // update simulation delay
+        blockDiagramEditorGlobals.configurations.simulationDelay = $(configurationRows[0]).find("input")[0].value;    // update simulation delay
 
-        configurations.skipLoopChecks = $(configurationRows[1]).find("input")[0].checked;   // update skip loop checks
+        blockDiagramEditorGlobals.configurations.skipLoopChecks = $(configurationRows[1]).find("input")[0].checked;   // update skip loop checks
 
-        configurations.hideAddressColumn = $(configurationRows[2]).find("input")[0].checked;    // update hide address column
+        blockDiagramEditorGlobals.configurations.hideAddressColumn = $(configurationRows[2]).find("input")[0].checked;    // update hide address column
         hideAddressColumnChanged();
 
         $(this).dialog("close");
@@ -222,8 +222,8 @@ function initializeConfigurations() {
     configurationsContainer = $("#configurationsDialog tbody");
 
     configsOfGroup = $(configurationsContainer[0]).find("input");
-    $(configsOfGroup)[0].value = configurations.simulationDelay;
-    $(configsOfGroup)[1].checked = configurations.skipLoopChecks;
+    $(configsOfGroup)[0].value = blockDiagramEditorGlobals.configurations.simulationDelay;
+    $(configsOfGroup)[1].checked = blockDiagramEditorGlobals.configurations.skipLoopChecks;
 }
 
 function openConfigurationsDialog() {
@@ -450,7 +450,7 @@ function loadSelectedDiagram(withMain) {
 }
 
 function startSimulation() {
-    var delay = configurations.simulationDelay;
+    var delay = blockDiagramEditorGlobals.configurations.simulationDelay;
 
     simulateDiagram(delay, $("#visualStackContainer"), function (functionName) {
         $("#tabs").tabs("refresh");
@@ -859,10 +859,10 @@ function getCodebehindClassOfName(name) {
 }
 
 function hideAddressColumnChanged() {
-    if (configurations.hideAddressColumn && $("#visualStackContainer table thead tr th").length > 3) {
+    if (blockDiagramEditorGlobals.configurations.hideAddressColumn && $("#visualStackContainer table thead tr th").length > 3) {
         $("#visualStackContainer table thead tr").children().last().remove();
     }
-    else if (!configurations.hideAddressColumn && $("#visualStackContainer table thead tr th").length < 4) {
+    else if (!blockDiagramEditorGlobals.configurations.hideAddressColumn && $("#visualStackContainer table thead tr th").length < 4) {
         $("#visualStackContainer table thead tr").append("<th>" + languagePack.address + "</th>");
         $("#visualStackContainer table").styleTable();
     }
