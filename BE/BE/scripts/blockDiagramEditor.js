@@ -69,8 +69,8 @@ function initialize() {
 
     $("#tabs").delegate("span.ui-icon-close", "click", deleteTab);
 
-    initializeDiagram($("#main"));
-    initializeApplication($("#tabs"), $("#main .statements"));
+    blockDiagramEditorGlobals.initializeDiagram($("#main"));
+    blockDiagramEditorGlobals.initializeApplication($("#tabs"), $("#main .statements"));
     initializeConfigurations();
     initializeDialogs();
     initializeVisualStackContainer();
@@ -139,9 +139,9 @@ function deleteTab() {
     var index;
     var codebehindObject = $("#" + panelId).data("codebehindObject");
 
-    FunctionPropertyHolder.functions.splice(FunctionPropertyHolder.functions.indexOf(codebehindObject), 1);
+    blockDiagramEditorGlobals.FunctionPropertyHolder.functions.splice(blockDiagramEditorGlobals.FunctionPropertyHolder.functions.indexOf(codebehindObject), 1);
 
-    Statement.functionContainers.some(function (statements, idx) {
+    blockDiagramEditorGlobals.functionContainers.some(function (statements, idx) {
         if (statements.parent().attr("id") == panelId) {
             index = idx;
 
@@ -151,7 +151,7 @@ function deleteTab() {
         return false;
     });
 
-    Statement.functionContainers.splice(index, 1);
+    blockDiagramEditorGlobals.functionContainers.splice(index, 1);
 
     $("#" + panelId).remove();
     $("#tabs").tabs("refresh");
@@ -328,7 +328,7 @@ function generateCCode() {
     var functionPrototypesCode = "";
     var filename;
 
-    Statement.functionContainers.forEach(function (statement) {
+    blockDiagramEditorGlobals.functionContainers.forEach(function (statement) {
         var functionCode = $(statement).data("codebehindObject").generateCCode();
 
         if ($(statement).parent().prop("id") != "main") {
@@ -358,7 +358,7 @@ function saveDiagram() {
 
     diagram.main = $("#main .statements").data("codebehindObject").toSerializableObject();
 
-    Statement.functionContainers.forEach(function (statements, index) {
+    blockDiagramEditorGlobals.functionContainers.forEach(function (statements, index) {
         if (index > 0) {
             var parameters = new Array();
             var statementsSerialized = $(statements).data("codebehindObject").toSerializableObject();
@@ -408,14 +408,14 @@ function loadSelectedDiagram(withMain) {
             savedDiagram.main = undefined;
         }
         else {
-            FunctionPropertyHolder.functions = new Array();
+            blockDiagramEditorGlobals.FunctionPropertyHolder.functions = new Array();
             
             $("span.ui-icon-close").trigger("click");
 
             $("#main .statements").remove();
 
-            initializeDiagram($("#main"));
-            initializeApplication($("#tabs"), $("#main .statements"));
+            blockDiagramEditorGlobals.initializeDiagram($("#main"));
+            blockDiagramEditorGlobals.initializeApplication($("#tabs"), $("#main .statements"));
         }
 
         blockDiagramEditorGlobals.parseSerializedDiagram(savedDiagram, $("#main .statements"), function (functionName) {
@@ -515,7 +515,7 @@ function startSimulation() {
 }
 
 function addTab(droppableForStatementsParameters) {
-    var functionSkeleton = $(getFunctionSkeleton(onResultStatementsChanged));
+    var functionSkeleton = $(blockDiagramEditorGlobals.FunctionPropertyHolder.getFunctionSkeleton(onResultStatementsChanged));
     var functionPropertyHolder = functionSkeleton.data("codebehindObject");
     
     functionSkeleton.appendTo("#tabs"); 

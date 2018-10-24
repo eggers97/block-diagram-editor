@@ -132,7 +132,7 @@ function beginSimulation(generatedCodes, firstId, delay, visualStackContainer, o
 
                 functionTrace.push(generatedFunction);
                 variableTrace.push(generatedVariables);
-                functionPropertyHolderTrace.push(FunctionPropertyHolder.getByName(simulationInformation.functionName));
+                functionPropertyHolderTrace.push(blockDiagramEditorGlobals.FunctionPropertyHolder.getByName(simulationInformation.functionName));
 
                 caseId = firstId;
 
@@ -273,7 +273,7 @@ function generateCodes(firstId) {
         value: firstId + 1
     };
 
-    Statement.functionContainers.forEach(function (functionContainer) {
+    blockDiagramEditorGlobals.functionContainers.forEach(function (functionContainer) {
         scopeCreationCode = "";
         functionPropertyHolder = functionContainer.parent().data("codebehindObject");
 

@@ -16,7 +16,7 @@
                 }
                 else {
                     var functionContainer = addFunctionFunction(functionName);
-                    var functionSkeleton = getFunctionSkeleton(onResultStatementsChanged);
+                    var functionSkeleton = blockDiagramEditorGlobals.FunctionPropertyHolder.getFunctionSkeleton(onResultStatementsChanged);
                     var addParameterButton = $(functionSkeleton).children("button")[1];
                     var currentParameter;
 
@@ -68,7 +68,7 @@
     }
 
     function functionAlreadyExists(functionName) {
-        return FunctionPropertyHolder.getByName(functionName);
+        return blockDiagramEditorGlobals.FunctionPropertyHolder.getByName(functionName);
     }
 
     function parseDiagramStatements(serializableStatement, guiComponent, rootElement) {
@@ -228,7 +228,7 @@
                 $(guiComponent).find("input")[0].value = getEmptyStringIfUndefined(serializableStatement.functionName);
                 $($(guiComponent).find("input")[0]).trigger("change");
 
-                var functionPropertyHolder = FunctionPropertyHolder.getByName(serializableStatement.functionName);
+                var functionPropertyHolder = blockDiagramEditorGlobals.FunctionPropertyHolder.getByName(serializableStatement.functionName);
 
                 if (functionPropertyHolder != null && functionPropertyHolder.getReturnType() != "void") {
                     if (serializableStatement.variableName != null) {

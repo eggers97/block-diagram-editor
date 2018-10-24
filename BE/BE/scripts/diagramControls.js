@@ -79,7 +79,7 @@ Statement.insertBefore = 2;
 Statement.useGiven = 3;
 Statement.prepend = 4;
 
-Statement.applicationContainer = null;
+blockDiagramEditorGlobals.applicationContainer = null;
 
 
 
@@ -1119,7 +1119,7 @@ function FunctionCallStatement(statement, insertionMode, rootElement) {
     VariableSelectableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [10]);
 
     this.functionNameChanged = function (functionName) {
-        FunctionPropertyHolder.functions.some(function (fn) {   
+        blockDiagramEditorGlobals.FunctionPropertyHolder.functions.some(function (fn) {
             if (fn.getName() == functionName) {
                 _underlyingFunctionPropertyHolder = fn;
 
@@ -1179,7 +1179,7 @@ function FunctionCallStatement(statement, insertionMode, rootElement) {
     this.prepareFunctionField = function () {
         var functionNames = new Array();
 
-        FunctionPropertyHolder.functions.forEach(function (fn) {
+        blockDiagramEditorGlobals.FunctionPropertyHolder.functions.forEach(function (fn) {
             if (fn.getName() != null) {     // if null is added, autocomplete fails
                 functionNames.push(fn.getName());
             }
