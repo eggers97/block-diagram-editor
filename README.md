@@ -11,5 +11,8 @@ A client-side web application which helps learning programming.
   <li>Save and load your block diagrams</li>
 </ul>
 
+# Demo
+https://editor.noasy.com/
+
 # Getting started
 Download the repository and open BE/BE/pages/Blocks-Editor.html
