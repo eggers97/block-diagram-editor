@@ -20,19 +20,19 @@
             var cType;
 
             switch (blockDiagramType) {
-                case languagePack["integer"]:
+                case blockDiagramEditorGlobals.languagePack["integer"]:
                     cType = "int";
                     break;
 
-                case languagePack["string"]:
+                case blockDiagramEditorGlobals.languagePack["string"]:
                     cType = "char*";
                     break;
 
-                case languagePack["integer"] + "[]":
+                case blockDiagramEditorGlobals.languagePack["integer"] + "[]":
                     cType = "int*";
                     break;
 
-                case languagePack["string"] + "[]":
+                case blockDiagramEditorGlobals.languagePack["string"] + "[]":
                     cType = "char**";
                     break;
 
@@ -187,7 +187,7 @@
                     functionPropertyHolder.getParameters().forEach(function (parameter) {
                         var cParameterType = this.convertBlockDiagramTypeToCType(parameter.getType());
 
-                        if (parameter.getOnlyIn() == false && parameter.getType() == languagePack["integer"]) {
+                        if (parameter.getOnlyIn() == false && parameter.getType() == blockDiagramEditorGlobals.languagePack["integer"]) {
                             cParameterType += "*";
                         }
 
@@ -206,10 +206,10 @@
                         generatedCode += statement.generateCCode();
                     });
 
-                    if (functionPropertyHolder.getReturnType() == languagePack["integer"]) {
+                    if (functionPropertyHolder.getReturnType() == blockDiagramEditorGlobals.languagePack["integer"]) {
                         generatedCode += "return result;";
                     }
-                    else if (functionPropertyHolder.getReturnType() == languagePack["string"]) {
+                    else if (functionPropertyHolder.getReturnType() == blockDiagramEditorGlobals.languagePack["string"]) {
                         generatedCode += "/* returning a string is not supported */";
                     }
 
@@ -331,7 +331,7 @@
 
             if (functionPropertyHolder != null) { // -> it's a function/procedure -> we have to add the parameters
                 functionPropertyHolder.getParameters().forEach(function (parameter) {
-                    if (parameter.getOnlyIn() == false && parameter.getType() == languagePack["integer"]) {
+                    if (parameter.getOnlyIn() == false && parameter.getType() == blockDiagramEditorGlobals.languagePack["integer"]) {
                         variableNames.push(parameter.getName());
                     }
                 });
@@ -377,7 +377,7 @@
 
             while (possibleShadowingVariable != null && variableNames.length > 0) {
                 possibleShadowingVariable = null;
-                
+
                 codeString = codeString.replace(new RegExp(variableNames.join("|"), "g"), function (match, offset) {
                     var stringToReplace;
                     var numberOfQuotes = 0;
@@ -449,11 +449,11 @@
                     var variableName = stringComponents.split("[")[0];
                     var variableType = this.getVariableType(variableName).split("[")[0];
 
-                    if (variableType == languagePack["integer"]) {
+                    if (variableType == blockDiagramEditorGlobals.languagePack["integer"]) {
                         printfFormatString += "%d";
                         this.replaceIntegerOutParameterAccess(stringComponents);
                     }
-                    else if (variableType == languagePack["string"]) {
+                    else if (variableType == blockDiagramEditorGlobals.languagePack["string"]) {
                         printfFormatString += "%s";
                     }
                     else {
@@ -532,7 +532,7 @@
                     var variableName = leftAndRightExpressions[0].split("[")[0];
                     var variableType = this.getVariableType(variableName).split("[")[0];
 
-                    if (variableType == languagePack["string"]) {
+                    if (variableType == blockDiagramEditorGlobals.languagePack["string"]) {
                         isString = true;
                     }
                 }
@@ -598,13 +598,13 @@
 
 
     function IfStatement(statement, insertionMode, rootElement) {
-        var _elseSkeleton = '<tr><td><div><span>' + languagePack["else"] + '</span></div></td><td><div class="statements"></div></td></tr>';
+        var _elseSkeleton = '<tr><td><div><span>' + blockDiagramEditorGlobals.languagePack["else"] + '</span></div></td><td><div class="statements"></div></td></tr>';
         var _htmlSkeleton = '                                                                            \
     <div class="ifStatement">                                                               \                                            \
         <table>                                                                             \
             <tbody>                                                                         \
-                <tr><td><span>' + languagePack["if"] + '</span></td><td><input type="text" onchange="$(this).closest(\'.ifStatement\').data(\'codebehindObject\').conditionChanged(this.value);"/></td></tr>            \
-                <tr><td><span>' + languagePack["then"] + '</span></td><td><div class="statements"></div></td></tr>  \
+                <tr><td><span>' + blockDiagramEditorGlobals.languagePack["if"] + '</span></td><td><input type="text" onchange="$(this).closest(\'.ifStatement\').data(\'codebehindObject\').conditionChanged(this.value);"/></td></tr>            \
+                <tr><td><span>' + blockDiagramEditorGlobals.languagePack["then"] + '</span></td><td><div class="statements"></div></td></tr>  \
             </tbody>                                                                        \
         </table>\                                             \
     </div>';
@@ -728,7 +728,7 @@
         var _htmlSkeleton = '                           \
     <div class="whileStatement">                        \
         <div>                                           \
-            <span>' + languagePack["while"] + '</span><input type="text" onchange="$(this).closest(\'.whileStatement\').data(\'codebehindObject\').conditionChanged(this.value);" />   \
+            <span>' + blockDiagramEditorGlobals.languagePack["while"] + '</span><input type="text" onchange="$(this).closest(\'.whileStatement\').data(\'codebehindObject\').conditionChanged(this.value);" />   \
         </div>                                          \
         <div class="statements"></div>                  \
     </div>';
@@ -805,9 +805,9 @@
     function DoWhileStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '                           \
     <div class="doWhileStatement">                      \
-        <span>' + languagePack["repeat"] + '</span>                                 \
+        <span>' + blockDiagramEditorGlobals.languagePack["repeat"] + '</span>                                 \
         <div class="statements"></div>                  \
-        <div><span>' + languagePack["until"] + '</span><input type="text" onchange="$(this).closest(\'.doWhileStatement\').data(\'codebehindObject\').conditionChanged(this.value);" /></div>           \
+        <div><span>' + blockDiagramEditorGlobals.languagePack["until"] + '</span><input type="text" onchange="$(this).closest(\'.doWhileStatement\').data(\'codebehindObject\').conditionChanged(this.value);" /></div>           \
     </div>';
         var _loopStatements;
         var _condition;
@@ -925,12 +925,12 @@
 
                 var initializationInputField = $(this.getDomElement()).find("input.hiddenWhenArray").first();
                 switch (_variableType) {
-                    case languagePack["integer"]:
+                    case blockDiagramEditorGlobals.languagePack["integer"]:
                         initializationInputField[0].value = 0;
                         initializationInputField.trigger("change");
                         break;
 
-                    case languagePack["string"]:
+                    case blockDiagramEditorGlobals.languagePack["string"]:
                         initializationInputField[0].value = "\"\"";
                         initializationInputField.trigger("change");
                         break;
@@ -962,14 +962,14 @@
 
             simulationCode += "case " + statementsCaseId + ":";console.log(_initializationValue);console.log(_variableName);
 
-            if (_variableType == languagePack["integer"]) {
+            if (_variableType == blockDiagramEditorGlobals.languagePack["integer"]) {
                 simulationCode += this.replaceVariableAccess(_variableName) + " = Number(" + this.replaceVariableAccess(_initializationValue) + ");";
                 simulationCode += "if (isNaN(" + this.replaceVariableAccess(_variableName) + ")) { ";
                 simulationCode += "throw new TypeError('" + _initializationValue + " is not a number');";
                 simulationCode += "}";
                 simulationCode += "localVariables['" + _variableName + "'].address = decimalToFixedWidthHex(nextFreeAddress++ * 8, 4);";
             }
-            else if (_variableType == languagePack["string"]) {
+            else if (_variableType == blockDiagramEditorGlobals.languagePack["string"]) {
                 simulationCode += this.replaceVariableAccess(_variableName) + " = (" + this.replaceVariableAccess(_initializationValue) + ").toString();";
                 simulationCode += "localVariables['" + _variableName + "'].address = decimalToFixedWidthHex(nextFreeAddress++ * 8, 4);";
             }
@@ -977,10 +977,10 @@
                 var primitiveType = _variableType.substr(0, _variableType.length - 2);
                 var primitiveTypeInitializer;
 
-                if (primitiveType == languagePack["integer"]) {
+                if (primitiveType == blockDiagramEditorGlobals.languagePack["integer"]) {
                     primitiveTypeInitializer = 0;
                 }
-                else if (primitiveType == languagePack["string"]) {
+                else if (primitiveType == blockDiagramEditorGlobals.languagePack["string"]) {
                     primitiveTypeInitializer = "\"\"";
                 }
 
@@ -1005,17 +1005,17 @@
         this.generateCCode = function () {
             var generatedCode;
 
-            if (_variableType == languagePack["integer"]) {
+            if (_variableType == blockDiagramEditorGlobals.languagePack["integer"]) {
                 generatedCode = "int " + _variableName + " = " + this.replaceIntegerOutParameterAccess(_initializationValue) + ";";
             }
-            else if (_variableType == languagePack["string"]) {
+            else if (_variableType == blockDiagramEditorGlobals.languagePack["string"]) {
                 generatedCode = "char " + _variableName + "[MAX_STRING_SIZE] = " + _initializationValue + ";";
             }
-            else if (_variableType == languagePack["integer"] + "[]") {
+            else if (_variableType == blockDiagramEditorGlobals.languagePack["integer"] + "[]") {
                 generatedCode = "int " + _variableName + "[" + this.replaceIntegerOutParameterAccess(_arrayLength) + "];";
                 generatedCode += "int " + _variableName + "Size = " + _arrayLength + ";";
             }
-            else if (_variableType == languagePack["string"] + "[]") {
+            else if (_variableType == blockDiagramEditorGlobals.languagePack["string"] + "[]") {
                 generatedCode = "char " + _variableName + "[" + this.replaceIntegerOutParameterAccess(_arrayLength) + "][MAX_STRING_SIZE];";
                 generatedCode += "int " + _variableName + "Size = " + _arrayLength + ";";
             }
@@ -1054,7 +1054,7 @@
 
             $(this.getDomElement()).find("input:first-child").autocomplete({
                 autoFocus: true,
-                source: [languagePack["string"], languagePack["integer"], languagePack["string"] + "[]", languagePack["integer"] + "[]"],
+                source: [blockDiagramEditorGlobals.languagePack["string"], blockDiagramEditorGlobals.languagePack["integer"], blockDiagramEditorGlobals.languagePack["string"] + "[]", blockDiagramEditorGlobals.languagePack["integer"] + "[]"],
                 delay: 0,
                 minLength: 0,
                 select: function (event, ui) {
@@ -1241,13 +1241,13 @@
                     var parameterType = _underlyingFunctionPropertyHolder.getParameters()[index].getType();
                     var parameterOnlyIn = _underlyingFunctionPropertyHolder.getParameters()[index].getOnlyIn();
 
-                    if (parameterType == languagePack["string"]) {
+                    if (parameterType == blockDiagramEditorGlobals.languagePack["string"]) {
                         generatedCode += parameter.value;
                     }
                     else if (parameterType.charAt(parameterType.length - 1) == "]") {
                         generatedCode += parameter.value + "," + parameter.value + "Size";
                     }
-                    else if (parameterType == languagePack["integer"]) {
+                    else if (parameterType == blockDiagramEditorGlobals.languagePack["integer"]) {
                         if (parameterOnlyIn == true) {
                             generatedCode += this.replaceIntegerOutParameterAccess(parameter.value);
                         }
@@ -1288,7 +1288,7 @@
     function ForStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '                                                                                        \
     <div class="forStatement">                                                                          \
-        <div><span>' + languagePack["from"] + '</span><span><input class="variableInput" type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').counterNameChanged(this.value);" /><span>=</span><input type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').fromValueChanged(this.value);" /></span><span>' + languagePack["to"] + '</span><input type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').toValueChanged(this.value);" /><span>' + languagePack["step"] + '</span><input type="text" value="+1" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').counterShiftChanged(this.value);" /></div>    \
+        <div><span>' + blockDiagramEditorGlobals.languagePack["from"] + '</span><span><input class="variableInput" type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').counterNameChanged(this.value);" /><span>=</span><input type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').fromValueChanged(this.value);" /></span><span>' + blockDiagramEditorGlobals.languagePack["to"] + '</span><input type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').toValueChanged(this.value);" /><span>' + blockDiagramEditorGlobals.languagePack["step"] + '</span><input type="text" value="+1" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').counterShiftChanged(this.value);" /></div>    \
         <div class="statements"></div>                                                                  \
     </div>';
         var _loopStatements;
@@ -1458,10 +1458,10 @@
             var variableType = this.getVariableType(_variableName.split("[")[0]).split("[")[0];
             var generatedCode = "";
 
-            if (variableType == languagePack["integer"]) {
+            if (variableType == blockDiagramEditorGlobals.languagePack["integer"]) {
                 generatedCode += this.replaceIntegerOutParameterAccess(_variableName) + " = " + this.replaceIntegerOutParameterAccess(_assignmentValue) + ";";
             }
-            else if (variableType == languagePack["string"]) {
+            else if (variableType == blockDiagramEditorGlobals.languagePack["string"]) {
                 var printfInformation = this.getPrintfParametersForStringConcatenation(_assignmentValue);
 
                 generatedCode += "sprintf(" + _variableName + ",\"" + printfInformation.formatString + "\"," + printfInformation.additionalArgumentList + ");";
@@ -1483,12 +1483,12 @@
 
     function SwitchStatement(statement, insertionMode, rootElement) {
         var _caseSkeleton = '<tr><td><input type="text" value="?" onchange=\"$(this).closest(\'.switchStatement\').data(\'codebehindObject\').caseValueChanged(this.value, $(this).parent().siblings().children().filter(\'.statements\').data(\'codebehindObject\'));" /></td><td><div class="statements"></div></td></tr>';
-        var _elseSkeleton = '<tr><td><span>' + languagePack["else"] + '</span></td><td><div class="statements"></div></td></tr>';
+        var _elseSkeleton = '<tr><td><span>' + blockDiagramEditorGlobals.languagePack["else"] + '</span></td><td><div class="statements"></div></td></tr>';
         var _htmlSkeleton = '                                                                                \
     <div class="switchStatement">                                                               \
         <table>                                                                                 \
             <thead>                                                                             \
-                <tr><th>' + languagePack["switch"] + '</th><th><input type="text" onchange="$(this).closest(\'.switchStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" class="variableInput" /></th></tr>                           \
+                <tr><th>' + blockDiagramEditorGlobals.languagePack["switch"] + '</th><th><input type="text" onchange="$(this).closest(\'.switchStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" class="variableInput" /></th></tr>                           \
             </thead>                                                                            \
             <tbody>                                                                             \
             </tbody>\
@@ -1620,7 +1620,7 @@
         this.generateCCode = function () {
             var generatedCode = "";
 
-            if (this.getVariableType(_variableName.split("[")[0]).split("[")[0] == languagePack["string"]) {
+            if (this.getVariableType(_variableName.split("[")[0]).split("[")[0] == blockDiagramEditorGlobals.languagePack["string"]) {
                 generatedCode += "/* switch with a string is not supported */";
             }
 
@@ -1677,7 +1677,7 @@
     function InputStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '                                    \
     <div class="inputStatement">                        \
-        <span>' + languagePack["input"] + '</span><span>:</span><input type="text" onchange="$(this).closest(\'.inputStatement\').data(\'codebehindObject\').promptChanged(this.value);" /><span>,</span><input type="text" onchange="$(this).closest(\'.inputStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" class="variableInput" />                       \
+        <span>' + blockDiagramEditorGlobals.languagePack["input"] + '</span><span>:</span><input type="text" onchange="$(this).closest(\'.inputStatement\').data(\'codebehindObject\').promptChanged(this.value);" /><span>,</span><input type="text" onchange="$(this).closest(\'.inputStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" class="variableInput" />                       \
     </div>';
         var _variableName;
         var _prompt;
@@ -1721,10 +1721,10 @@
 
             generatedCode += "printf(\"" + printfInformation.formatString + "\"," + printfInformation.additionalArgumentList.join(",") + ");";
 
-            if (variableType.split("[")[0] == languagePack["integer"]) {
+            if (variableType.split("[")[0] == blockDiagramEditorGlobals.languagePack["integer"]) {
                 generatedCode += "scanf(\"%d\", &" + this.replaceIntegerOutParameterAccess(_variableName) + ");";
             }
-            else if (variableType.split("[")[0] == languagePack["string"]) {
+            else if (variableType.split("[")[0] == blockDiagramEditorGlobals.languagePack["string"]) {
                 generatedCode += "gets(" + _variableName + ");";
             }
 
@@ -1752,7 +1752,7 @@
     function OutputStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '                                    \
     <div class="outputStatement">                        \
-        <span>' + languagePack["output"] + '</span><span>:</span><input type="text" onchange="$(this).closest(\'.outputStatement\').data(\'codebehindObject\').outputStringChanged(this.value);" class="variableInput" />                       \
+        <span>' + blockDiagramEditorGlobals.languagePack["output"] + '</span><span>:</span><input type="text" onchange="$(this).closest(\'.outputStatement\').data(\'codebehindObject\').outputStringChanged(this.value);" class="variableInput" />                       \
     </div>';
         var _outputString;
 
@@ -1811,47 +1811,47 @@
         var codebehindClass = null;
 
         switch (name) {
-            case languagePack["if"]:
+            case blockDiagramEditorGlobals.languagePack["if"]:
                 codebehindClass = IfStatement;
                 break;
 
-            case languagePack["while"]:
+            case blockDiagramEditorGlobals.languagePack["while"]:
                 codebehindClass = WhileStatement;
                 break;
 
-            case languagePack["do while"]:
+            case blockDiagramEditorGlobals.languagePack["do while"]:
                 codebehindClass = DoWhileStatement;
                 break;
 
-            case languagePack["for"]:
+            case blockDiagramEditorGlobals.languagePack["for"]:
                 codebehindClass = ForStatement;
                 break;
 
-            case languagePack["switch"]:
+            case blockDiagramEditorGlobals.languagePack["switch"]:
                 codebehindClass = SwitchStatement;
                 break;
 
-            case languagePack["declaration"]:
+            case blockDiagramEditorGlobals.languagePack["declaration"]:
                 codebehindClass = DeclarationStatement;
                 break;
 
-            case languagePack["assignment"]:
+            case blockDiagramEditorGlobals.languagePack["assignment"]:
                 codebehindClass = AssignmentStatement;
                 break;
 
-            case languagePack["call"]:
+            case blockDiagramEditorGlobals.languagePack["call"]:
                 codebehindClass = FunctionCallStatement;
                 break;
 
-            case languagePack["input"]:
+            case blockDiagramEditorGlobals.languagePack["input"]:
                 codebehindClass = InputStatement;
                 break;
 
-            case languagePack["output"]:
+            case blockDiagramEditorGlobals.languagePack["output"]:
                 codebehindClass = OutputStatement;
                 break;
 
-            case languagePack["comment"]:
+            case blockDiagramEditorGlobals.languagePack["comment"]:
                 codebehindClass = CommentStatement;
                 break;
 
@@ -1879,7 +1879,7 @@
         $(declarationOfReturn.find("input")[0]).prop("value", returnType);
         $(declarationOfReturn.find("input")[0]).trigger("change");
         $(declarationOfReturn.find("input")[0]).prop("disabled", true);
-        $(declarationOfReturn.find("input")[1]).prop("value", languagePack.result);
+        $(declarationOfReturn.find("input")[1]).prop("value", blockDiagramEditorGlobals.languagePack.result);
         $(declarationOfReturn.find("input")[1]).trigger("change");
         $(declarationOfReturn.find("input")[1]).prop("disabled", true);
         $(declarationOfReturn.find("input")[2]).addClass("resultInitializationValue");

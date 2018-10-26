@@ -116,7 +116,7 @@
         functionSkeleton.append('<input value="void" onchange="$(this).parent().data(\'codebehindObject\').setReturnType(this.value);" />');
         functionSkeleton.find("input").autocomplete({
             autoFocus: true,
-            source: ["void", languagePack["string"], languagePack["integer"]],
+            source: ["void", blockDiagramEditorGlobals.languagePack["string"], blockDiagramEditorGlobals.languagePack["integer"]],
             delay: 0,
             minLength: 0,
             select: function (event, ui) {
@@ -128,7 +128,7 @@
         functionSkeleton.find("input").first().change(function () {
             var returnType = this.value;
 
-            if (returnType == languagePack["integer"] || returnType == languagePack["integer"] + "[]" || returnType == languagePack["string"] || returnType == languagePack["string"] + "[]") {
+            if (returnType == blockDiagramEditorGlobals.languagePack["integer"] || returnType == blockDiagramEditorGlobals.languagePack["integer"] + "[]" || returnType == blockDiagramEditorGlobals.languagePack["string"] || returnType == blockDiagramEditorGlobals.languagePack["string"] + "[]") {
                 var firstStatement = functionSkeleton.children(".statements").children().first();
 
                 if ($(firstStatement.find("input")[0]).prop("disabled") == true) {  // it's an auto-generated result-declaration
@@ -155,7 +155,7 @@
             }
         });
 
-        functionSkeleton.append('<input onchange="$(this).parent().data(\'codebehindObject\').setName(this.value);" type="text" value="' + languagePack.subprogram + (FunctionPropertyHolder.functionNameCounter === 1 ? '' : FunctionPropertyHolder.functionNameCounter) + '"></input>');
+        functionSkeleton.append('<input onchange="$(this).parent().data(\'codebehindObject\').setName(this.value);" type="text" value="' + blockDiagramEditorGlobals.languagePack.subprogram + (FunctionPropertyHolder.functionNameCounter === 1 ? '' : FunctionPropertyHolder.functionNameCounter) + '"></input>');
         FunctionPropertyHolder.functionNameCounter++;
 
         functionSkeleton.find("input").autoGrowInput({
@@ -165,7 +165,7 @@
 
         functionSkeleton.append('<br /><div class="parameters"></div>');
 
-        $('<button>' + languagePack.addParameter + '</button>').click(function(event) {
+        $('<button>' + blockDiagramEditorGlobals.languagePack.addParameter + '</button>').click(function(event) {
             addParameter($(event.currentTarget).prev(), $(event.currentTarget).parent().data('codebehindObject'));
         }).appendTo(functionSkeleton).button({
             icons: {
@@ -177,7 +177,7 @@
         blockDiagramEditorGlobals.initializeDiagram(functionSkeleton);
         functionContainers.push(functionSkeleton.find(".statements"));
 
-        functionSkeleton.append('<div class="visibleIfNotVoid"><span>' + languagePack.return1 + ' ' + languagePack.result + ' ' + languagePack.return2 + '</span></div>');
+        functionSkeleton.append('<div class="visibleIfNotVoid"><span>' + blockDiagramEditorGlobals.languagePack.return1 + ' ' + blockDiagramEditorGlobals.languagePack.result + ' ' + blockDiagramEditorGlobals.languagePack.return2 + '</span></div>');
 
         functionSkeleton.find(".visibleIfNotVoid").css("display", "none");
 
@@ -266,7 +266,7 @@
 
         parameter.find("input[type='text']").first().autocomplete({
             autoFocus: true,
-            source: [languagePack["string"], languagePack["integer"], languagePack["string"] + "[]", languagePack["integer"] + "[]"],
+            source: [blockDiagramEditorGlobals.languagePack["string"], blockDiagramEditorGlobals.languagePack["integer"], blockDiagramEditorGlobals.languagePack["string"] + "[]", blockDiagramEditorGlobals.languagePack["integer"] + "[]"],
             delay: 0,
             minLength: 0,
             select: function (event, ui) {

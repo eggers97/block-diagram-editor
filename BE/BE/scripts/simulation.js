@@ -324,20 +324,20 @@ function generateParameterInitializationCode(functionPropertyHolder) {
 
     functionPropertyHolder.getParameters().forEach(function (parameter) {
         if (parameter.getOnlyIn() == true) {
-            if (parameter.getType() == languagePack["integer"]) {
+            if (parameter.getType() == blockDiagramEditorGlobals.languagePack["integer"]) {
                 parameterInitializationCode += "localVariables['" + parameter.getName() + "'].value = Number(parameters[" + i++ + "]);";
             }
-            else if (parameter.getType() == languagePack["string"]) {
+            else if (parameter.getType() == blockDiagramEditorGlobals.languagePack["string"]) {
                 parameterInitializationCode += "localVariables['" + parameter.getName() + "'].value = parameters[" + i++ + "].toString();";
             }
         }
         else {
             parameterInitializationCode += "localVariables['" + parameter.getName() + "'] = parameters[" + i++ + "];";
 
-            if (parameter.getType() == languagePack["integer"]) {
+            if (parameter.getType() == blockDiagramEditorGlobals.languagePack["integer"]) {
                 parameterInitializationCode += "localVariables['" + parameter.getName() + "'].value = Number(localVariables['" + parameter.getName() + "'].value);";
             }
-            else if (parameter.getType() == languagePack["string"]) {
+            else if (parameter.getType() == blockDiagramEditorGlobals.languagePack["string"]) {
                 parameterInitializationCode += "localVariables['" + parameter.getName() + "'].value = localVariables['" + parameter.getName() + "'].value.toString();";
             }
         }

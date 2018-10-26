@@ -17,7 +17,7 @@ function initialize() {
     var statementInsertionPoint = '<div class="statementInsertionPoint"></div>';
 
     var droppableForIfComponentsParameters = {
-        accept: "." + languagePack["else"] + "Component",
+        accept: "." + blockDiagramEditorGlobals.languagePack["else"] + "Component",
         greedy: true,
         tolerance: "pointer",
         hoverClass: "componentsDroppableHovered",
@@ -27,7 +27,7 @@ function initialize() {
     };
 
     var droppableForSwitchComponentsParameters = {
-        accept: "." + languagePack["case"] + "Component",
+        accept: "." + blockDiagramEditorGlobals.languagePack["case"] + "Component",
         greedy: true,
         tolerance: "pointer",
         hoverClass: "componentsDroppableHovered",
@@ -129,9 +129,9 @@ function initialize() {
 function initializeVisualStackContainer() {
     var tableHeads = $("#visualStackContainer th");
 
-    $(tableHeads[0]).text(languagePack.variable);
-    $(tableHeads[1]).text(languagePack.value);
-    $(tableHeads[2]).text(languagePack.function);
+    $(tableHeads[0]).text(blockDiagramEditorGlobals.languagePack.variable);
+    $(tableHeads[1]).text(blockDiagramEditorGlobals.languagePack.value);
+    $(tableHeads[2]).text(blockDiagramEditorGlobals.languagePack.function);
 }
 
 function deleteTab() {
@@ -161,13 +161,13 @@ function deleteTab() {
 function initializeDialogs() {
     var configurationLabels = $("#configurationsDialog label");
 
-    $(configurationLabels[0]).text(languagePack.simulationDelay);
-    $(configurationLabels[1]).text(languagePack.skipLoopChecks);
-    $(configurationLabels[2]).text(languagePack.hideAddressColumn);
+    $(configurationLabels[0]).text(blockDiagramEditorGlobals.languagePack.simulationDelay);
+    $(configurationLabels[1]).text(blockDiagramEditorGlobals.languagePack.skipLoopChecks);
+    $(configurationLabels[2]).text(blockDiagramEditorGlobals.languagePack.hideAddressColumn);
 
     var buttonsObject = {}; // because the attributes must set through []-Syntax (name of attribute is text of button)
 
-    buttonsObject[languagePack.ok] = function () {
+    buttonsObject[blockDiagramEditorGlobals.languagePack.ok] = function () {
         var configurationRows = $(this).find("tr");
 
         blockDiagramEditorGlobals.configurations.simulationDelay = $(configurationRows[0]).find("input")[0].value;    // update simulation delay
@@ -180,7 +180,7 @@ function initializeDialogs() {
         $(this).dialog("close");
     };
 
-    buttonsObject[languagePack.cancel] = function () {
+    buttonsObject[blockDiagramEditorGlobals.languagePack.cancel] = function () {
         $(this).dialog("close");
     };
 
@@ -193,17 +193,17 @@ function initializeDialogs() {
 
     var loadDialogTexts = $("#loadDialog p");
 
-    $(loadDialogTexts[0]).text(languagePack.loadDialogQuestion);
-    $(loadDialogTexts[1]).text(languagePack.loadDialogWarning);
+    $(loadDialogTexts[0]).text(blockDiagramEditorGlobals.languagePack.loadDialogQuestion);
+    $(loadDialogTexts[1]).text(blockDiagramEditorGlobals.languagePack.loadDialogWarning);
 
     buttonsObject = {}; // because the attributes must set through []-Syntax (name of attribute is text of button)
 
-    buttonsObject[languagePack.wholeDiagram] = function () {
+    buttonsObject[blockDiagramEditorGlobals.languagePack.wholeDiagram] = function () {
         $(this).dialog("close");
         loadSelectedDiagram(true);
     };
 
-    buttonsObject[languagePack.onlySubprograms] = function () {
+    buttonsObject[blockDiagramEditorGlobals.languagePack.onlySubprograms] = function () {
         $(this).dialog("close");
         loadSelectedDiagram(false);
     };
@@ -231,15 +231,15 @@ function openConfigurationsDialog() {
 }
 
 function generateTools() {
-    var saveButtonSkeleton = '<button>' + languagePack.save + '</button>';
-    var loadButtonSkeleton = '<button>' + languagePack.load + '</button>';
-    var generateCCodeButtonSkeleton = '<button>' + languagePack.generateCCode + '</button>';
-    var playButtonSkeleton = '<button id="playButton">' + languagePack.play + '</button>';
-    var stopButtonSkeleton = '<button>' + languagePack.stop + '</button>';
-    var finishDiagramButtonSkeleton = '<button>' + languagePack.finish + '</button>';
-    var unfinishDiagramButtonSkeleton = '<button>' + languagePack.unfinish + '</button>';
-    var configurationsButtonSkeleton = '<button>' + languagePack.configurations + '</button>';
-    var helpButtonSkeleton = '<button>' + languagePack.help + '</button>';
+    var saveButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.save + '</button>';
+    var loadButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.load + '</button>';
+    var generateCCodeButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.generateCCode + '</button>';
+    var playButtonSkeleton = '<button id="playButton">' + blockDiagramEditorGlobals.languagePack.play + '</button>';
+    var stopButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.stop + '</button>';
+    var finishDiagramButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.finish + '</button>';
+    var unfinishDiagramButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.unfinish + '</button>';
+    var configurationsButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.configurations + '</button>';
+    var helpButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.help + '</button>';
     
     $(loadButtonSkeleton).click(function() {
         $('#fileChooser').trigger('click');
@@ -544,43 +544,43 @@ function addTab(droppableForStatementsParameters) {
 
 function generateDraggables() {
     var draggables = [{
-        name: languagePack["declaration"],
+        name: blockDiagramEditorGlobals.languagePack["declaration"],
         statement: true
     }, {
-        name: languagePack["input"],
+        name: blockDiagramEditorGlobals.languagePack["input"],
         statement: true
     }, {
-        name: languagePack["output"],
+        name: blockDiagramEditorGlobals.languagePack["output"],
         statement: true
     }, {
-        name: languagePack["assignment"],
+        name: blockDiagramEditorGlobals.languagePack["assignment"],
         statement: true
     }, {
-        name: languagePack["if"],
+        name: blockDiagramEditorGlobals.languagePack["if"],
         statement: true
     }, {
-        name: languagePack["else"],
+        name: blockDiagramEditorGlobals.languagePack["else"],
         statement: false
     }, {
-        name: languagePack["while"],
+        name: blockDiagramEditorGlobals.languagePack["while"],
         statement: true
     }, {
-        name: languagePack["for"],
+        name: blockDiagramEditorGlobals.languagePack["for"],
         statement: true
     }, {
-        name: languagePack["until"],
+        name: blockDiagramEditorGlobals.languagePack["until"],
         statement: true
     }, {
-        name: languagePack["switch"],
+        name: blockDiagramEditorGlobals.languagePack["switch"],
         statement: true
     }, {
-        name: languagePack["case"],
+        name: blockDiagramEditorGlobals.languagePack["case"],
         statement: false
     }, {
-        name: languagePack["call"],
+        name: blockDiagramEditorGlobals.languagePack["call"],
         statement: true
     }, {
-        name: languagePack["comment"],
+        name: blockDiagramEditorGlobals.languagePack["comment"],
         statement: true
     }];
 
@@ -609,7 +609,7 @@ function createContextmenus(droppableForStatementsParameters, droppableForIfComp
         delegate: otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector,
 
         menu: [{
-            title: languagePack["delete"],
+            title: blockDiagramEditorGlobals.languagePack["delete"],
             action: function (event, ui) {
                 var closestElement = $(ui.target).closest(otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector);
 
@@ -657,10 +657,10 @@ function createContextmenus(droppableForStatementsParameters, droppableForIfComp
                 event.stopPropagation();
             }
         }, {
-            title: languagePack["documentation"],
+            title: blockDiagramEditorGlobals.languagePack["documentation"],
             cmd: "documentation",
             action: function (event, ui) {
-                var documentation = window.prompt(languagePack["documentationPrompt"], "");
+                var documentation = window.prompt(blockDiagramEditorGlobals.languagePack["documentationPrompt"], "");
                 var closestElement = $(ui.target).closest(declarationStatementSelector + ", " + parametersSelector);
 
                 if (closestElement.is(declarationStatementSelector)) {
@@ -715,7 +715,7 @@ function droppedOnIfStatement(ui, ifStatement, droppableForStatementsParameters)
     var codebehindObject = $(ifStatement).data("codebehindObject");
 
     switch (ui.draggable.button("option", "label")) {
-        case languagePack["else"]:
+        case blockDiagramEditorGlobals.languagePack["else"]:
             $(codebehindObject.addElseBlock()).find(".statements").droppable(droppableForStatementsParameters);
             break;
 
@@ -731,13 +731,13 @@ function droppedOnSwitchStatement(ui, switchStatement, droppableForStatementsPar
     var codebehindObject = $(switchStatement).data("codebehindObject");
 
     switch (ui.draggable.button("option", "label")) {
-        case languagePack["case"]:
+        case blockDiagramEditorGlobals.languagePack["case"]:
             $(codebehindObject.addCaseBlock()).find(".statements").droppable(droppableForStatementsParameters);
             break;
 
-        case languagePack["else"]:
+        case blockDiagramEditorGlobals.languagePack["else"]:
             $(codebehindObject.addElseBlock()).find(".statements").droppable(droppableForStatementsParameters);
-            $(switchStatement).droppable("option", "accept", "." + languagePack["case"] + "Component");
+            $(switchStatement).droppable("option", "accept", "." + blockDiagramEditorGlobals.languagePack["case"] + "Component");
             break;
 
         default:
@@ -807,7 +807,7 @@ function hideAddressColumnChanged() {
         $("#visualStackContainer table thead tr").children().last().remove();
     }
     else if (!blockDiagramEditorGlobals.configurations.hideAddressColumn && $("#visualStackContainer table thead tr th").length < 4) {
-        $("#visualStackContainer table thead tr").append("<th>" + languagePack.address + "</th>");
+        $("#visualStackContainer table thead tr").append("<th>" + blockDiagramEditorGlobals.languagePack.address + "</th>");
         $("#visualStackContainer table").styleTable();
     }
 }})();
