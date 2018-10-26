@@ -77,7 +77,7 @@
                 var statements = $(guiComponent).data("codebehindObject");
 
                 serializableStatement.statements.forEach(function (statement) {
-                    statements.append(window[statement.type]);
+                    statements.append(statement.type);
                     parseDiagramStatements(statement, $(statements.getDomElement()).children().last(), rootElement);
                 });
 

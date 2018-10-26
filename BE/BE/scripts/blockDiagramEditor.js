@@ -693,7 +693,7 @@ function createContextmenus(droppableForStatementsParameters, droppableForIfComp
 }
 
 function droppedOnStatements(ui, statements, droppableForIfComponentsParameters, droppableForSwitchComponentsParameters, droppableForStatementsParameters, insertionPointHtmlCode) {
-    var codebehindClass = getCodebehindClassOfName(ui.draggable.button("option", "label"));
+    var codebehindClass = blockDiagramEditorGlobals.getCodebehindClassOfName(ui.draggable.button("option", "label"));
 
     if (codebehindClass != null) {
         $(statements).data("codebehindObject").append(codebehindClass);
@@ -747,7 +747,7 @@ function droppedOnSwitchStatement(ui, switchStatement, droppableForStatementsPar
 }
 
  function droppedOnStatementInsertionPoint(ui, insertionPoint, droppableForIfComponentsParameters, droppableForSwitchComponentsParameters, droppableForStatementsParameters, insertionPointHtmlCode) {
-    var codebehindClass = getCodebehindClassOfName(ui.draggable.button("option", "label"));
+    var codebehindClass = blockDiagramEditorGlobals.getCodebehindClassOfName(ui.draggable.button("option", "label"));
     var elementForInsertion;
 
     if (codebehindClass != null) {
@@ -763,10 +763,10 @@ function droppedOnSwitchStatement(ui, switchStatement, droppableForStatementsPar
             $(elementForInsertion).next().droppable(droppableForStatementsParameters);               // assign all droppables
             $(elementForInsertion).next().next().find(".statements").droppable(droppableForStatementsParameters);
             
-            if (codebehindClass == IfStatement) {
+            if (blockDiagramEditorGlobals.isIfStatementClass(codebehindClass)) {
                 $(elementForInsertion).next().next().droppable(droppableForIfComponentsParameters);
             }
-            else if (codebehindClass == SwitchStatement) {
+            else if (blockDiagramEditorGlobals.isSwitchStatementClass(codebehindClass)) {
                 $(elementForInsertion).next().next().droppable(droppableForSwitchComponentsParameters);
             }
 
@@ -785,10 +785,10 @@ function droppedOnSwitchStatement(ui, switchStatement, droppableForStatementsPar
             $(elementForInsertion).prev().droppable(droppableForStatementsParameters);           // assign all droppables
             $(elementForInsertion).prev().prev().find(".statements").droppable(droppableForStatementsParameters);
 
-            if (codebehindClass == IfStatement) {
+            if (blockDiagramEditorGlobals.isIfStatementClass(codebehindClass)) {
                 $(elementForInsertion).prev().prev().droppable(droppableForIfComponentsParameters);
             }
-            else if (codebehindClass == SwitchStatement) {
+            else if (blockDiagramEditorGlobals.isSwitchStatementClass(codebehindClass)) {
                 $(elementForInsertion).prev().prev().droppable(droppableForSwitchComponentsParameters);
             }
 
@@ -800,62 +800,6 @@ function droppedOnSwitchStatement(ui, switchStatement, droppableForStatementsPar
     else {
         console.warn("no ui element for given name found");
     }
-}
-
-function getCodebehindClassOfName(name) {
-    var codebehindClass = null;
-
-    switch (name) {
-        case languagePack["if"]:
-            codebehindClass = IfStatement;
-            break;
-
-        case languagePack["while"]:
-            codebehindClass = WhileStatement;
-            break;
-
-        case languagePack["do while"]:
-            codebehindClass = DoWhileStatement;
-            break;
-
-        case languagePack["for"]:
-            codebehindClass = ForStatement;
-            break;
-
-        case languagePack["switch"]:
-            codebehindClass = SwitchStatement;
-            break;
-
-        case languagePack["declaration"]:
-            codebehindClass = DeclarationStatement;
-            break;
-
-        case languagePack["assignment"]:
-            codebehindClass = AssignmentStatement;
-            break;
-
-        case languagePack["call"]:
-            codebehindClass = FunctionCallStatement;
-            break;
-
-        case languagePack["input"]:
-            codebehindClass = InputStatement;
-            break;
-
-        case languagePack["output"]:
-            codebehindClass = OutputStatement;
-            break;
-
-        case languagePack["comment"]:
-            codebehindClass = CommentStatement;
-            break;
-
-        default:
-            codebehindClass = null;
-            break;
-    }
-
-    return codebehindClass;
 }
 
 function hideAddressColumnChanged() {
