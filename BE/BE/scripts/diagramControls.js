@@ -960,7 +960,7 @@
         this.generateSimulationCode = function (statementsCaseId, nextStatementsCaseId, nextFreeId) {
             var simulationCode = "";
 
-            simulationCode += "case " + statementsCaseId + ":";console.log(_initializationValue);console.log(_variableName);
+            simulationCode += "case " + statementsCaseId + ":";
 
             if (_variableType == blockDiagramEditorGlobals.languagePack["integer"]) {
                 simulationCode += this.replaceVariableAccess(_variableName) + " = Number(" + this.replaceVariableAccess(_initializationValue) + ");";
