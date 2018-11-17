@@ -336,6 +336,7 @@
     }
 
     $.extend(window.blockDiagramEditorGlobals, {
-        parseSerializedDiagram: parseSerializedDiagram
+        parseSerializedDiagram: parseSerializedDiagram,
+        parseDiagramStatements: parseDiagramStatements
     });
 })();

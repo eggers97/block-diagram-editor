@@ -53,6 +53,8 @@
 
         // context menu
         "delete": "delete",
+        "copy": "copy",
+        "paste": "paste",
         "documentation": "documentation",
         "documentationPrompt": "Please input the documentation",
 

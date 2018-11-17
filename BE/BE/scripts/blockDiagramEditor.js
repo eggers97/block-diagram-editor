@@ -539,9 +539,12 @@
         var declarationStatementSelector = ".declarationStatement";
         var otherStatementsSelector = ".ifStatement, .whileStatement, .doWhileStatement, .forStatement, .switchStatement, .assignmentStatement, .inputStatement, .outputStatement, .functionCallStatement, .commentStatement";
         var parametersSelector = ".parameter";
+        var statementsSelector = ".statements";
+
+        var clipboard = null;
 
         $("#tabs").contextmenu({
-            delegate: otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector,
+            delegate: statementsSelector + ", " + otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector,
 
             menu: [{
                 title: blockDiagramEditorGlobals.languagePack["delete"],
@@ -592,6 +595,27 @@
                     event.stopPropagation();
                 }
             }, {
+                title: blockDiagramEditorGlobals.languagePack["copy"],
+                cmd: "copy",
+                action: function (event, ui) {
+                    var closestElement = $(ui.target).closest(".statements");
+
+                    clipboard = closestElement.data("codebehindObject").toSerializableObject();
+                }
+            }, {
+               title: blockDiagramEditorGlobals.languagePack["paste"],
+               cmd: "paste",
+               action: function(event, ui) {
+                   var closestElement = $(ui.target).closest(".statements");
+
+                   blockDiagramEditorGlobals.parseDiagramStatements(clipboard, closestElement, null);
+
+                   finishDiagram();
+                   unfinishDiagram();
+
+                   clipboard = null;
+               }
+            }, {
                 title: blockDiagramEditorGlobals.languagePack["documentation"],
                 cmd: "documentation",
                 action: function (event, ui) {
@@ -615,13 +639,20 @@
             }],
 
             beforeOpen: function (event, ui) {
-                var closestElement = $(ui.target).closest(otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector);
+                var closestElement = $(ui.target).closest(statementsSelector + ", " + otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector);
 
                 if (closestElement.is(declarationStatementSelector) || closestElement.is(parametersSelector)) {
                     $("#tabs").contextmenu("showEntry", "documentation", true);
                 }
                 else {
                     $("#tabs").contextmenu("showEntry", "documentation", false);
+                }
+
+                if (closestElement.is(statementsSelector) && clipboard !== null) {
+                    $("#tabs").contextmenu("showEntry", "paste", true);
+                }
+                else {
+                    $("#tabs").contextmenu("showEntry", "paste", false);
                 }
             }
         });
