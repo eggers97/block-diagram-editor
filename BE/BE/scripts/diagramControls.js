@@ -109,6 +109,10 @@
         this.insertBefore = function (StatementConstructor, statement) {
             var positionToInsert = _statements.indexOf($(statement).data("codebehindObject"));
 
+            if (typeof StatementConstructor === "string") { // this is used when loading diagrams
+                StatementConstructor = eval(StatementConstructor);
+            }
+
             _statements.splice(positionToInsert, 0, new StatementConstructor(statement, Statement.insertBefore, this.getRootElement()));
         };
 

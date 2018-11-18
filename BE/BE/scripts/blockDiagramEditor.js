@@ -540,11 +540,12 @@
         var otherStatementsSelector = ".ifStatement, .whileStatement, .doWhileStatement, .forStatement, .switchStatement, .assignmentStatement, .inputStatement, .outputStatement, .functionCallStatement, .commentStatement";
         var parametersSelector = ".parameter";
         var statementsSelector = ".statements";
+        var statementInsertionPointSelector = ".statementInsertionPoint:not(:last-child)";
 
         var clipboard = null;
 
         $("#tabs").contextmenu({
-            delegate: statementsSelector + ", " + otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector,
+            delegate: statementInsertionPointSelector + ", " + statementsSelector + ", " + otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector,
 
             menu: [{
                 title: blockDiagramEditorGlobals.languagePack["delete"],
@@ -598,7 +599,7 @@
                 title: blockDiagramEditorGlobals.languagePack["copy"],
                 cmd: "copy",
                 action: function (event, ui) {
-                    var closestElement = $(ui.target).closest(".statements");
+                    var closestElement = $(ui.target).closest(statementsSelector);
 
                     clipboard = closestElement.data("codebehindObject").toSerializableObject();
                 }
@@ -606,9 +607,14 @@
                title: blockDiagramEditorGlobals.languagePack["paste"],
                cmd: "paste",
                action: function(event, ui) {
-                   var closestElement = $(ui.target).closest(".statements");
+                   var closestElement = $(ui.target).closest(statementsSelector + ", " + statementInsertionPointSelector);
 
-                   blockDiagramEditorGlobals.parseDiagramStatements(clipboard, closestElement, null);
+                   if (closestElement.is(statementsSelector)) {
+                       blockDiagramEditorGlobals.parseDiagramStatements(clipboard, closestElement, null);
+                   }
+                   else if (closestElement.is(statementInsertionPointSelector)) {
+                       blockDiagramEditorGlobals.parseDiagramStatements(clipboard, closestElement.next(), null, true);
+                   }
 
                    finishDiagram();
                    unfinishDiagram();
@@ -649,6 +655,9 @@
                 }
 
                 if (closestElement.is(statementsSelector) && clipboard !== null) {
+                    $("#tabs").contextmenu("showEntry", "paste", true);
+                }
+                else if (closestElement.is(statementInsertionPointSelector) && clipboard !== null) {
                     $("#tabs").contextmenu("showEntry", "paste", true);
                 }
                 else {

@@ -71,15 +71,26 @@
         return blockDiagramEditorGlobals.FunctionPropertyHolder.getByName(functionName);
     }
 
-    function parseDiagramStatements(serializableStatement, guiComponent, rootElement) {
+    function parseDiagramStatements(serializableStatement, guiComponent, rootElement, shouldInsertBefore) {
         switch (serializableStatement.type) {
             case "Statements":
-                var statements = $(guiComponent).data("codebehindObject");
+                if (shouldInsertBefore) {
+                    var statements = $(guiComponent).parent().data("codebehindObject");
+                    var insertBeforeStatement = $(guiComponent);
 
-                serializableStatement.statements.forEach(function (statement) {
-                    statements.append(statement.type);
-                    parseDiagramStatements(statement, $(statements.getDomElement()).children().last(), rootElement);
-                });
+                    serializableStatement.statements.forEach(function(statement) {
+                        statements.insertBefore(statement.type, insertBeforeStatement);
+                        parseDiagramStatements(statement, insertBeforeStatement.prev(), rootElement);
+                    });
+                }
+                else {
+                    var statements = $(guiComponent).data("codebehindObject");
+
+                    serializableStatement.statements.forEach(function (statement) {
+                        statements.append(statement.type);
+                        parseDiagramStatements(statement, $(statements.getDomElement()).children().last(), rootElement);
+                    });
+                }
 
                 break;
 
