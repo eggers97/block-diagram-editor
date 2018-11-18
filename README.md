@@ -16,3 +16,6 @@ https://editor.noasy.com/
 
 # Getting started
 Download the repository and open BE/BE/pages/Blocks-Editor.html
+
+# Contact
+Feature requests etc. are highly appreciated: stefan.egger@noasy.com
