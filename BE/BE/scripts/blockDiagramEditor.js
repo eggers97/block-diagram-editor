@@ -111,7 +111,7 @@
                 }
             }
             else if (removed) {
-                if (statementsContainer.data("codebehindObject").isEmpty()) {   // result declaration was the only statement
+                if (statementsContainer.data(blockDiagramEditorGlobals.codebehindObjectName).isEmpty()) {   // result declaration was the only statement
                     statementsContainer.empty();    // remove insertionPoints
 
                     statementsContainer.droppable(droppableForStatementsParameters);
@@ -137,7 +137,7 @@
     function deleteTab() {
         var panelId = $(this).closest("li").remove().attr("aria-controls");
         var index;
-        var codebehindObject = $("#" + panelId).data("codebehindObject");
+        var codebehindObject = $("#" + panelId).data(blockDiagramEditorGlobals.codebehindObjectName);
 
         blockDiagramEditorGlobals.FunctionPropertyHolder.functions.splice(blockDiagramEditorGlobals.FunctionPropertyHolder.functions.indexOf(codebehindObject), 1);
 
@@ -329,7 +329,7 @@
         var filename;
 
         blockDiagramEditorGlobals.functionContainers.forEach(function (statement) {
-            var functionCode = $(statement).data("codebehindObject").generateCCode();
+            var functionCode = $(statement).data(blockDiagramEditorGlobals.codebehindObjectName).generateCCode();
 
             if ($(statement).parent().prop("id") != "main") {
                 functionPrototypesCode += functionCode.split("{")[0] + ";";
@@ -356,14 +356,14 @@
         var diagram = new Object();
         var filename;
 
-        diagram.main = $("#main .statements").data("codebehindObject").toSerializableObject();
+        diagram.main = $("#main .statements").data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject();
 
         blockDiagramEditorGlobals.functionContainers.forEach(function (statements, index) {
             if (index > 0) {
                 var parameters = new Array();
-                var statementsSerialized = $(statements).data("codebehindObject").toSerializableObject();
+                var statementsSerialized = $(statements).data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject();
 
-                $(statements).parent().data("codebehindObject").getParameters().forEach(function (parameter) {
+                $(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getParameters().forEach(function (parameter) {
                     parameters.push({
                         type: parameter.getType(),
                         name: parameter.getName(),
@@ -375,10 +375,10 @@
 
                 var resultInitializationValue = $(statements).find(".functionResultDeclaration").length > 0 ? $(statements).find(".resultInitializationValue")[0].value : undefined;
 
-                diagram[$(statements).parent().data("codebehindObject").getName()] = {
+                diagram[$(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getName()] = {
                     "parameters": parameters,
                     "statements": statementsSerialized,
-                    "returnType": $(statements).parent().data("codebehindObject").getReturnType(),
+                    "returnType": $(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getReturnType(),
                     "resultInitializationValue": resultInitializationValue
                 };
             }
@@ -425,9 +425,9 @@
             }, function () { });
 
             $("#tabs").children("div").each(function (index, tab) {
-                if ($(tab).prop("id") != "main" && $(tab).data("codebehindObject") != undefined) {
-                    $(tab).prop("id", $(tab).data("codebehindObject").getName());
-                    $(tab).data("codebehindObject").onUpdateName = function () {
+                if ($(tab).prop("id") != "main" && $(tab).data(blockDiagramEditorGlobals.codebehindObjectName) != undefined) {
+                    $(tab).prop("id", $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).getName());
+                    $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = function () {
                         tabTextContainer.text(this.getName());
                         $("#" + idBefore).attr("id", this.getName());
                         $("[href='#" + idBefore + "']").attr("href", "#" + this.getName());
@@ -451,7 +451,7 @@
 
     function addTab(droppableForStatementsParameters) {
         var functionSkeleton = $(blockDiagramEditorGlobals.FunctionPropertyHolder.getFunctionSkeleton(onResultStatementsChanged));
-        var functionPropertyHolder = functionSkeleton.data("codebehindObject");
+        var functionPropertyHolder = functionSkeleton.data(blockDiagramEditorGlobals.codebehindObjectName);
 
         functionSkeleton.appendTo("#tabs");
         functionSkeleton.find("input").trigger("change");
@@ -463,7 +463,7 @@
 
         var idBefore = functionPropertyHolder.getName();
         var tabTextContainer = $("#tabs").children().first().children().last().prev().children();
-        functionSkeleton.data("codebehindObject").onUpdateName = function () {
+        functionSkeleton.data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = function () {
             tabTextContainer.text(this.getName());
             $("#" + idBefore).attr("id", this.getName());
             $("[href='#" + idBefore + "']").attr("href", "#" + this.getName());
@@ -555,9 +555,9 @@
                     if (closestElement.is(otherStatementsSelector + ", " + declarationStatementSelector)) {
                         var statements = closestElement.closest(".statements");
 
-                        statements.data("codebehindObject").remove(closestElement);
+                        statements.data(blockDiagramEditorGlobals.codebehindObjectName).remove(closestElement);
 
-                        if (statements.data("codebehindObject").isEmpty()) {
+                        if (statements.data(blockDiagramEditorGlobals.codebehindObjectName).isEmpty()) {
                             statements.empty();
 
                             statements.droppable(droppableForStatementsParameters);
@@ -568,13 +568,13 @@
                     }
                     else if (closestElement.is(switchComponentsSelector)) {
                         var parent = $(ui.target).closest("tr").parent().prop("tagName");
-                        var statements = $(ui.target).closest("tr").find(".statements").first().data("codebehindObject");
+                        var statements = $(ui.target).closest("tr").find(".statements").first().data(blockDiagramEditorGlobals.codebehindObjectName);
 
                         if (parent == "TFOOT") {
-                            $(ui.target).closest(".switchStatement").data("codebehindObject").removeElseBlock();
+                            $(ui.target).closest(".switchStatement").data(blockDiagramEditorGlobals.codebehindObjectName).removeElseBlock();
                         }
                         else if (parent == "TBODY") {
-                            $(ui.target).closest(".switchStatement").data("codebehindObject").removeCaseBlock(statements);
+                            $(ui.target).closest(".switchStatement").data(blockDiagramEditorGlobals.codebehindObjectName).removeCaseBlock(statements);
                         }
                         else {
                             console.warn("tagname not possible in this case");
@@ -583,11 +583,11 @@
                     else if (closestElement.is(ifComponentSelector)) {
                         var ifStatement = $(ui.target).closest(".ifStatement");
 
-                        ifStatement.data("codebehindObject").removeElseBlock();
+                        ifStatement.data(blockDiagramEditorGlobals.codebehindObjectName).removeElseBlock();
                         ifStatement.droppable(droppableForIfComponentsParameters);
                     }
                     else if (closestElement.is(parametersSelector)) {
-                        var parameter = closestElement.data("codebehindObject");
+                        var parameter = closestElement.data(blockDiagramEditorGlobals.codebehindObjectName);
 
                         parameter.getFunctionPropertyHolder().removeParameter(parameter);
                         closestElement.remove();
@@ -601,7 +601,7 @@
                 action: function (event, ui) {
                     var closestElement = $(ui.target).closest(statementsSelector);
 
-                    clipboard = closestElement.data("codebehindObject").toSerializableObject();
+                    clipboard = closestElement.data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject();
                 }
             }, {
                title: blockDiagramEditorGlobals.languagePack["paste"],
@@ -629,10 +629,10 @@
                     var closestElement = $(ui.target).closest(declarationStatementSelector + ", " + parametersSelector);
 
                     if (closestElement.is(declarationStatementSelector)) {
-                        $(ui.target).closest(declarationStatementSelector).data("codebehindObject").addDocumentation(documentation);
+                        $(ui.target).closest(declarationStatementSelector).data(blockDiagramEditorGlobals.codebehindObjectName).addDocumentation(documentation);
                     }
                     else {
-                        $(ui.target).closest(parametersSelector).data("codebehindObject").setDocumentation(documentation);
+                        $(ui.target).closest(parametersSelector).data(blockDiagramEditorGlobals.codebehindObjectName).setDocumentation(documentation);
 
                         if (documentation) {
                             $(ui.target).closest(parametersSelector).children().last().text(" // " + documentation);
@@ -671,7 +671,7 @@
         var codebehindClass = blockDiagramEditorGlobals.getCodebehindClassOfName(ui.draggable.button("option", "label"));
 
         if (codebehindClass != null) {
-            $(statements).data("codebehindObject").append(codebehindClass);
+            $(statements).data(blockDiagramEditorGlobals.codebehindObjectName).append(codebehindClass);
 
             $(statements).append(insertionPointHtmlCode).prepend(insertionPointHtmlCode);
             $(statements).find(".statements, .statementInsertionPoint").droppable(droppableForStatementsParameters);    // assign all droppables
@@ -687,7 +687,7 @@
     }
 
     function droppedOnIfStatement(ui, ifStatement, droppableForStatementsParameters) {
-        var codebehindObject = $(ifStatement).data("codebehindObject");
+        var codebehindObject = $(ifStatement).data(blockDiagramEditorGlobals.codebehindObjectName);
 
         switch (ui.draggable.button("option", "label")) {
             case blockDiagramEditorGlobals.languagePack["else"]:
@@ -703,7 +703,7 @@
     }
 
     function droppedOnSwitchStatement(ui, switchStatement, droppableForStatementsParameters) {
-        var codebehindObject = $(switchStatement).data("codebehindObject");
+        var codebehindObject = $(switchStatement).data(blockDiagramEditorGlobals.codebehindObjectName);
 
         switch (ui.draggable.button("option", "label")) {
             case blockDiagramEditorGlobals.languagePack["case"]:
@@ -732,7 +732,7 @@
                 var statementsContainer = $(insertionPoint).parent();
 
                 $(insertionPoint).remove();
-                statementsContainer.data("codebehindObject").insertAfter(codebehindClass, elementForInsertion); // insert the new element
+                statementsContainer.data(blockDiagramEditorGlobals.codebehindObjectName).insertAfter(codebehindClass, elementForInsertion); // insert the new element
                 $(elementForInsertion).next().before(insertionPointHtmlCode).after(insertionPointHtmlCode);   // insert the new insertion points
 
                 $(elementForInsertion).next().droppable(droppableForStatementsParameters);               // assign all droppables
@@ -754,7 +754,7 @@
 
                 elementForInsertion = $(insertionPoint).next();
                 $(insertionPoint).remove();
-                statementsContainer.data("codebehindObject").insertBefore(codebehindClass, elementForInsertion);    // insert the new element
+                statementsContainer.data(blockDiagramEditorGlobals.codebehindObjectName).insertBefore(codebehindClass, elementForInsertion);    // insert the new element
                 $(elementForInsertion).prev().before(insertionPointHtmlCode).after(insertionPointHtmlCode);   // insert the new insertion points
 
                 $(elementForInsertion).prev().droppable(droppableForStatementsParameters);           // assign all droppables

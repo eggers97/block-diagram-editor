@@ -51,17 +51,17 @@
             if (insertionMode == Statement.insertInto) {
                 $(statement).append(htmlSkeleton);
                 _domElement = $(statement).children().last()[0];
-                $(_domElement).data("codebehindObject", this);
+                $(_domElement).data(blockDiagramEditorGlobals.codebehindObjectName, this);
             }
             else if (insertionMode == Statement.insertAfter) {
                 $(statement).after(htmlSkeleton);
                 _domElement = $(statement).next()[0];
-                $(_domElement).data("codebehindObject", this);
+                $(_domElement).data(blockDiagramEditorGlobals.codebehindObjectName, this);
             }
             else if (insertionMode == Statement.insertBefore) {
                 $(statement).before(htmlSkeleton);
                 _domElement = $(statement).prev()[0];
-                $(_domElement).data("codebehindObject", this);
+                $(_domElement).data(blockDiagramEditorGlobals.codebehindObjectName, this);
             }
             else if (insertionMode == Statement.useGiven) {
                 _domElement = $(statement)[0];
@@ -69,7 +69,7 @@
             else if (insertionMode == Statement.prepend) {
                 $(statement).prepend(htmlSkeleton);
                 _domElement = $(statement).children().first()[0];
-                $(_domElement).data("codebehindObject", this);
+                $(_domElement).data(blockDiagramEditorGlobals.codebehindObjectName, this);
             }
         }).call(this);
     }
@@ -101,13 +101,13 @@
         };
 
         this.insertAfter = function (StatementConstructor, statement) {
-            var positionToInsert = _statements.indexOf($(statement).data("codebehindObject")) + 1;
+            var positionToInsert = _statements.indexOf($(statement).data(blockDiagramEditorGlobals.codebehindObjectName)) + 1;
 
             _statements.splice(positionToInsert, 0, new StatementConstructor(statement, Statement.insertAfter, this.getRootElement()));
         };
 
         this.insertBefore = function (StatementConstructor, statement) {
-            var positionToInsert = _statements.indexOf($(statement).data("codebehindObject"));
+            var positionToInsert = _statements.indexOf($(statement).data(blockDiagramEditorGlobals.codebehindObjectName));
 
             if (typeof StatementConstructor === "string") { // this is used when loading diagrams
                 StatementConstructor = eval(StatementConstructor);
@@ -117,7 +117,7 @@
         };
 
         this.remove = function (statement) {
-            var positionToRemove = _statements.indexOf($(statement).data("codebehindObject"));
+            var positionToRemove = _statements.indexOf($(statement).data(blockDiagramEditorGlobals.codebehindObjectName));
 
             _statements.splice(positionToRemove, 1);
 
@@ -134,7 +134,7 @@
             var i;
 
             if (nextStatementsCaseId == -1) {   // container of whole function/procedure/main
-                var functionPropertyHolder = $(this.getRootElement()).parent().data("codebehindObject");
+                var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
                 if (functionPropertyHolder != null) {   // it's a function/procedure but not main
                     if (functionPropertyHolder.getReturnType() != "void") { // it's a function
@@ -182,7 +182,7 @@
             var generatedCode = "";
 
             if (this.getDomElement() == this.getRootElement()[0]) {    // function
-                var functionPropertyHolder = $(this.getRootElement()).parent().data("codebehindObject");
+                var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
                 var parametersStringArray = new Array();
 
                 if (functionPropertyHolder) {   // subprogram
@@ -318,7 +318,7 @@
                 }
             });
 
-            var functionPropertyHolder = $(this.getRootElement()).parent().data("codebehindObject");
+            var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
             if (functionPropertyHolder != null) { // -> it's a function/procedure -> we have to add the parameters
                 functionPropertyHolder.getParameters().forEach(function (parameter) {
@@ -331,7 +331,7 @@
 
         this.replaceIntegerOutParameterAccess = function (codeString) {
             var variableNames = new Array();
-            var functionPropertyHolder = $(this.getRootElement()).parent().data("codebehindObject");
+            var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
             if (functionPropertyHolder != null) { // -> it's a function/procedure -> we have to add the parameters
                 functionPropertyHolder.getParameters().forEach(function (parameter) {
@@ -421,7 +421,7 @@
             });
 
             if (!variableType) {
-                var functionPropertyHolder = $(this.getRootElement()).parent().data("codebehindObject");
+                var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
                 if (functionPropertyHolder != null) { // -> it's a function/procedure -> we have to add the parameters
                     functionPropertyHolder.getParameters().forEach(function (parameter) {
@@ -626,7 +626,7 @@
             var elseStatements = $(_elseSkeleton).appendTo($(this.getDomElement()).children().children().filter("tbody"));
 
             _elseStatements = new Statements(elseStatements.find(".statements"), Statement.useGiven, this.getRootElement());
-            elseStatements.find(".statements").data("codebehindObject", _elseStatements);
+            elseStatements.find(".statements").data(blockDiagramEditorGlobals.codebehindObjectName, _elseStatements);
 
             return elseStatements;
         };
@@ -721,7 +721,7 @@
             var statementsBlocks = $(this.getDomElement()).find(".statements");
 
             _thenStatements = new Statements(statementsBlocks[0], Statement.useGiven, this.getRootElement());
-            $(statementsBlocks[0]).data("codebehindObject", _thenStatements);
+            $(statementsBlocks[0]).data(blockDiagramEditorGlobals.codebehindObjectName, _thenStatements);
 
             this.addElseBlock();
         }).call(this);
@@ -801,7 +801,7 @@
             var statementsBlocks = $(this.getDomElement()).find(".statements");
 
             _loopStatements = new Statements(statementsBlocks[0], Statement.useGiven, this.getRootElement());
-            $(statementsBlocks[0]).data("codebehindObject", _loopStatements);
+            $(statementsBlocks[0]).data(blockDiagramEditorGlobals.codebehindObjectName, _loopStatements);
         }).call(this);
     }
 
@@ -879,7 +879,7 @@
             var statementsBlocks = $(this.getDomElement()).find(".statements");
 
             _loopStatements = new Statements(statementsBlocks[0], Statement.useGiven, this.getRootElement());
-            $(statementsBlocks[0]).data("codebehindObject", _loopStatements);
+            $(statementsBlocks[0]).data(blockDiagramEditorGlobals.codebehindObjectName, _loopStatements);
         }).call(this);
     }
 
@@ -901,7 +901,7 @@
         this.refreshVariableFieldsOfDiagram = function () {
             if ($(this.getRootElement()).find(".forStatement, .assignmentStatement, .switchStatement, .inputStatement, .outputStatement, .functionCallStatement").length) {
                 $(this.getRootElement()).find(".forStatement, .assignmentStatement, .switchStatement, .inputStatement, .outputStatement, .functionCallStatement").each(function (index, element) {
-                    $(element).data("codebehindObject").prepareVariableFields();
+                    $(element).data(blockDiagramEditorGlobals.codebehindObjectName).prepareVariableFields();
                 });
             }
         };
@@ -1053,7 +1053,7 @@
 
         (function () {   // initialize function
             $(this.getDomElement()).change(function () {
-                $(this).data("codebehindObject").refreshVariableFieldsOfDiagram();
+                $(this).data(blockDiagramEditorGlobals.codebehindObjectName).refreshVariableFieldsOfDiagram();
             });
 
             $(this.getDomElement()).find("input:first-child").autocomplete({
@@ -1146,12 +1146,12 @@
                 if (i < _underlyingFunctionPropertyHolder.getParameters().length - 1) {
                     domElement.find("span").last().before(parameterSkeleton).before("<span>,</span>");
                     _functionParameters.push(new Object());
-                    domElement.find("span").last().prev().prev().data("codebehindObject", _functionParameters[i]);
+                    domElement.find("span").last().prev().prev().data(blockDiagramEditorGlobals.codebehindObjectName, _functionParameters[i]);
                 }
                 else {
                     domElement.find("span").last().before(parameterSkeleton);
                     _functionParameters.push(new Object());
-                    domElement.find("span").last().prev().data("codebehindObject", _functionParameters[i]);
+                    domElement.find("span").last().prev().data(blockDiagramEditorGlobals.codebehindObjectName, _functionParameters[i]);
                 }
             }
 
@@ -1404,7 +1404,7 @@
             var statementsBlocks = $(this.getDomElement()).find(".statements");
 
             _loopStatements = new Statements(statementsBlocks[0], Statement.useGiven, this.getRootElement());
-            $(statementsBlocks[0]).data("codebehindObject", _loopStatements);
+            $(statementsBlocks[0]).data(blockDiagramEditorGlobals.codebehindObjectName, _loopStatements);
 
             $(this.getDomElement()).children().first().find("input").last().change(function () {
                 if (this.value == "+1") {
@@ -1527,7 +1527,7 @@
 
             _casesStatements.push(newCaseStatement);
 
-            newCaseBlock.find(".statements").data("codebehindObject", newCaseStatement.caseStatements);
+            newCaseBlock.find(".statements").data(blockDiagramEditorGlobals.codebehindObjectName, newCaseStatement.caseStatements);
             this.prepareAutogrowInputField(newCaseBlock.children().children().filter("input"), 5);
 
             newCaseBlock.find("input").trigger("change");
@@ -1549,7 +1549,7 @@
             var elseBlock = $(_elseSkeleton).appendTo($(this.getDomElement()).children().children().filter("tfoot"));
 
             _elseStatements = new Statements(elseBlock.find(".statements"), Statement.useGiven, this.getRootElement());
-            elseBlock.find(".statements").data("codebehindObject", _elseStatements);
+            elseBlock.find(".statements").data(blockDiagramEditorGlobals.codebehindObjectName, _elseStatements);
             this.prepareAutogrowInputField(elseBlock.children().children().filter("input"), 5);
 
             return elseBlock;
@@ -1667,7 +1667,7 @@
                 caseStatements: statementsCodebehind
             });*/
 
-            statementsBlock.data("codebehindObject", statementsCodebehind);
+            statementsBlock.data(blockDiagramEditorGlobals.codebehindObjectName, statementsCodebehind);
 
             this.addCaseBlock();
             this.addCaseBlock();
@@ -1889,7 +1889,7 @@
     function initializeDiagram(diagramContainer) {
         var statements = $(Statements.htmlSkeleton).appendTo($(diagramContainer));
 
-        statements.data("codebehindObject", new Statements(statements, Statement.useGiven, statements));
+        statements.data(blockDiagramEditorGlobals.codebehindObjectName, new Statements(statements, Statement.useGiven, statements));
     }
 
     function getCodebehindClassOfName(name) {
@@ -1957,7 +1957,7 @@
     }
 
     function addAutoGeneratedResultDeclaration(functionSkeleton, returnType) {
-        functionSkeleton.children(".statements").data("codebehindObject").prepend(DeclarationStatement);
+        functionSkeleton.children(".statements").data(blockDiagramEditorGlobals.codebehindObjectName).prepend(DeclarationStatement);
 
         var declarationOfReturn = functionSkeleton.children(".statements").children().first();
 

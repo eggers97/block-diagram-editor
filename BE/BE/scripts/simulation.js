@@ -343,7 +343,7 @@
 
         blockDiagramEditorGlobals.functionContainers.forEach(function (functionContainer) {
             scopeCreationCode = "";
-            functionPropertyHolder = functionContainer.parent().data("codebehindObject");
+            functionPropertyHolder = functionContainer.parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
             if (functionPropertyHolder == null) {
                 functionName = "main";
@@ -375,7 +375,7 @@
             }
 
             scopeCreationCode += "switch(caseId) {";
-            scopeCreationCode += functionContainer.data("codebehindObject").generateSimulationCode(firstId, endId, nextFreeId);
+            scopeCreationCode += functionContainer.data(blockDiagramEditorGlobals.codebehindObjectName).generateSimulationCode(firstId, endId, nextFreeId);
             scopeCreationCode += "}";
             scopeCreationCode += "};";
             scopeCreationCode += "})();";

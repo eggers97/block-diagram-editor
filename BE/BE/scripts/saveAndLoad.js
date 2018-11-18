@@ -48,7 +48,7 @@
 
                     if (savedDiagramObject[functionName].returnType !== "void") {
                         $(functionSkeleton).find(".resultInitializationValue")[0].value = savedDiagramObject[functionName].resultInitializationValue;
-                        $(functionSkeleton).find(".functionResultDeclaration").data("codebehindObject").initializationValueChanged(savedDiagramObject[functionName].resultInitializationValue);
+                        $(functionSkeleton).find(".functionResultDeclaration").data(blockDiagramEditorGlobals.codebehindObjectName).initializationValueChanged(savedDiagramObject[functionName].resultInitializationValue);
                     }
 
                     functionSkeletons[functionName] = functionSkeleton;
@@ -75,7 +75,7 @@
         switch (serializableStatement.type) {
             case "Statements":
                 if (shouldInsertBefore) {
-                    var statements = $(guiComponent).parent().data("codebehindObject");
+                    var statements = $(guiComponent).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
                     var insertBeforeStatement = $(guiComponent);
 
                     serializableStatement.statements.forEach(function(statement) {
@@ -84,7 +84,7 @@
                     });
                 }
                 else {
-                    var statements = $(guiComponent).data("codebehindObject");
+                    var statements = $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName);
 
                     serializableStatement.statements.forEach(function (statement) {
                         statements.append(statement.type);
@@ -116,7 +116,7 @@
                     parseDiagramStatements(serializableStatement.elseStatements, $(statements[1]), rootElement);
                 }
                 else {
-                    $(guiComponent).data("codebehindObject").removeElseBlock();
+                    $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).removeElseBlock();
                 }
 
                 break;
@@ -172,11 +172,11 @@
                 }
 
                 tbody.find(".statements").each(function (index, statementsContainer) {  // remove all pregenerated cases
-                    $(guiComponent).data("codebehindObject").removeCaseBlock($(statementsContainer).data("codebehindObject"));
+                    $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).removeCaseBlock($(statementsContainer).data(blockDiagramEditorGlobals.codebehindObjectName));
                 });
 
                 serializableStatement.casesStatements.forEach(function (caseStatements, index) {
-                    $(guiComponent).data("codebehindObject").addCaseBlock();
+                    $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).addCaseBlock();
 
                     addedRow = tbody.children().last();
 
@@ -205,7 +205,7 @@
                     $(inputElements[2]).trigger("change");
                 }
 
-                $(guiComponent).data("codebehindObject").addDocumentation(serializableStatement.documentation);
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).addDocumentation(serializableStatement.documentation);
 
                 break;
 
