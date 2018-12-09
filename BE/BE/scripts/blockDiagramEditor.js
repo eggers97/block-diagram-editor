@@ -8,6 +8,7 @@
     var finishDiagram;
     var unfinishDiagram;
     var onResultStatementsChanged;
+    var currentFileName;
 
     $(document).ready(function () {
         initialize();
@@ -339,7 +340,7 @@
         });
         generatedCode = "#include<stdio.h>\n#define MAX_STRING_SIZE 255\n" + functionPrototypesCode + generatedCode;
 
-        filename = window.prompt("Enter filename:");
+        filename = window.prompt("Enter filename:", currentFileName);
 
         if (filename != undefined) {
             filename += ".c";
@@ -384,7 +385,7 @@
             }
         });
 
-        filename = window.prompt("Enter filename:");
+        filename = window.prompt("Enter filename:", currentFileName);
 
         if (filename != undefined) {
             filename += ".bb";
@@ -400,6 +401,8 @@
     function loadSelectedDiagram(withMain) {
         var selectedFile = $("#fileChooser")[0].files[0];
         var fileReader = new FileReader();
+
+        currentFileName = selectedFile.name.substring(0, selectedFile.name.length - 3);
 
         fileReader.onload = function () {
             var savedDiagram = JSON.parse(this.result);
