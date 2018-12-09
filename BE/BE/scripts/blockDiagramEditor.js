@@ -599,9 +599,9 @@
                 title: blockDiagramEditorGlobals.languagePack["copy"],
                 cmd: "copy",
                 action: function (event, ui) {
-                    var closestElement = $(ui.target).closest(statementsSelector);
+                    var closestElement = $(ui.target).closest(otherStatementsSelector + ", " + declarationStatementSelector);
 
-                    clipboard = closestElement.data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject();
+                    clipboard = blockDiagramEditorGlobals.getWithStatementsSerializableWrapped([ closestElement.data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject() ]);
                 }
             }, {
                title: blockDiagramEditorGlobals.languagePack["paste"],
