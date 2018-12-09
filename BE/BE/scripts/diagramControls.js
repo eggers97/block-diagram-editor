@@ -961,6 +961,10 @@
             _documentation = documentation;
         };
 
+        this.getDocumentation = function () {
+            return _documentation;
+        };
+
         this.generateSimulationCode = function (statementsCaseId, nextStatementsCaseId, nextFreeId) {
             var simulationCode = "";
 

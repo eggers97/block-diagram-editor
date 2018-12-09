@@ -625,8 +625,9 @@
                 title: blockDiagramEditorGlobals.languagePack["documentation"],
                 cmd: "documentation",
                 action: function (event, ui) {
-                    var documentation = window.prompt(blockDiagramEditorGlobals.languagePack["documentationPrompt"], "");
                     var closestElement = $(ui.target).closest(declarationStatementSelector + ", " + parametersSelector);
+                    var currentDocumentation = closestElement.data(blockDiagramEditorGlobals.codebehindObjectName).getDocumentation();
+                    var documentation = window.prompt(blockDiagramEditorGlobals.languagePack["documentationPrompt"], currentDocumentation);
 
                     if (closestElement.is(declarationStatementSelector)) {
                         $(ui.target).closest(declarationStatementSelector).data(blockDiagramEditorGlobals.codebehindObjectName).addDocumentation(documentation);
