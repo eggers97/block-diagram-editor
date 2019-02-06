@@ -307,15 +307,9 @@
 
         this.getDeclaredVariables = function () {
             var variables = [];
-            /*
-            $(this.getDomElement()).children().first().parentsUntil($(this.getRootElement())).prevAll(".declarationStatement").children("input:nth-child(3)").each(function (index, element) {
-                variables.push(element.value);
-            });*/
 
-            $(this.getRootElement()).find(".declarationStatement").children().children("input:nth-child(3)").each(function (index, element) {
-                if (element.value != "") {
-                    variables.push(element.value);
-                }
+            $(this.getRootElement()).find(".declarationStatement").each(function(index, element) {
+                variables.push($(element).data(blockDiagramEditorGlobals.codebehindObjectName).getVariableName());
             });
 
             var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
@@ -414,10 +408,8 @@
         this.getVariableType = function (variableName) {
             var variableType;
 
-            $(this.getRootElement()).find(".declarationStatement").children().children("input:nth-child(3)").each(function (index, element) {
-                if (element.value == variableName) {
-                    variableType = $(element).prev().prev()[0].value;
-                }
+            $(this.getRootElement()).find(".declarationStatement").each(function(index, element) {
+                variables.push($(element).data(blockDiagramEditorGlobals.codebehindObjectName).getVariableName());
             });
 
             if (!variableType) {
@@ -918,6 +910,10 @@
 
         InputReceivableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [10, 10, 10, 10]);
         CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
+
+        this.getVariableName = function() {
+            return _variableName;
+        };
 
         this.refreshVariableFieldsOfDiagram = function () {
             if ($(this.getRootElement()).find(".forStatement, .assignmentStatement, .switchStatement, .inputStatement, .outputStatement, .functionCallStatement").length) {
