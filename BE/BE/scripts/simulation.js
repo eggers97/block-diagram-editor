@@ -354,8 +354,8 @@
 
             scopeCreationCode += "(function() {";
 
-            localVariableInputFields = $(functionContainer).find(".declarationStatement").children("input:nth-child(3)");
-            localVariableArrayLengthFields = $(functionContainer).find(".declarationStatement").children("input.hiddenWhenNotArray");
+            localVariableInputFields = $(functionContainer).find(".declarationStatement").children().children("input:nth-child(3)");
+            localVariableArrayLengthFields = $(functionContainer).find(".declarationStatement").children().children("input.hiddenWhenNotArray");
 
             scopeCreationCode += "var initialized = false;";
             scopeCreationCode += generateLocalVariables(localVariableInputFields, localVariableArrayLengthFields, functionPropertyHolder);

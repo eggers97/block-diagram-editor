@@ -119,6 +119,8 @@
                     $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).removeElseBlock();
                 }
 
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(serializableStatement.comment);
+
                 break;
 
             case "WhileStatement":
@@ -129,6 +131,8 @@
                 }
 
                 parseDiagramStatements(serializableStatement.loopStatements, $(guiComponent).find(".statements"), rootElement);
+
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(serializableStatement.comment);
 
                 break;
 
@@ -141,6 +145,8 @@
                 }
 
                 parseDiagramStatements(serializableStatement.loopStatements, $(guiComponent).find(".statements"), rootElement);
+
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(serializableStatement.comment);
 
                 break;
 
@@ -157,6 +163,8 @@
                 $(inputElements[3]).trigger("change");
 
                 parseDiagramStatements(serializableStatement.loopStatements, $(guiComponent).find(".statements"), rootElement);
+
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(serializableStatement.comment);
 
                 break;
 
@@ -186,6 +194,8 @@
                     parseDiagramStatements(caseStatements.caseStatements, addedRow.find(".statements"), rootElement);
                 });
 
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(serializableStatement.comment);
+
                 break;
 
             case "DeclarationStatement":
@@ -205,7 +215,7 @@
                     $(inputElements[2]).trigger("change");
                 }
 
-                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).addDocumentation(serializableStatement.documentation);
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(serializableStatement.comment);
 
                 break;
 
@@ -217,6 +227,8 @@
                 inputElements[1].value = getEmptyStringIfUndefined(serializableStatement.assignmentValue);
                 $(inputElements[1]).trigger("change");
 
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(serializableStatement.comment);
+
                 break;
 
             case "InputStatement":
@@ -225,11 +237,15 @@
                 $(guiComponent).find("input")[1].value = getEmptyStringIfUndefined(serializableStatement.variableName);
                 $(guiComponent).find("input").trigger("change");
 
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(serializableStatement.comment);
+
                 break;
 
             case "OutputStatement":
                 $(guiComponent).find("input")[0].value = getEmptyStringIfUndefined(serializableStatement.outputString);
                 $(guiComponent).find("input").trigger("change");
+
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(serializableStatement.comment);
 
                 break;
 
@@ -255,6 +271,8 @@
                     inputElements[index + inputsBeforeParameters].value = getEmptyStringIfUndefined(parameter.value);
                     $(inputElements[index + inputsBeforeParameters]).trigger("change");
                 });
+
+                $(guiComponent).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(serializableStatement.comment);
 
                 break;
         }

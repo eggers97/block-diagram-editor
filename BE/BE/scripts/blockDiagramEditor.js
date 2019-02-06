@@ -10,10 +10,10 @@
     var onResultStatementsChanged;
     var currentFileName;
 
-    window.addEventListener("beforeunload", function (event) {
+    /*window.addEventListener("beforeunload", function (event) {
         event.preventDefault();
         event.returnValue = '';
-    });
+    });*/
 
     $(document).ready(function () {
         initialize();
@@ -544,8 +544,7 @@
     function createContextmenus(droppableForStatementsParameters, droppableForIfComponentsParameters, droppableForSwitchComponentsParameters) {
         var ifComponentSelector = ".ifStatement > table > tbody > tr:nth-child(3)";
         var switchComponentsSelector = ".switchStatement > table > tbody > tr, .switchStatement > table > tfoot > tr";
-        var declarationStatementSelector = ".declarationStatement";
-        var otherStatementsSelector = ".ifStatement, .whileStatement, .doWhileStatement, .forStatement, .switchStatement, .assignmentStatement, .inputStatement, .outputStatement, .functionCallStatement, .commentStatement";
+        var otherStatementsSelector = ".declarationStatement, .ifStatement, .whileStatement, .doWhileStatement, .forStatement, .switchStatement, .assignmentStatement, .inputStatement, .outputStatement, .functionCallStatement, .commentStatement";
         var parametersSelector = ".parameter";
         var statementsSelector = ".statements";
         var statementInsertionPointSelector = ".statementInsertionPoint:not(:last-child)";
@@ -553,14 +552,14 @@
         var clipboard = null;
 
         $("#tabs").contextmenu({
-            delegate: statementInsertionPointSelector + ", " + statementsSelector + ", " + otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector,
+            delegate: statementInsertionPointSelector + ", " + statementsSelector + ", " + otherStatementsSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector,
 
             menu: [{
                 title: blockDiagramEditorGlobals.languagePack["delete"],
                 action: function (event, ui) {
-                    var closestElement = $(ui.target).closest(otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector);
+                    var closestElement = $(ui.target).closest(otherStatementsSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector);
 
-                    if (closestElement.is(otherStatementsSelector + ", " + declarationStatementSelector)) {
+                    if (closestElement.is(otherStatementsSelector)) {
                         var statements = closestElement.closest(".statements");
 
                         statements.data(blockDiagramEditorGlobals.codebehindObjectName).remove(closestElement);
@@ -604,10 +603,20 @@
                     event.stopPropagation();
                 }
             }, {
+                title: blockDiagramEditorGlobals.languagePack["addComment"],
+                cmd: "comment",
+                action: function(event, ui) {
+                    var closestElement = $(ui.target).closest(otherStatementsSelector);
+                    var currentComment = closestElement.data(blockDiagramEditorGlobals.codebehindObjectName).getComment();
+                    var comment = window.prompt(blockDiagramEditorGlobals.languagePack["commentPrompt"], currentComment);
+
+                    $(ui.target).closest(otherStatementsSelector).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(comment);
+                }
+            }, {
                 title: blockDiagramEditorGlobals.languagePack["copy"],
                 cmd: "copy",
                 action: function (event, ui) {
-                    var closestElement = $(ui.target).closest(otherStatementsSelector + ", " + declarationStatementSelector);
+                    var closestElement = $(ui.target).closest(otherStatementsSelector);
 
                     clipboard = blockDiagramEditorGlobals.getWithStatementsSerializableWrapped([ closestElement.data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject() ]);
                 }
@@ -633,34 +642,31 @@
                 title: blockDiagramEditorGlobals.languagePack["documentation"],
                 cmd: "documentation",
                 action: function (event, ui) {
-                    var closestElement = $(ui.target).closest(declarationStatementSelector + ", " + parametersSelector);
+                    var closestElement = $(ui.target).closest(parametersSelector);
                     var currentDocumentation = closestElement.data(blockDiagramEditorGlobals.codebehindObjectName).getDocumentation();
                     var documentation = window.prompt(blockDiagramEditorGlobals.languagePack["documentationPrompt"], currentDocumentation);
 
-                    if (closestElement.is(declarationStatementSelector)) {
-                        $(ui.target).closest(declarationStatementSelector).data(blockDiagramEditorGlobals.codebehindObjectName).addDocumentation(documentation);
+                    $(ui.target).closest(parametersSelector).data(blockDiagramEditorGlobals.codebehindObjectName).setDocumentation(documentation);
+
+                    if (documentation) {
+                        $(ui.target).closest(parametersSelector).children().last().text(" // " + documentation);
                     }
                     else {
-                        $(ui.target).closest(parametersSelector).data(blockDiagramEditorGlobals.codebehindObjectName).setDocumentation(documentation);
-
-                        if (documentation) {
-                            $(ui.target).closest(parametersSelector).children().last().text(" // " + documentation);
-                        }
-                        else {
-                            $(ui.target).closest(parametersSelector).children().last().empty();
-                        }
+                        $(ui.target).closest(parametersSelector).children().last().empty();
                     }
                 }
             }],
 
             beforeOpen: function (event, ui) {
-                var closestElement = $(ui.target).closest(statementsSelector + ", " + otherStatementsSelector + ", " + declarationStatementSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector);
+                var closestElement = $(ui.target).closest(statementsSelector + ", " + otherStatementsSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector);
 
-                if (closestElement.is(declarationStatementSelector) || closestElement.is(parametersSelector)) {
+                if (closestElement.is(parametersSelector)) {
                     $("#tabs").contextmenu("showEntry", "documentation", true);
+                    $("#tabs").contextmenu("showEntry", "comment", false);
                 }
                 else {
                     $("#tabs").contextmenu("showEntry", "documentation", false);
+                    $("#tabs").contextmenu("showEntry", "comment", true);
                 }
 
                 if (closestElement.is(statementsSelector) && clipboard !== null) {

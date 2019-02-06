@@ -312,7 +312,7 @@
                 variables.push(element.value);
             });*/
 
-            $(this.getRootElement()).find(".declarationStatement").children("input:nth-child(3)").each(function (index, element) {
+            $(this.getRootElement()).find(".declarationStatement").children().children("input:nth-child(3)").each(function (index, element) {
                 if (element.value != "") {
                     variables.push(element.value);
                 }
@@ -414,7 +414,7 @@
         this.getVariableType = function (variableName) {
             var variableType;
 
-            $(this.getRootElement()).find(".declarationStatement").children("input:nth-child(3)").each(function (index, element) {
+            $(this.getRootElement()).find(".declarationStatement").children().children("input:nth-child(3)").each(function (index, element) {
                 if (element.value == variableName) {
                     variableType = $(element).prev().prev()[0].value;
                 }
@@ -569,6 +569,21 @@
     }
 
 
+    function CommentAttachableStatement(commentField) {
+        var _comment;
+
+        this.getComment = function() {
+            return _comment;
+        };
+
+        this.setComment = function(comment) {
+            _comment = comment;
+
+            commentField.text(" // " + _comment);
+        };
+    }
+
+
     function CommentStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '\
     <div class="commentStatement">\
@@ -607,7 +622,7 @@
     <div class="ifStatement">                                                               \                                            \
         <table>                                                                             \
             <tbody>                                                                         \
-                <tr><td><span>' + blockDiagramEditorGlobals.languagePack["if"] + '</span></td><td><input type="text" onchange="$(this).closest(\'.ifStatement\').data(\'codebehindObject\').conditionChanged(this.value);"/></td></tr>            \
+                <tr><td><span>' + blockDiagramEditorGlobals.languagePack["if"] + '</span></td><td><input type="text" onchange="$(this).closest(\'.ifStatement\').data(\'codebehindObject\').conditionChanged(this.value);"/><span class=\'comment\'></span></td></tr>            \
                 <tr><td><span>' + blockDiagramEditorGlobals.languagePack["then"] + '</span></td><td><div class="statements"></div></td></tr>  \
             </tbody>                                                                        \
         </table>\                                             \
@@ -617,6 +632,7 @@
         var _elseStatements;
 
         InputReceivableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [30]);
+        CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
 
         this.conditionChanged = function (newValue) {
             _condition = newValue;
@@ -713,6 +729,7 @@
             }
 
             ifStatementSerializable.condition = _condition;
+            ifStatementSerializable.comment = this.getComment();
 
             return ifStatementSerializable;
         };
@@ -732,7 +749,7 @@
         var _htmlSkeleton = '                           \
     <div class="whileStatement">                        \
         <div>                                           \
-            <span>' + blockDiagramEditorGlobals.languagePack["while"] + '</span><input type="text" onchange="$(this).closest(\'.whileStatement\').data(\'codebehindObject\').conditionChanged(this.value);" />   \
+            <span style="bigRightSpaced">' + blockDiagramEditorGlobals.languagePack["while"] + '</span><input type="text" onchange="$(this).closest(\'.whileStatement\').data(\'codebehindObject\').conditionChanged(this.value);" /><span class=\'comment\'></span>   \
         </div>                                          \
         <div class="statements"></div>                  \
     </div>';
@@ -740,6 +757,7 @@
         var _condition;
 
         InputReceivableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [30]);
+        CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
 
         this.conditionChanged = function (newValue) {
             _condition = newValue;
@@ -793,6 +811,7 @@
 
             whileStatementSerializable.loopStatements = _loopStatements.toSerializableObject();
             whileStatementSerializable.condition = _condition;
+            whileStatementSerializable.comment = this.getComment();
 
             return whileStatementSerializable;
         };
@@ -809,14 +828,15 @@
     function DoWhileStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '                           \
     <div class="doWhileStatement">                      \
-        <span>' + blockDiagramEditorGlobals.languagePack["repeat"] + '</span>                                 \
+        <span>' + blockDiagramEditorGlobals.languagePack["repeat"] + '</span>                               \
         <div class="statements"></div>                  \
-        <div><span>' + blockDiagramEditorGlobals.languagePack["until"] + '</span><input type="text" onchange="$(this).closest(\'.doWhileStatement\').data(\'codebehindObject\').conditionChanged(this.value);" /></div>           \
+        <div class="statementBorderHelper"><span>' + blockDiagramEditorGlobals.languagePack["until"] + '</span><input type="text" onchange="$(this).closest(\'.doWhileStatement\').data(\'codebehindObject\').conditionChanged(this.value);" /><span class=\'comment\'></span></div>           \
     </div>';
         var _loopStatements;
         var _condition;
 
         InputReceivableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [30]);
+        CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
 
         this.conditionChanged = function (newValue) {
             _condition = newValue;
@@ -871,6 +891,7 @@
 
             doWhileStatementSerializable.loopStatements = _loopStatements.toSerializableObject();
             doWhileStatementSerializable.condition = _condition;
+            doWhileStatementSerializable.comment = this.getComment();
 
             return doWhileStatementSerializable;
         };
@@ -887,9 +908,8 @@
     function DeclarationStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '                                    \
     <div class="declarationStatement">                       \
-        <input type="text" onchange="$(this).closest(\'.declarationStatement\').data(\'codebehindObject\').variableTypeChanged(this.value);" /><span>:</span><input type="text" onchange="$(this).closest(\'.declarationStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" /><span class=\'hiddenWhenArray\'>=</span><input type="text" class=\'hiddenWhenArray\' onchange="$(this).closest(\'.declarationStatement\').data(\'codebehindObject\').initializationValueChanged(this.value);" /><span class=\'hiddenWhenNotArray\'>[</span><input type="text" onchange="$(this).closest(\'.declarationStatement\').data(\'codebehindObject\').arrayLengthChanged(this.value);" class=\'hiddenWhenNotArray\' /><span class=\'hiddenWhenNotArray\'>]</span><span></span>                      \
+        <div class="statementBorderHelper"><input type="text" onchange="$(this).closest(\'.declarationStatement\').data(\'codebehindObject\').variableTypeChanged(this.value);" /><span>:</span><input type="text" onchange="$(this).closest(\'.declarationStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" /><span class=\'hiddenWhenArray\'>=</span><input type="text" class=\'hiddenWhenArray\' onchange="$(this).closest(\'.declarationStatement\').data(\'codebehindObject\').initializationValueChanged(this.value);" /><span class=\'hiddenWhenNotArray\'>[</span><input type="text" onchange="$(this).closest(\'.declarationStatement\').data(\'codebehindObject\').arrayLengthChanged(this.value);" class=\'hiddenWhenNotArray\' /><span class=\'hiddenWhenNotArray\'>]</span><span class=\'comment\'></span></div>                      \
     </div>';
-        var _documentation;
         var _initializationValue;
         var _variableName;
         var _variableType;
@@ -897,6 +917,7 @@
         var _isArray = false;
 
         InputReceivableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [10, 10, 10, 10]);
+        CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
 
         this.refreshVariableFieldsOfDiagram = function () {
             if ($(this.getRootElement()).find(".forStatement, .assignmentStatement, .switchStatement, .inputStatement, .outputStatement, .functionCallStatement").length) {
@@ -948,21 +969,6 @@
 
         this.initializationValueChanged = function (initializationValue) {
             _initializationValue = initializationValue;
-        };
-
-        this.addDocumentation = function (documentation) {
-            if (documentation) {
-                $(this.getDomElement()).children().last().text(" // " + documentation);
-            }
-            else {
-                $(this.getDomElement()).children().last().empty();
-            }
-
-            _documentation = documentation;
-        };
-
-        this.getDocumentation = function () {
-            return _documentation;
         };
 
         this.generateSimulationCode = function (statementsCaseId, nextStatementsCaseId, nextFreeId) {
@@ -1028,10 +1034,6 @@
                 generatedCode += "int " + _variableName + "Size = " + _arrayLength + ";";
             }
 
-            if (_documentation) {
-                generatedCode += "  /* " + _documentation + "*/";
-            }
-
             return generatedCode;
         }
 
@@ -1047,9 +1049,9 @@
                 declarationStatementSerializable.variableType = _variableType;
                 declarationStatementSerializable.variableName = _variableName;
                 declarationStatementSerializable.initializationValue = _initializationValue;
-                declarationStatementSerializable.documentation = _documentation;
                 declarationStatementSerializable.arrayLength = _arrayLength;
                 declarationStatementSerializable.isArray = _isArray;
+                declarationStatementSerializable.comment = this.getComment();
             }
 
             return declarationStatementSerializable;
@@ -1077,8 +1079,6 @@
             $(this.getDomElement()).find(".hiddenWhenNotArray").css("display", "none");
 
             $(this.getDomElement()).find("input").last()[0].value = "0";  // mark it as non-array for generateLocalVariables() in simulation.js
-
-            $(this.getDomElement()).children().last().addClass("comment");
         }).call(this);
     }
 
@@ -1114,13 +1114,14 @@
     function FunctionCallStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '\
     <div class="functionCallStatement">\
-        <input type="text" onchange="$(this).closest(\'.functionCallStatement\').data(\'codebehindObject\').functionNameChanged(this.value);" /><span>(</span><span>)</span>\
+        <div class="statementBorderHelper"><input type="text" onchange="$(this).closest(\'.functionCallStatement\').data(\'codebehindObject\').functionNameChanged(this.value);" /><span>(</span><span>)</span><span class=\'comment\'></span></div>\
     </div>';
         var _functionParameters;
         var _underlyingFunctionPropertyHolder;
         var _variableName;
 
         VariableSelectableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [10]);
+        CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
 
         this.functionNameChanged = function (functionName) {
             blockDiagramEditorGlobals.FunctionPropertyHolder.functions.some(function (fn) {
@@ -1142,7 +1143,7 @@
                 domElement.find("input").first().remove();
             }
 
-            domElement.find("span").first().nextUntil(domElement.find("span").last(), "input, span").remove();
+            domElement.find("span").first().nextUntil(domElement.find("span:contains(')')"), "input, span").remove();
             domElement.find("input.variableInput").remove();
 
             _functionParameters = new Array();
@@ -1283,6 +1284,7 @@
             functionCallStatementSerializable.variableName = _variableName;
             functionCallStatementSerializable.functionName = _underlyingFunctionPropertyHolder.getName();
             functionCallStatementSerializable.parameters = _functionParameters;
+            functionCallStatementSerializable.comment = this.getComment();
 
             return functionCallStatementSerializable;
         };
@@ -1296,7 +1298,7 @@
     function ForStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '                                                                                        \
     <div class="forStatement">                                                                          \
-        <div><span>' + blockDiagramEditorGlobals.languagePack["from"] + '</span><span><input class="variableInput" type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').counterNameChanged(this.value);" /><span>=</span><input type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').fromValueChanged(this.value);" /></span><span>' + blockDiagramEditorGlobals.languagePack["to"] + '</span><input type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').toValueChanged(this.value);" /><span>' + blockDiagramEditorGlobals.languagePack["step"] + '</span><input type="text" value="+1" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').counterShiftChanged(this.value);" /></div>    \
+        <div class="statementBorderHelper"><span class="bigRightSpaced">' + blockDiagramEditorGlobals.languagePack["from"] + '</span><span class="rightSpaced"><input class="variableInput" type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').counterNameChanged(this.value);" /><span class="rightSpaced">=</span><input type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').fromValueChanged(this.value);" /></span><span class="rightSpaced">' + blockDiagramEditorGlobals.languagePack["to"] + '</span><input class="rightSpaced" type="text" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').toValueChanged(this.value);" /><span class="rightSpaced">' + blockDiagramEditorGlobals.languagePack["step"] + '</span><input type="text" value="+1" onchange="$(this).closest(\'.forStatement\').data(\'codebehindObject\').counterShiftChanged(this.value);" /><span class=\'comment\'></span></div>    \
         <div class="statements"></div>                                                                  \
     </div>';
         var _loopStatements;
@@ -1306,6 +1308,7 @@
         var _counterShift;
 
         VariableSelectableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [5, 5, 5, 5]);
+        CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
 
         this.counterNameChanged = function (counterName) {
             _counterName = counterName;
@@ -1400,6 +1403,7 @@
             forStatementSerializable.toValue = _toValue;
             forStatementSerializable.counterShift = _counterShift;
             forStatementSerializable.loopStatements = _loopStatements.toSerializableObject();
+            forStatementSerializable.comment = this.getComment();
 
             return forStatementSerializable;
         };
@@ -1426,12 +1430,13 @@
     function AssignmentStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '                                    \
     <div class="assignmentStatement">                        \
-        <input type="text" onchange="$(this).closest(\'.assignmentStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" class="variableInput" /><span>=</span><input type="text" onchange="$(this).closest(\'.assignmentStatement\').data(\'codebehindObject\').assignmentValueChanged(this.value);" />                       \
+        <div class="statementBorderHelper"><input type="text" onchange="$(this).closest(\'.assignmentStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" class="variableInput" /><span>=</span><input type="text" onchange="$(this).closest(\'.assignmentStatement\').data(\'codebehindObject\').assignmentValueChanged(this.value);" /><span class=\'comment\'></span></div>                       \
     </div>';
         var _variableName;
         var _assignmentValue;
 
         VariableSelectableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [10, 30]);
+        CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
 
         this.variableNameChanged = function (variableName) {
             _variableName = variableName;
@@ -1483,6 +1488,7 @@
 
             assignmentStatementSerializable.variableName = _variableName;
             assignmentStatementSerializable.assignmentValue = _assignmentValue;
+            assignmentStatementSerializable.comment = this.getComment();
 
             return assignmentStatementSerializable;
         };
@@ -1496,7 +1502,7 @@
     <div class="switchStatement">                                                               \
         <table>                                                                                 \
             <thead>                                                                             \
-                <tr><th>' + blockDiagramEditorGlobals.languagePack["switch"] + '</th><th><input type="text" onchange="$(this).closest(\'.switchStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" class="variableInput" /></th></tr>                           \
+                <tr><th>' + blockDiagramEditorGlobals.languagePack["switch"] + '</th><th><input type="text" onchange="$(this).closest(\'.switchStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" class="variableInput" /><span class=\'comment\'></span></th></tr>                           \
             </thead>                                                                            \
             <tbody>                                                                             \
             </tbody>\
@@ -1509,6 +1515,7 @@
         var _variableName;
 
         VariableSelectableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [10, 5]);
+        CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
 
         this.variableNameChanged = function (variableName) {
             _variableName = variableName;
@@ -1658,6 +1665,7 @@
             }
 
             switchStatementSerializable.variableName = _variableName;
+            switchStatementSerializable.comment = this.getComment();
 
             return switchStatementSerializable;
         };
@@ -1685,12 +1693,13 @@
     function InputStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '                                    \
     <div class="inputStatement">                        \
-        <span>' + blockDiagramEditorGlobals.languagePack["input"] + '</span><span>:</span><input type="text" onchange="$(this).closest(\'.inputStatement\').data(\'codebehindObject\').promptChanged(this.value);" /><span>,</span><input type="text" onchange="$(this).closest(\'.inputStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" class="variableInput" />                       \
+        <div class="statementBorderHelper"><span>' + blockDiagramEditorGlobals.languagePack["input"] + '</span><span>:</span><input type="text" onchange="$(this).closest(\'.inputStatement\').data(\'codebehindObject\').promptChanged(this.value);" /><span>,</span><input type="text" onchange="$(this).closest(\'.inputStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" class="variableInput" /><span class=\'comment\'></span></div>                       \
     </div>';
         var _variableName;
         var _prompt;
 
         VariableSelectableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [10, 10]);
+        CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
 
         this.variableNameChanged = function (variableName) {
             _variableName = variableName;
@@ -1744,6 +1753,7 @@
 
             inputStatementSerializable.prompt = _prompt;
             inputStatementSerializable.variableName = _variableName;
+            inputStatementSerializable.comment = this.getComment();
 
             return inputStatementSerializable;
         };
@@ -1760,7 +1770,7 @@
     function OutputStatement(statement, insertionMode, rootElement) {
         var _htmlSkeleton = '                                    \
     <div class="outputStatement">                        \
-        <span>' + blockDiagramEditorGlobals.languagePack["output"] + '</span><span>:</span><input type="text" onchange="$(this).closest(\'.outputStatement\').data(\'codebehindObject\').outputStringChanged(this.value);" class="variableInput" />                       \
+        <div class="statementBorderHelper"><span>' + blockDiagramEditorGlobals.languagePack["output"] + '</span><span>:</span><input type="text" onchange="$(this).closest(\'.outputStatement\').data(\'codebehindObject\').outputStringChanged(this.value);" class="variableInput" /><span class=\'comment\'></span></div>                      \
     </div>';
         var _outputString;
 
@@ -1769,6 +1779,7 @@
         };
 
         VariableSelectableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [10]);
+        CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
 
         this.generateSimulationCode = function (statementsCaseId, nextStatementsCaseId, nextFreeId) {
             var simulationCode = "";
@@ -1798,6 +1809,7 @@
             var outputStatementSerializable = new OutputStatementSerializable();
 
             outputStatementSerializable.outputString = _outputString;
+            outputStatementSerializable.comment = this.getComment();
 
             return outputStatementSerializable;
         };
@@ -1826,18 +1838,21 @@
         this.thenStatements = null;
         this.elseStatements = null;
         this.condition = null;
+        this.comment = null;
     }
 
     function WhileStatementSerializable() {
         this.type = "WhileStatement";
         this.condition = null;
-        this.loopStatements = null;
+        this.loopStatements = null
+        this.comment = null;
     }
 
     function DoWhileStatementSerializable() {
         this.type = "DoWhileStatement";
         this.condition = null;
         this.loopStatements = null;
+        this.comment = null;
     }
 
     function ForStatementSerializable() {
@@ -1847,6 +1862,7 @@
         this.toValue = null;
         this.counterShift = null;
         this.loopStatements = null;
+        this.comment = null;
     }
 
     function SwitchStatementSerializable() {
@@ -1854,6 +1870,7 @@
         this.variableName = null;
         this.casesStatements = new Array();
         this.elseStatements = null;
+        this.comment = null;
     }
 
     function DeclarationStatementSerializable() {
@@ -1864,23 +1881,27 @@
         this.documentation = null;
         this.arrayLength = null;
         this.isArray = null;
+        this.comment = null;
     }
 
     function AssignmentStatementSerializable() {
         this.type = "AssignmentStatement";
         this.variableName = null;
         this.assignmentValue = null;
+        this.comment = null;
     }
 
     function InputStatementSerializable() {
         this.type = "InputStatement";
         this.prompt = null;
         this.variableName = null;
+        this.comment = null;
     }
 
     function OutputStatementSerializable() {
         this.type = "OutputStatement";
         this.outputString = null;
+        this.comment = null;
     }
 
     function FunctionCallStatementSerializable() {
@@ -1888,6 +1909,7 @@
         this.variableName = null;
         this.functionName = null;
         this.parameters = null;
+        this.comment = null;
     }
 
     function getWithStatementsSerializableWrapped(statements) {
