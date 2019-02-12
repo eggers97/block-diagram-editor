@@ -1145,7 +1145,6 @@
             }
 
             domElement.find("span").first().nextUntil(domElement.find("span:contains(')')"), "input, span").remove();
-            domElement.find("input.variableInput").remove();
 
             _functionParameters = new Array();
             for (var i = 0; i < _underlyingFunctionPropertyHolder.getParameters().length; i++) {
