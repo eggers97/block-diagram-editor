@@ -44,10 +44,6 @@
         // comment
         "comment": "COMMENT",
 
-        // tools
-        "save": "Save",
-        "load": "Load",
-
         // functions
         "name": "Name",
 
@@ -58,7 +54,7 @@
         "documentation": "documentation",
         "documentationPrompt": "Please input the documentation",
         "commentPrompt": "Please input the comment",
-        "addComment": "add comment",
+        "addComment": "comment",
 
         // configurationsDialog
         "simulationDelay": "Simulation delay [ms]:",

@@ -44,10 +44,6 @@
         // comment
         "comment": "KOMMENTAR",
 
-        // tools
-        "save": "Speichern",
-        "load": "Laden",
-
         // functions
         "name": "Name",
 
