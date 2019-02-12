@@ -1150,14 +1150,14 @@
             _functionParameters = new Array();
             for (var i = 0; i < _underlyingFunctionPropertyHolder.getParameters().length; i++) {
                 if (i < _underlyingFunctionPropertyHolder.getParameters().length - 1) {
-                    domElement.find("span").last().before(parameterSkeleton).before("<span>,</span>");
+                    domElement.find("span:contains(')')").last().before(parameterSkeleton).before("<span>,</span>");
                     _functionParameters.push(new Object());
-                    domElement.find("span").last().prev().prev().data(blockDiagramEditorGlobals.codebehindObjectName, _functionParameters[i]);
+                    domElement.find("span:contains(')')").last().prev().prev().data(blockDiagramEditorGlobals.codebehindObjectName, _functionParameters[i]);
                 }
                 else {
-                    domElement.find("span").last().before(parameterSkeleton);
+                    domElement.find("span:contains(')')").last().before(parameterSkeleton);
                     _functionParameters.push(new Object());
-                    domElement.find("span").last().prev().data(blockDiagramEditorGlobals.codebehindObjectName, _functionParameters[i]);
+                    domElement.find("span:contains(')')").last().prev().data(blockDiagramEditorGlobals.codebehindObjectName, _functionParameters[i]);
                 }
             }
 
@@ -1167,9 +1167,9 @@
             });
 
             if (_underlyingFunctionPropertyHolder.getReturnType() != "void") {
-                domElement.prepend('<input type="text" class="variableInput" onchange="$(this).closest(\'.functionCallStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" /><span>=</span>');
+                domElement.find(".statementBorderHelper").prepend('<input type="text" class="variableInput" onchange="$(this).closest(\'.functionCallStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" /><span>=</span>');
 
-                this.prepareAutogrowInputField(domElement.children().first(), 10);
+                this.prepareAutogrowInputField(domElement.find(".statementBorderHelper").children().first(), 10);
             }
             else {
                 _variableName = undefined;
