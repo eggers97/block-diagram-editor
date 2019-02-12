@@ -571,7 +571,12 @@
         this.setComment = function(comment) {
             _comment = comment;
 
-            commentField.text(" // " + _comment);
+            if (comment) {
+                commentField.text(" // " + _comment);
+            }
+            else {
+                commentField.text("");
+            }
         };
     }
 
