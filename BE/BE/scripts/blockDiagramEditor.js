@@ -603,12 +603,12 @@
                     event.stopPropagation();
                 }
             }, {
-                title: blockDiagramEditorGlobals.languagePack["addComment"],
+                title: blockDiagramEditorGlobals.languagePack["statementComment"],
                 cmd: "comment",
                 action: function(event, ui) {
                     var closestElement = $(ui.target).closest(otherStatementsSelector);
                     var currentComment = closestElement.data(blockDiagramEditorGlobals.codebehindObjectName).getComment();
-                    var comment = window.prompt(blockDiagramEditorGlobals.languagePack["commentPrompt"], currentComment);
+                    var comment = window.prompt(blockDiagramEditorGlobals.languagePack["statementCommentPrompt"], currentComment);
 
                     $(ui.target).closest(otherStatementsSelector).data(blockDiagramEditorGlobals.codebehindObjectName).setComment(comment);
                 }

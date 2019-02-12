@@ -53,8 +53,8 @@
         "paste": "paste",
         "documentation": "documentation",
         "documentationPrompt": "Please input the documentation",
-        "commentPrompt": "Please input the comment",
-        "addComment": "comment",
+        "statementCommentPrompt": "Please input the comment",
+        "statementComment": "comment",
 
         // configurationsDialog
         "simulationDelay": "Simulation delay [ms]:",
