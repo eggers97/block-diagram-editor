@@ -49,10 +49,6 @@
         this.setName = function (name) {
             _name = name;
 
-            blockDiagramEditorGlobals.applicationContainer.find(".functionCallStatement").each(function (index, functionCallStatement) {
-                $(functionCallStatement).data(blockDiagramEditorGlobals.codebehindObjectName).prepareFunctionField();
-            });
-
             this.onUpdateName();
         };
 

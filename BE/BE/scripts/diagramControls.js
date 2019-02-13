@@ -1182,17 +1182,17 @@
         };
 
         this.prepareFunctionField = function () {
-            var functionNames = new Array();
-
-            blockDiagramEditorGlobals.FunctionPropertyHolder.functions.forEach(function (fn) {
-                if (fn.getName() != null) {     // if null is added, autocomplete fails
-                    functionNames.push(fn.getName());
-                }
-            });
-
             $(this.getDomElement()).find("input:first-child").autocomplete({
                 autoFocus: true,
-                source: functionNames,
+                source: function(request, response) {
+                    var searchExpression = new RegExp($.ui.autocomplete.escapeRegex(request.term));
+
+                    response(blockDiagramEditorGlobals.FunctionPropertyHolder.functions.map(function(availableFunction) {
+                        return availableFunction.getName();
+                    }).filter(function(functionName) {
+                        return functionName.match(searchExpression);
+                    }));
+                },
                 delay: 0,
                 minLength: 0,
                 select: function (event, ui) {
