@@ -130,7 +130,7 @@
 
         this.generateSimulationCode = function (statementsCaseId, nextStatementsCaseId, nextFreeId) {
             var simulationCode = "";
-            var statementsCaseIds = new Array();
+            var statementsCaseIds = [];
             var i;
 
             if (nextStatementsCaseId === -1) {   // container of whole function/procedure/main
@@ -170,7 +170,7 @@
             else {
                 simulationCode += "case " + statementsCaseId + ":";
                 simulationCode += "return {";
-                simulationCode += "caseId: " + nextStatementsCaseId + ","
+                simulationCode += "caseId: " + nextStatementsCaseId + ",";
                 simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).getPath() + "'";
                 simulationCode += "};"
             }
@@ -183,7 +183,7 @@
 
             if (this.getDomElement() === this.getRootElement()[0]) {    // function
                 var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
-                var parametersStringArray = new Array();
+                var parametersStringArray = [];
 
                 if (functionPropertyHolder) {   // subprogram
                     generatedCode += this.convertBlockDiagramTypeToCType(functionPropertyHolder.getReturnType()) + " " + functionPropertyHolder.getName() + "(";
@@ -324,7 +324,7 @@
         };
 
         this.replaceIntegerOutParameterAccess = function (codeString) {
-            var variableNames = new Array();
+            var variableNames = [];
             var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
             if (functionPropertyHolder) { // -> it's a function/procedure -> we have to add the parameters
@@ -430,7 +430,7 @@
         this.getPrintfParametersForStringConcatenation = function (string) {
             var stringComponents = string.split("+");
             var printfFormatString = "";
-            var printfAdditionalArgumentsList = new Array();
+            var printfAdditionalArgumentsList = [];
 
             stringComponents.forEach(function (stringComponents, index) {
                 stringComponents = stringComponents.trim();
@@ -469,52 +469,7 @@
             };
         };
 
-        this.convertToCConditionalExpression = function (conditionalExpression) {/*
-            var logicalOperators = /\|\||&&|!/;
-            var conditionalOperatorsWithoutEqualityAndInequality = />|</;
-            var equalityAndInequality = /==|!=/;
-            var numOfConditionalOperators;
-            var splittedConditionalExpressions = conditionalExpression.split(logicalOperators);
-            var cConditionalExpression = "";
-            var andIndex = 0, orIndex = 0, notIndex = 0;
-
-            splittedConditionalExpressions.forEach(function (splittedConditionalExpression) {
-                andIndex = conditionalExpression.indexOf("&&");
-                orIndex = conditionalExpression.indexOf("||");
-                notIndex = conditionalExpression.indexOf("!");
-
-                numOfConditionalOperators = splittedConditionalExpression.split(conditionalOperatorsWithoutEqualityAndInequality).length - 1;
-
-                if (numOfConditionalOperators === 0) {
-
-                }
-                else if (numOfConditionalOperators === 1) {
-                    var conditionalOperator;
-
-                    if (splittedConditionalExpression.indexOf(">") !== -1) {
-                        var tempSplit = splittedConditionalExpression.split(">");
-
-                        cConditionalExpression += "strcmp (" + tempSplit[0] + "," + tempSplit[1] + ") > 0";
-                    }
-                    else if (splittedConditionalExpression.indexOf("<") !== -1) {
-                        var tempSplit = splittedConditionalExpression.split("<");
-
-                        cConditionalExpression += "strcmp (" + tempSplit[0] + "," + tempSplit[1] + ") < 0";
-                    }
-                }
-                else if (numOfConditionalOperators > 1) {
-
-                }
-
-                if (equalityIndex > inequalityIndex) {
-                    cConditionalExpression += "!=";
-                    equalityIndex = inequalityIndex;
-                }
-                else {
-                    cConditionalExpression += "==";
-                    inequalityIndex = equalityIndex;
-                }
-            });*/
+        this.convertToCConditionalExpression = function (conditionalExpression) {
             var cConditionalExpression;
             var isString;
 
@@ -663,7 +618,7 @@
             }
             else {
                 simulationCode += "return {";
-                simulationCode += "caseId: " + thenStatementsCaseId + ","
+                simulationCode += "caseId: " + thenStatementsCaseId + ",";
                 simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).children("table").children("tbody").children().first().getPath() + "'";
                 simulationCode += "};"
             }
@@ -678,7 +633,7 @@
                 }
                 else {
                     simulationCode += "return {";
-                    simulationCode += "caseId: " + elseStatementsCaseId + ","
+                    simulationCode += "caseId: " + elseStatementsCaseId + ",";
                     simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).children("table").children("tbody").children().first().getPath() + "'";
                     simulationCode += "};";
                 }
@@ -772,7 +727,7 @@
             }
             else {
                 simulationCode += "return {";
-                simulationCode += "caseId: " + loopStatementsCaseId + ","
+                simulationCode += "caseId: " + loopStatementsCaseId + ",";
                 simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).children().first().getPath() + "'";
                 simulationCode += "};";
             }
@@ -785,7 +740,7 @@
             }
             else {
                 simulationCode += "return {";
-                simulationCode += "caseId: " + nextStatementsCaseId + ","
+                simulationCode += "caseId: " + nextStatementsCaseId + ",";
                 simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).children().first().getPath() + "'";
                 simulationCode += "};";
             }
@@ -798,9 +753,7 @@
         };
 
         this.generateCCode = function () {
-            var generatedCode = "while (" + this.convertToCConditionalExpression(this.replaceIntegerOutParameterAccess(_condition)) + ") {" + _loopStatements.generateCCode() + "}";
-
-            return generatedCode;
+            return "while (" + this.convertToCConditionalExpression(this.replaceIntegerOutParameterAccess(_condition)) + ") {" + _loopStatements.generateCCode() + "}";
         };
 
         this.toSerializableObject = function () {
@@ -852,7 +805,7 @@
             }
             else {
                 simulationCode += "return {";
-                simulationCode += "caseId: " + loopStatementsCaseId + ","
+                simulationCode += "caseId: " + loopStatementsCaseId + ",";
                 simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).children().last().getPath() + "'";
                 simulationCode += "};";
             }
@@ -865,7 +818,7 @@
             }
             else {
                 simulationCode += "return {";
-                simulationCode += "caseId: " + nextStatementsCaseId + ","
+                simulationCode += "caseId: " + nextStatementsCaseId + ",";
                 simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).children().last().getPath() + "'";
                 simulationCode += "};"
             }
@@ -878,9 +831,7 @@
         };
 
         this.generateCCode = function () {
-            var generatedCode = "do {" + _loopStatements.generateCCode() + "} while (!(" + this.convertToCConditionalExpression(this.replaceIntegerOutParameterAccess(_condition)) + "));";
-
-            return generatedCode;
+            return "do {" + _loopStatements.generateCCode() + "} while (!(" + this.convertToCConditionalExpression(this.replaceIntegerOutParameterAccess(_condition)) + "));";
         };
 
         this.toSerializableObject = function () {
@@ -1136,7 +1087,7 @@
             });
 
             var domElement = $(this.getDomElement());
-            var parameterSkeleton = '<input type="text" class="variableInput" onchange="$(this).data(\'codebehindObject\').value = this.value;" />'
+            var parameterSkeleton = '<input type="text" class="variableInput" onchange="$(this).data(\'codebehindObject\').value = this.value;" />';
 
 
             if (domElement.find("input.variableInput:first-child").length > 0) {
@@ -1146,16 +1097,16 @@
 
             domElement.find("span").first().nextUntil(domElement.find("span:contains(')')"), "input, span").remove();
 
-            _functionParameters = new Array();
+            _functionParameters = [];
             for (var i = 0; i < _underlyingFunctionPropertyHolder.getParameters().length; i++) {
                 if (i < _underlyingFunctionPropertyHolder.getParameters().length - 1) {
                     domElement.find("span:contains(')')").last().before(parameterSkeleton).before("<span>,</span>");
-                    _functionParameters.push(new Object());
+                    _functionParameters.push({});
                     domElement.find("span:contains(')')").last().prev().prev().data(blockDiagramEditorGlobals.codebehindObjectName, _functionParameters[i]);
                 }
                 else {
                     domElement.find("span:contains(')')").last().before(parameterSkeleton);
-                    _functionParameters.push(new Object());
+                    _functionParameters.push({});
                     domElement.find("span:contains(')')").last().prev().data(blockDiagramEditorGlobals.codebehindObjectName, _functionParameters[i]);
                 }
             }
@@ -1206,7 +1157,7 @@
         this.generateSimulationCode = function (statementsCaseId, nextStatementsCaseId, nextFreeId) {
             var simulationCode = "";
             var returnValueAssignmentCaseId = nextFreeId.value++;
-            var parameterNames = new Array();
+            var parameterNames = [];
 
             simulationCode += "case " + statementsCaseId + ":";
             simulationCode += "return {";
@@ -1460,9 +1411,9 @@
             simulationCode += this.replaceVariableAccess(_variableName) + " = (" + this.replaceVariableAccess(_assignmentValue) + ").toString();";
             simulationCode += "}";
             simulationCode += "return {";
-            simulationCode += "caseId: " + nextStatementsCaseId + ","
+            simulationCode += "caseId: " + nextStatementsCaseId + ",";
             simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).getPath() + "'";
-            simulationCode += "};"
+            simulationCode += "};";
 
             return simulationCode;
         };
@@ -1510,7 +1461,7 @@
             </tfoot>\
         </table>  \
     </div>';
-        var _casesStatements = new Array();
+        var _casesStatements = [];
         var _elseStatements;
         var _variableName;
 
@@ -1574,7 +1525,7 @@
 
         this.generateSimulationCode = function (statementsCaseId, nextStatementsCaseId, nextFreeId) {
             var simulationCode = "";
-            var caseStatementsCaseIds = new Array();
+            var caseStatementsCaseIds = [];
             var defaultCaseId = nextFreeId.value++;
             var caseId;
             var i;
@@ -1674,11 +1625,6 @@
             var statementsBlock = $(this.getDomElement()).find(".statements");
             var statementsCodebehind = new Statements(statementsBlock, Statement.useGiven, this.getRootElement());
 
-            /*_casesStatements.push({
-                caseValue: null,
-                caseStatements: statementsCodebehind
-            });*/
-
             statementsBlock.data(blockDiagramEditorGlobals.codebehindObjectName, statementsCodebehind);
 
             this.addCaseBlock();
@@ -1726,7 +1672,7 @@
             simulationCode += "}";
             simulationCode += "},";
             simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).getPath() + "'";
-            simulationCode += "};"
+            simulationCode += "};";
 
             return simulationCode;
         };
@@ -1786,7 +1732,7 @@
 
             simulationCode += "case " + statementsCaseId + ":";
             simulationCode += "return {";
-            simulationCode += "caseId: " + nextStatementsCaseId + ","
+            simulationCode += "caseId: " + nextStatementsCaseId + ",";
             simulationCode += "codeToExecute: function(){";
             simulationCode += "alert (" + this.replaceVariableAccess(_outputString) + ");";
             simulationCode += "},";
@@ -1825,7 +1771,7 @@
 
     function StatementsSerializable() {
         this.type = "Statements";
-        this.statements = new Array();
+        this.statements = [];
     }
 
     function CommentStatementSerializable() {
@@ -1844,7 +1790,7 @@
     function WhileStatementSerializable() {
         this.type = "WhileStatement";
         this.condition = null;
-        this.loopStatements = null
+        this.loopStatements = null;
         this.comment = null;
     }
 
@@ -1868,7 +1814,7 @@
     function SwitchStatementSerializable() {
         this.type = "SwitchStatement";
         this.variableName = null;
-        this.casesStatements = new Array();
+        this.casesStatements = [];
         this.elseStatements = null;
         this.comment = null;
     }

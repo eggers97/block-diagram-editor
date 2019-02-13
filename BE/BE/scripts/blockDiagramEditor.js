@@ -10,10 +10,10 @@
     var onResultStatementsChanged;
     var currentFileName;
 
-    /*window.addEventListener("beforeunload", function (event) {
+    window.addEventListener("beforeunload", function (event) {
         event.preventDefault();
         event.returnValue = '';
-    });*/
+    });
 
     $(document).ready(function () {
         initialize();
@@ -359,14 +359,14 @@
     }
 
     function saveDiagram() {
-        var diagram = new Object();
+        var diagram = {};
         var filename;
 
         diagram.main = $("#main .statements").data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject();
 
         blockDiagramEditorGlobals.functionContainers.forEach(function (statements, index) {
             if (index > 0) {
-                var parameters = new Array();
+                var parameters = [];
                 var statementsSerialized = $(statements).data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject();
 
                 $(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getParameters().forEach(function (parameter) {
@@ -558,9 +558,10 @@
                 title: blockDiagramEditorGlobals.languagePack["delete"],
                 action: function (event, ui) {
                     var closestElement = $(ui.target).closest(otherStatementsSelector + ", " + switchComponentsSelector + ", " + ifComponentSelector + ", " + parametersSelector);
+                    var statements;
 
                     if (closestElement.is(otherStatementsSelector)) {
-                        var statements = closestElement.closest(".statements");
+                        statements = closestElement.closest(".statements");
 
                         statements.data(blockDiagramEditorGlobals.codebehindObjectName).remove(closestElement);
 
@@ -575,7 +576,7 @@
                     }
                     else if (closestElement.is(switchComponentsSelector)) {
                         var parent = $(ui.target).closest("tr").parent().prop("tagName");
-                        var statements = $(ui.target).closest("tr").find(".statements").first().data(blockDiagramEditorGlobals.codebehindObjectName);
+                        statements = $(ui.target).closest("tr").find(".statements").first().data(blockDiagramEditorGlobals.codebehindObjectName);
 
                         if (parent === "TFOOT") {
                             $(ui.target).closest(".switchStatement").data(blockDiagramEditorGlobals.codebehindObjectName).removeElseBlock();

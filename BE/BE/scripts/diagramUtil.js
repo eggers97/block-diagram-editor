@@ -6,7 +6,6 @@
 "use strict";
 
 (function() {
-    var applicationContainer;
     var functionContainers = [];
 
     function initializeApplication(applicationContainer, mainStatementsContainer) {
@@ -21,7 +20,7 @@
 
     function FunctionPropertyHolder() {
         var _name = "function";
-        var _parameters = new Array();
+        var _parameters = [];
         var _returnType = "void";
 
         this.getName = function() {
@@ -60,7 +59,7 @@
 
         FunctionPropertyHolder.functions.push(this);
     }
-    FunctionPropertyHolder.functions = new Array();
+    FunctionPropertyHolder.functions = [];
     FunctionPropertyHolder.functionNameCounter = 1;
 
     FunctionPropertyHolder.getByName = function (name) {
@@ -308,7 +307,7 @@
     }
 
     $.extend(window.blockDiagramEditorGlobals, {
-        applicationContainer: applicationContainer,
+        applicationContainer: null,
         functionContainers: functionContainers,
         initializeApplication: initializeApplication,
         FunctionPropertyHolder: FunctionPropertyHolder
