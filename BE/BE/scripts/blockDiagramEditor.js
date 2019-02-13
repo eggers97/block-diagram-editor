@@ -62,7 +62,7 @@
 
         $("#tabs").tabs({
             beforeActivate: function (event, ui) {
-                if (ui.newTab.text() == "+") {
+                if (ui.newTab.text() === "+") {
                     addTab(droppableForStatementsParameters);
 
                     return false;
@@ -92,7 +92,7 @@
 
         unfinishDiagram = function () {
             $("#tabs").children("div").each(function (index, diagramFunction) {
-                if ($(diagramFunction).find(".statementInsertionPoint").length == 0) {
+                if ($(diagramFunction).find(".statementInsertionPoint").length === 0) {
                     $(diagramFunction).find(".statements:empty").droppable(droppableForStatementsParameters);
                     $(diagramFunction).find(".switchStatement").droppable(droppableForSwitchComponentsParameters);
                     $(diagramFunction).find(".ifStatement").droppable(droppableForIfComponentsParameters);
@@ -106,7 +106,7 @@
 
         onResultStatementsChanged = function (statementsContainer, added, removed) {
             if (added) {
-                if (statementsContainer.children().length == 1) {   // result declaration is the only statement
+                if (statementsContainer.children().length === 1) {   // result declaration is the only statement
                     if (statementsContainer.data("uiDroppable")) {
                         statementsContainer.droppable("destroy");
                     }
@@ -148,7 +148,7 @@
         blockDiagramEditorGlobals.FunctionPropertyHolder.functions.splice(blockDiagramEditorGlobals.FunctionPropertyHolder.functions.indexOf(codebehindObject), 1);
 
         blockDiagramEditorGlobals.functionContainers.some(function (statements, idx) {
-            if (statements.parent().attr("id") == panelId) {
+            if (statements.parent().attr("id") === panelId) {
                 index = idx;
 
                 return true;
@@ -577,10 +577,10 @@
                         var parent = $(ui.target).closest("tr").parent().prop("tagName");
                         var statements = $(ui.target).closest("tr").find(".statements").first().data(blockDiagramEditorGlobals.codebehindObjectName);
 
-                        if (parent == "TFOOT") {
+                        if (parent === "TFOOT") {
                             $(ui.target).closest(".switchStatement").data(blockDiagramEditorGlobals.codebehindObjectName).removeElseBlock();
                         }
-                        else if (parent == "TBODY") {
+                        else if (parent === "TBODY") {
                             $(ui.target).closest(".switchStatement").data(blockDiagramEditorGlobals.codebehindObjectName).removeCaseBlock(statements);
                         }
                         else {

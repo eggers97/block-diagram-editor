@@ -48,25 +48,25 @@
         };
 
         (function () {  // intialize function
-            if (insertionMode == Statement.insertInto) {
+            if (insertionMode === Statement.insertInto) {
                 $(statement).append(htmlSkeleton);
                 _domElement = $(statement).children().last()[0];
                 $(_domElement).data(blockDiagramEditorGlobals.codebehindObjectName, this);
             }
-            else if (insertionMode == Statement.insertAfter) {
+            else if (insertionMode === Statement.insertAfter) {
                 $(statement).after(htmlSkeleton);
                 _domElement = $(statement).next()[0];
                 $(_domElement).data(blockDiagramEditorGlobals.codebehindObjectName, this);
             }
-            else if (insertionMode == Statement.insertBefore) {
+            else if (insertionMode === Statement.insertBefore) {
                 $(statement).before(htmlSkeleton);
                 _domElement = $(statement).prev()[0];
                 $(_domElement).data(blockDiagramEditorGlobals.codebehindObjectName, this);
             }
-            else if (insertionMode == Statement.useGiven) {
+            else if (insertionMode === Statement.useGiven) {
                 _domElement = $(statement)[0];
             }
-            else if (insertionMode == Statement.prepend) {
+            else if (insertionMode === Statement.prepend) {
                 $(statement).prepend(htmlSkeleton);
                 _domElement = $(statement).children().first()[0];
                 $(_domElement).data(blockDiagramEditorGlobals.codebehindObjectName, this);
@@ -125,7 +125,7 @@
         };
 
         this.isEmpty = function () {
-            return _statements.length == 0;
+            return _statements.length === 0;
         };
 
         this.generateSimulationCode = function (statementsCaseId, nextStatementsCaseId, nextFreeId) {
@@ -133,7 +133,7 @@
             var statementsCaseIds = new Array();
             var i;
 
-            if (nextStatementsCaseId == -1) {   // container of whole function/procedure/main
+            if (nextStatementsCaseId === -1) {   // container of whole function/procedure/main
                 var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
                 if (functionPropertyHolder != null) {   // it's a function/procedure but not main
@@ -181,7 +181,7 @@
         this.generateCCode = function () {
             var generatedCode = "";
 
-            if (this.getDomElement() == this.getRootElement()[0]) {    // function
+            if (this.getDomElement() === this.getRootElement()[0]) {    // function
                 var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
                 var parametersStringArray = new Array();
 
@@ -191,13 +191,13 @@
                     functionPropertyHolder.getParameters().forEach(function (parameter) {
                         var cParameterType = this.convertBlockDiagramTypeToCType(parameter.getType());
 
-                        if (parameter.getOnlyIn() == false && parameter.getType() == blockDiagramEditorGlobals.languagePack["integer"]) {
+                        if (parameter.getOnlyIn() === false && parameter.getType() === blockDiagramEditorGlobals.languagePack["integer"]) {
                             cParameterType += "*";
                         }
 
                         parametersStringArray.push(cParameterType + " " + parameter.getName());
 
-                        if (parameter.getType().charAt(parameter.getType().length - 1) == "]") {
+                        if (parameter.getType().charAt(parameter.getType().length - 1) === "]") {
                             parametersStringArray.push("int " + parameter.getName() + "Size");
                         }
                     }, this);
@@ -210,10 +210,10 @@
                         generatedCode += statement.generateCCode();
                     });
 
-                    if (functionPropertyHolder.getReturnType() == blockDiagramEditorGlobals.languagePack["integer"]) {
+                    if (functionPropertyHolder.getReturnType() === blockDiagramEditorGlobals.languagePack["integer"]) {
                         generatedCode += "return result;";
                     }
-                    else if (functionPropertyHolder.getReturnType() == blockDiagramEditorGlobals.languagePack["string"]) {
+                    else if (functionPropertyHolder.getReturnType() === blockDiagramEditorGlobals.languagePack["string"]) {
                         generatedCode += "/* returning a string is not supported */";
                     }
 
@@ -246,12 +246,12 @@
                 var numberOfQuotes = 0;
 
                 for (var i = 0; i < offset; i++) {
-                    if (codeString.charAt(i) == '"' || codeString.charAt(i) == "'") {
+                    if (codeString.charAt(i) === '"' || codeString.charAt(i) === "'") {
                         numberOfQuotes++;
                     }
                 }
 
-                if (numberOfQuotes % 2 == 0) { // replace every match which is not between quotes
+                if (numberOfQuotes % 2 === 0) { // replace every match which is not between quotes
                     stringToReplace = "Size";
                 }
                 else {
@@ -329,7 +329,7 @@
 
             if (functionPropertyHolder != null) { // -> it's a function/procedure -> we have to add the parameters
                 functionPropertyHolder.getParameters().forEach(function (parameter) {
-                    if (parameter.getOnlyIn() == false && parameter.getType() == blockDiagramEditorGlobals.languagePack["integer"]) {
+                    if (parameter.getOnlyIn() === false && parameter.getType() === blockDiagramEditorGlobals.languagePack["integer"]) {
                         variableNames.push(parameter.getName());
                     }
                 });
@@ -345,12 +345,12 @@
                     var numberOfQuotes = 0;
 
                     for (var i = 0; i < offset; i++) {
-                        if (codeString.charAt(i) == '"' || codeString.charAt(i) == "'") {
+                        if (codeString.charAt(i) === '"' || codeString.charAt(i) === "'") {
                             numberOfQuotes++;
                         }
                     }
 
-                    if (numberOfQuotes % 2 == 0 && (offset - 1 < 1 || !codeString.charAt(offset - 1).match("[a-z0-9]")) && (offset + match.length >= codeString.length || !codeString.charAt(offset + match.length).match("[a-z0-9]"))) { // replace every match which is not between quotes
+                    if (numberOfQuotes % 2 === 0 && (offset - 1 < 1 || !codeString.charAt(offset - 1).match("[a-z0-9]")) && (offset + match.length >= codeString.length || !codeString.charAt(offset + match.length).match("[a-z0-9]"))) { // replace every match which is not between quotes
                         stringToReplace = "*" + match;
                     }
                     else {
@@ -381,12 +381,12 @@
                     var numberOfQuotes = 0;
 
                     for (var i = 0; i < offset; i++) {
-                        if (codeString.charAt(i) == '"' || codeString.charAt(i) == "'") {
+                        if (codeString.charAt(i) === '"' || codeString.charAt(i) === "'") {
                             numberOfQuotes++;
                         }
                     }
 
-                    if (numberOfQuotes % 2 == 0 && (offset - 1 < 1 || !codeString.charAt(offset - 1).match("[a-z0-9]")) && (offset + match.length >= codeString.length || !codeString.charAt(offset + match.length).match("[a-z0-9]"))) { // replace every match which is not between quotes
+                    if (numberOfQuotes % 2 === 0 && (offset - 1 < 1 || !codeString.charAt(offset - 1).match("[a-z0-9]")) && (offset + match.length >= codeString.length || !codeString.charAt(offset + match.length).match("[a-z0-9]"))) { // replace every match which is not between quotes
                         stringToReplace = "localVariables[\"" + match + "\"].value";
                     }
                     else {
@@ -417,7 +417,7 @@
 
                 if (functionPropertyHolder != null) { // -> it's a function/procedure -> we have to add the parameters
                     functionPropertyHolder.getParameters().forEach(function (parameter) {
-                        if (parameter.getName() == variableName) {
+                        if (parameter.getName() === variableName) {
                             variableType = parameter.getType();
                         }
                     });
@@ -435,7 +435,7 @@
             stringComponents.forEach(function (stringComponents, index) {
                 stringComponents = stringComponents.trim();
 
-                if (stringComponents.charAt(0) == "\"") {
+                if (stringComponents.charAt(0) === "\"") {
                     printfFormatString += "%s";
                 }
                 else if (stringComponents.charAt(0).match(/0-9/)) {
@@ -445,11 +445,11 @@
                     var variableName = stringComponents.split("[")[0];
                     var variableType = this.getVariableType(variableName).split("[")[0];
 
-                    if (variableType == blockDiagramEditorGlobals.languagePack["integer"]) {
+                    if (variableType === blockDiagramEditorGlobals.languagePack["integer"]) {
                         printfFormatString += "%d";
                         this.replaceIntegerOutParameterAccess(stringComponents);
                     }
-                    else if (variableType == blockDiagramEditorGlobals.languagePack["string"]) {
+                    else if (variableType === blockDiagramEditorGlobals.languagePack["string"]) {
                         printfFormatString += "%s";
                     }
                     else {
@@ -485,10 +485,10 @@
 
                 numOfConditionalOperators = splittedConditionalExpression.split(conditionalOperatorsWithoutEqualityAndInequality).length - 1;
 
-                if (numOfConditionalOperators == 0) {
+                if (numOfConditionalOperators === 0) {
 
                 }
-                else if (numOfConditionalOperators == 1) {
+                else if (numOfConditionalOperators === 1) {
                     var conditionalOperator;
 
                     if (splittedConditionalExpression.indexOf(">") != -1) {
@@ -521,21 +521,21 @@
             if (conditionalExpression.indexOf("==") != -1 || conditionalExpression.indexOf("!=") != -1) {
                 var leftAndRightExpressions = conditionalExpression.split(/==|!=/);
 
-                if (leftAndRightExpressions[0].charAt(0) == "\"") {
+                if (leftAndRightExpressions[0].charAt(0) === "\"") {
                     isString = true;
                 }
                 else {
                     var variableName = leftAndRightExpressions[0].split("[")[0];
                     var variableType = this.getVariableType(variableName).split("[")[0];
 
-                    if (variableType == blockDiagramEditorGlobals.languagePack["string"]) {
+                    if (variableType === blockDiagramEditorGlobals.languagePack["string"]) {
                         isString = true;
                     }
                 }
 
                 if (isString) {
                     if (conditionalExpression.indexOf("==")) {
-                        cConditionalExpression = "strcmp (" + leftAndRightExpressions[0] + "," + leftAndRightExpressions[1] + ") == 0";
+                        cConditionalExpression = "strcmp (" + leftAndRightExpressions[0] + "," + leftAndRightExpressions[1] + ") === 0";
                     }
                     else if (conditionalExpression.indexOf("!=")) {
                         cConditionalExpression = "strcmp (" + leftAndRightExpressions[0] + "," + leftAndRightExpressions[1] + ") != 0";
@@ -935,7 +935,7 @@
         this.variableTypeChanged = function (variableType) {
             _variableType = variableType;
 
-            if (_variableType.charAt(_variableType.length - 1) == "]") {    // array type
+            if (_variableType.charAt(_variableType.length - 1) === "]") {    // array type
                 _isArray = true;
 
                 $(this.getDomElement()).find(".hiddenWhenArray").css("display", "none");
@@ -977,14 +977,14 @@
 
             simulationCode += "case " + statementsCaseId + ":";
 
-            if (_variableType == blockDiagramEditorGlobals.languagePack["integer"]) {
+            if (_variableType === blockDiagramEditorGlobals.languagePack["integer"]) {
                 simulationCode += this.replaceVariableAccess(_variableName) + " = Number(" + this.replaceVariableAccess(_initializationValue) + ");";
                 simulationCode += "if (isNaN(" + this.replaceVariableAccess(_variableName) + ")) { ";
                 simulationCode += "throw new TypeError('" + _initializationValue + " is not a number');";
                 simulationCode += "}";
                 simulationCode += "localVariables['" + _variableName + "'].address = decimalToFixedWidthHex(nextFreeAddress++ * 8, 4);";
             }
-            else if (_variableType == blockDiagramEditorGlobals.languagePack["string"]) {
+            else if (_variableType === blockDiagramEditorGlobals.languagePack["string"]) {
                 simulationCode += this.replaceVariableAccess(_variableName) + " = (" + this.replaceVariableAccess(_initializationValue) + ").toString();";
                 simulationCode += "localVariables['" + _variableName + "'].address = decimalToFixedWidthHex(nextFreeAddress++ * 8, 4);";
             }
@@ -992,10 +992,10 @@
                 var primitiveType = _variableType.substr(0, _variableType.length - 2);
                 var primitiveTypeInitializer;
 
-                if (primitiveType == blockDiagramEditorGlobals.languagePack["integer"]) {
+                if (primitiveType === blockDiagramEditorGlobals.languagePack["integer"]) {
                     primitiveTypeInitializer = 0;
                 }
-                else if (primitiveType == blockDiagramEditorGlobals.languagePack["string"]) {
+                else if (primitiveType === blockDiagramEditorGlobals.languagePack["string"]) {
                     primitiveTypeInitializer = "\"\"";
                 }
 
@@ -1020,17 +1020,17 @@
         this.generateCCode = function () {
             var generatedCode;
 
-            if (_variableType == blockDiagramEditorGlobals.languagePack["integer"]) {
+            if (_variableType === blockDiagramEditorGlobals.languagePack["integer"]) {
                 generatedCode = "int " + _variableName + " = " + this.replaceIntegerOutParameterAccess(_initializationValue) + ";";
             }
-            else if (_variableType == blockDiagramEditorGlobals.languagePack["string"]) {
+            else if (_variableType === blockDiagramEditorGlobals.languagePack["string"]) {
                 generatedCode = "char " + _variableName + "[MAX_STRING_SIZE] = " + _initializationValue + ";";
             }
-            else if (_variableType == blockDiagramEditorGlobals.languagePack["integer"] + "[]") {
+            else if (_variableType === blockDiagramEditorGlobals.languagePack["integer"] + "[]") {
                 generatedCode = "int " + _variableName + "[" + this.replaceIntegerOutParameterAccess(_arrayLength) + "];";
                 generatedCode += "int " + _variableName + "Size = " + _arrayLength + ";";
             }
-            else if (_variableType == blockDiagramEditorGlobals.languagePack["string"] + "[]") {
+            else if (_variableType === blockDiagramEditorGlobals.languagePack["string"] + "[]") {
                 generatedCode = "char " + _variableName + "[" + this.replaceIntegerOutParameterAccess(_arrayLength) + "][MAX_STRING_SIZE];";
                 generatedCode += "int " + _variableName + "Size = " + _arrayLength + ";";
             }
@@ -1126,7 +1126,7 @@
 
         this.functionNameChanged = function (functionName) {
             blockDiagramEditorGlobals.FunctionPropertyHolder.functions.some(function (fn) {
-                if (fn.getName() == functionName) {
+                if (fn.getName() === functionName) {
                     _underlyingFunctionPropertyHolder = fn;
 
                     return true;
@@ -1213,7 +1213,7 @@
             simulationCode += "functionName: '" + _underlyingFunctionPropertyHolder.getName() + "',";
 
             _functionParameters.forEach(function (parameter, index) {
-                if (_underlyingFunctionPropertyHolder.getParameters()[index].getOnlyIn() == true) {
+                if (_underlyingFunctionPropertyHolder.getParameters()[index].getOnlyIn() === true) {
                     parameterNames.push(this.replaceVariableAccess(parameter.value));
                 }
                 else {
@@ -1250,14 +1250,14 @@
                     var parameterType = _underlyingFunctionPropertyHolder.getParameters()[index].getType();
                     var parameterOnlyIn = _underlyingFunctionPropertyHolder.getParameters()[index].getOnlyIn();
 
-                    if (parameterType == blockDiagramEditorGlobals.languagePack["string"]) {
+                    if (parameterType === blockDiagramEditorGlobals.languagePack["string"]) {
                         generatedCode += parameter.value;
                     }
-                    else if (parameterType.charAt(parameterType.length - 1) == "]") {
+                    else if (parameterType.charAt(parameterType.length - 1) === "]") {
                         generatedCode += parameter.value + "," + parameter.value + "Size";
                     }
-                    else if (parameterType == blockDiagramEditorGlobals.languagePack["integer"]) {
-                        if (parameterOnlyIn == true) {
+                    else if (parameterType === blockDiagramEditorGlobals.languagePack["integer"]) {
+                        if (parameterOnlyIn === true) {
                             generatedCode += this.replaceIntegerOutParameterAccess(parameter.value);
                         }
                         else {
@@ -1415,7 +1415,7 @@
             $(statementsBlocks[0]).data(blockDiagramEditorGlobals.codebehindObjectName, _loopStatements);
 
             $(this.getDomElement()).children().first().find("input").last().change(function () {
-                if (this.value == "+1") {
+                if (this.value === "+1") {
                     this.style.color = "#999999";
                 }
                 else {
@@ -1450,7 +1450,7 @@
             var simulationCode = "";
 
             simulationCode += "case " + statementsCaseId + ":";
-            simulationCode += "if (typeof " + this.replaceVariableAccess(_variableName) + " == 'number') {";
+            simulationCode += "if (typeof " + this.replaceVariableAccess(_variableName) + " === 'number') {";
             simulationCode += this.replaceVariableAccess(_variableName) + " = Number(" + this.replaceVariableAccess(_assignmentValue) + ");";
             simulationCode += "if (isNaN(" + this.replaceVariableAccess(_variableName) + ")) { ";
             simulationCode += "throw new TypeError('" + _assignmentValue + " is not a number');";
@@ -1471,10 +1471,10 @@
             var variableType = this.getVariableType(_variableName.split("[")[0]).split("[")[0];
             var generatedCode = "";
 
-            if (variableType == blockDiagramEditorGlobals.languagePack["integer"]) {
+            if (variableType === blockDiagramEditorGlobals.languagePack["integer"]) {
                 generatedCode += this.replaceIntegerOutParameterAccess(_variableName) + " = " + this.replaceIntegerOutParameterAccess(_assignmentValue) + ";";
             }
-            else if (variableType == blockDiagramEditorGlobals.languagePack["string"]) {
+            else if (variableType === blockDiagramEditorGlobals.languagePack["string"]) {
                 var printfInformation = this.getPrintfParametersForStringConcatenation(_assignmentValue);
 
                 generatedCode += "sprintf(" + _variableName + ",\"" + printfInformation.formatString + "\"," + printfInformation.additionalArgumentList + ");";
@@ -1523,7 +1523,7 @@
 
         this.caseValueChanged = function (caseValue, caseStatements) {
             var position = _casesStatements.findIndex(function (statements) {
-                return statements.caseStatements == caseStatements;
+                return statements.caseStatements === caseStatements;
             });
 
             _casesStatements[position].caseValue = caseValue;
@@ -1548,7 +1548,7 @@
 
         this.removeCaseBlock = function (caseStatements) {
             var positionToRemove = _casesStatements.findIndex(function (statements) {
-                return statements.caseStatements == caseStatements;
+                return statements.caseStatements === caseStatements;
             });
 
             _casesStatements.splice(positionToRemove, 1);
@@ -1635,7 +1635,7 @@
         this.generateCCode = function () {
             var generatedCode = "";
 
-            if (this.getVariableType(_variableName.split("[")[0]).split("[")[0] == blockDiagramEditorGlobals.languagePack["string"]) {
+            if (this.getVariableType(_variableName.split("[")[0]).split("[")[0] === blockDiagramEditorGlobals.languagePack["string"]) {
                 generatedCode += "/* switch with a string is not supported */";
             }
 
@@ -1716,7 +1716,7 @@
             simulationCode += "return {";
             simulationCode += "caseId: " + nextStatementsCaseId + ",";
             simulationCode += "codeToExecute: function(){";
-            simulationCode += "if (typeof " + this.replaceVariableAccess(_variableName) + " == 'number') {";
+            simulationCode += "if (typeof " + this.replaceVariableAccess(_variableName) + " === 'number') {";
             simulationCode += "do {";
             simulationCode += this.replaceVariableAccess(_variableName) + " = Number(window.prompt(" + this.replaceVariableAccess(_prompt) + "));";
             simulationCode += "}while(isNaN(" + this.replaceVariableAccess(_variableName) + "));";
@@ -1738,10 +1738,10 @@
 
             generatedCode += "printf(\"" + printfInformation.formatString + "\"," + printfInformation.additionalArgumentList.join(",") + ");";
 
-            if (variableType.split("[")[0] == blockDiagramEditorGlobals.languagePack["integer"]) {
+            if (variableType.split("[")[0] === blockDiagramEditorGlobals.languagePack["integer"]) {
                 generatedCode += "scanf(\"%d\", &" + this.replaceIntegerOutParameterAccess(_variableName) + ");";
             }
-            else if (variableType.split("[")[0] == blockDiagramEditorGlobals.languagePack["string"]) {
+            else if (variableType.split("[")[0] === blockDiagramEditorGlobals.languagePack["string"]) {
                 generatedCode += "gets(" + _variableName + ");";
             }
 

@@ -67,7 +67,7 @@
         var fn = null;
 
         this.functions.some(function (func) {
-            if (func.getName() == name) {
+            if (func.getName() === name) {
                 fn = func;
 
                 return true;
@@ -106,10 +106,10 @@
         functionSkeleton.find("input").first().change(function () {
             var returnType = this.value;
 
-            if (returnType == blockDiagramEditorGlobals.languagePack["integer"] || returnType == blockDiagramEditorGlobals.languagePack["integer"] + "[]" || returnType == blockDiagramEditorGlobals.languagePack["string"] || returnType == blockDiagramEditorGlobals.languagePack["string"] + "[]") {
+            if (returnType === blockDiagramEditorGlobals.languagePack["integer"] || returnType === blockDiagramEditorGlobals.languagePack["integer"] + "[]" || returnType === blockDiagramEditorGlobals.languagePack["string"] || returnType === blockDiagramEditorGlobals.languagePack["string"] + "[]") {
                 var firstStatement = functionSkeleton.children(".statements").children().first();
 
-                if ($(firstStatement.find("input")[0]).prop("disabled") == true) {  // it's an auto-generated result-declaration
+                if ($(firstStatement.find("input")[0]).prop("disabled") === true) {  // it's an auto-generated result-declaration
                     functionSkeleton.children(".statements").data(blockDiagramEditorGlobals.codebehindObjectName).remove(firstStatement);
                 }
 
@@ -117,10 +117,10 @@
 
                 onResultStatementsChanged(functionSkeleton.children(".statements"), true, false);
             }
-            else if (returnType == "void") {
+            else if (returnType === "void") {
                 var firstStatement = functionSkeleton.children(".statements").children().first();
 
-                if ($(firstStatement.find("input")[0]).prop("disabled") == true) {  // it's an auto-generated result-declaration
+                if ($(firstStatement.find("input")[0]).prop("disabled") === true) {  // it's an auto-generated result-declaration
                     functionSkeleton.children(".statements").data(blockDiagramEditorGlobals.codebehindObjectName).remove(firstStatement);
                     functionSkeleton.find(".visibleIfNotVoid").css("display", "none");
 
@@ -173,7 +173,7 @@
             var successful = true;
 
             _functionPropertyHolder.getParameters().forEach(function (parameter) {
-                if (parameter.getName() == name) {
+                if (parameter.getName() === name) {
                     successful = false;
                 }
 
@@ -288,7 +288,7 @@
             var callByButton = parameter.find("button");
             var options;
 
-            if (this.value.charAt(this.value.length - 1) == "]") {  // array-parameter -> only by reference
+            if (this.value.charAt(this.value.length - 1) === "]") {  // array-parameter -> only by reference
                 options = {
                     label: "InOut",
                     disabled: true,

@@ -223,7 +223,7 @@
                     tabNameStack.pop();
                     tabMustChange = tabNameStack[tabNameStack.length - 1];
                 }
-                else if (simulationInformation.caseId == -1) {   // procedure return
+                else if (simulationInformation.caseId === -1) {   // procedure return
                     functionTrace.pop();
                     variableTrace.pop();
                     functionPropertyHolderTrace.pop();
@@ -288,7 +288,7 @@
 
                 if (index > 0) {
                     functionPropertyHolderTrace[index - 1].getParameters().some(function (parameter) {
-                        if (parameter.getName() == variable) {
+                        if (parameter.getName() === variable) {
                             currentParameter = parameter;
 
                             return true;
@@ -303,7 +303,7 @@
                     var i = 0;
 
                     variables[variable].value.forEach(function (value) {
-                        stackFunctionContainer.append("<tr " + (currentParameter != null && currentParameter.getOnlyIn() == false ? "class='outParameter'" : "") + "><td>" + variable + "[" + i + "]</td><td>" + value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (blockDiagramEditorGlobals.configurations.hideAddressColumn ? "" : "<td>" + decimalToFixedWidthHex(address, 4) + "</td>") + "</tr>");
+                        stackFunctionContainer.append("<tr " + (currentParameter != null && currentParameter.getOnlyIn() === false ? "class='outParameter'" : "") + "><td>" + variable + "[" + i + "]</td><td>" + value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (blockDiagramEditorGlobals.configurations.hideAddressColumn ? "" : "<td>" + decimalToFixedWidthHex(address, 4) + "</td>") + "</tr>");
 
                         address += 8;
                         i++;
@@ -311,7 +311,7 @@
                     });
                 }
                 else {
-                    stackFunctionContainer.append("<tr " + (currentParameter != null && currentParameter.getOnlyIn() == false ? "class='outParameter'" : "") + "><td>" + variable + "</td><td>" + variables[variable].value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (blockDiagramEditorGlobals.configurations.hideAddressColumn ? "" : "<td>" + variables[variable].address + "</td>") + "</tr>");
+                    stackFunctionContainer.append("<tr " + (currentParameter != null && currentParameter.getOnlyIn() === false ? "class='outParameter'" : "") + "><td>" + variable + "</td><td>" + variables[variable].value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (blockDiagramEditorGlobals.configurations.hideAddressColumn ? "" : "<td>" + variables[variable].address + "</td>") + "</tr>");
                 }
 
                 addFunctionName = false;
@@ -345,7 +345,7 @@
             scopeCreationCode = "";
             functionPropertyHolder = functionContainer.parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
-            if (functionPropertyHolder == null) {
+            if (!functionPropertyHolder) {
                 functionName = "main";
             }
             else {
@@ -391,21 +391,21 @@
         var parameterInitializationCode = "";
 
         functionPropertyHolder.getParameters().forEach(function (parameter) {
-            if (parameter.getOnlyIn() == true) {
-                if (parameter.getType() == blockDiagramEditorGlobals.languagePack["integer"]) {
+            if (parameter.getOnlyIn() === true) {
+                if (parameter.getType() === blockDiagramEditorGlobals.languagePack["integer"]) {
                     parameterInitializationCode += "localVariables['" + parameter.getName() + "'].value = Number(parameters[" + i++ + "]);";
                 }
-                else if (parameter.getType() == blockDiagramEditorGlobals.languagePack["string"]) {
+                else if (parameter.getType() === blockDiagramEditorGlobals.languagePack["string"]) {
                     parameterInitializationCode += "localVariables['" + parameter.getName() + "'].value = parameters[" + i++ + "].toString();";
                 }
             }
             else {
                 parameterInitializationCode += "localVariables['" + parameter.getName() + "'] = parameters[" + i++ + "];";
 
-                if (parameter.getType() == blockDiagramEditorGlobals.languagePack["integer"]) {
+                if (parameter.getType() === blockDiagramEditorGlobals.languagePack["integer"]) {
                     parameterInitializationCode += "localVariables['" + parameter.getName() + "'].value = Number(localVariables['" + parameter.getName() + "'].value);";
                 }
-                else if (parameter.getType() == blockDiagramEditorGlobals.languagePack["string"]) {
+                else if (parameter.getType() === blockDiagramEditorGlobals.languagePack["string"]) {
                     parameterInitializationCode += "localVariables['" + parameter.getName() + "'].value = localVariables['" + parameter.getName() + "'].value.toString();";
                 }
             }
@@ -420,7 +420,7 @@
         var i = 0;
 
         localVariableInputFields.each(function (index, element) {
-            if (localVariableArrayLengthFields[i].value == "0") {
+            if (localVariableArrayLengthFields[i].value === "0") {
                 variableCreationCodes.push(element.value + ":{value:undefined,address:undefined}");
             }
             else {
@@ -432,7 +432,7 @@
 
         if (functionPropertyHolder != undefined) {
             functionPropertyHolder.getParameters().forEach(function (parameter) {
-                if (parameter.getOnlyIn() == true) {
+                if (parameter.getOnlyIn() === true) {
                     variableCreationCodes.push(parameter.getName() + ":{value:undefined,address:decimalToFixedWidthHex(nextFreeAddress++ * 8, 4)}");
                 }
             });

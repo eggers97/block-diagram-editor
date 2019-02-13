@@ -37,7 +37,7 @@
                         currentParameter.find("input")[1].value = getEmptyStringIfUndefined(parameter.name);
                         currentParameter.find("input").first().nextAll("input").first().trigger("change");
 
-                        if (parameter.onlyIn == false) {
+                        if (parameter.onlyIn === false) {
                             currentParameter.find("button").trigger("click");
                         }
 
@@ -279,7 +279,7 @@
     }
 
     function getEmptyStringIfUndefined(value) {
-        return value == undefined ? "" : value;
+        return value === undefined ? "" : value;
     }
 
     $.extend(window.blockDiagramEditorGlobals, {
