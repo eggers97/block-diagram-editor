@@ -337,7 +337,7 @@
         blockDiagramEditorGlobals.functionContainers.forEach(function (statement) {
             var functionCode = $(statement).data(blockDiagramEditorGlobals.codebehindObjectName).generateCCode();
 
-            if ($(statement).parent().prop("id") != "main") {
+            if ($(statement).parent().prop("id") !== "main") {
                 functionPrototypesCode += functionCode.split("{")[0] + ";";
             }
 
@@ -347,7 +347,7 @@
 
         filename = window.prompt("Enter filename:", currentFileName);
 
-        if (filename != undefined) {
+        if (filename) {
             filename += ".c";
 
             var blob = new Blob([generatedCode], {
@@ -392,7 +392,7 @@
 
         filename = window.prompt("Enter filename:", currentFileName);
 
-        if (filename != undefined) {
+        if (filename) {
             filename += ".bb";
 
             var blob = new Blob([JSON.stringify(diagram)], {
@@ -433,7 +433,7 @@
             }, function () { });
 
             $("#tabs").children("div").each(function (index, tab) {
-                if ($(tab).prop("id") != "main" && $(tab).data(blockDiagramEditorGlobals.codebehindObjectName) != undefined) {
+                if ($(tab).prop("id") !== "main" && $(tab).data(blockDiagramEditorGlobals.codebehindObjectName)) {
                     $(tab).prop("id", $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).getName());
                     $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = function () {
                         tabTextContainer.text(this.getName());
@@ -669,10 +669,10 @@
                     $("#tabs").contextmenu("showEntry", "comment", true);
                 }
 
-                if (closestElement.is(statementsSelector) && clipboard !== null) {
+                if (closestElement.is(statementsSelector) && clipboard) {
                     $("#tabs").contextmenu("showEntry", "paste", true);
                 }
-                else if (closestElement.is(statementInsertionPointSelector) && clipboard !== null) {
+                else if (closestElement.is(statementInsertionPointSelector) && clipboard) {
                     $("#tabs").contextmenu("showEntry", "paste", true);
                 }
                 else {
@@ -685,7 +685,7 @@
     function droppedOnStatements(ui, statements, droppableForIfComponentsParameters, droppableForSwitchComponentsParameters, droppableForStatementsParameters, insertionPointHtmlCode) {
         var codebehindClass = blockDiagramEditorGlobals.getCodebehindClassOfName(ui.draggable.button("option", "label"));
 
-        if (codebehindClass != null) {
+        if (codebehindClass) {
             $(statements).data(blockDiagramEditorGlobals.codebehindObjectName).append(codebehindClass);
 
             $(statements).append(insertionPointHtmlCode).prepend(insertionPointHtmlCode);
@@ -740,7 +740,7 @@
         var codebehindClass = blockDiagramEditorGlobals.getCodebehindClassOfName(ui.draggable.button("option", "label"));
         var elementForInsertion;
 
-        if (codebehindClass != null) {
+        if (codebehindClass) {
             elementForInsertion = $(insertionPoint).prev();
 
             if (elementForInsertion.length > 0) {  // a previous element exists -> insertAfter the previous element

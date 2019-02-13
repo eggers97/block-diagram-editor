@@ -165,13 +165,13 @@
 
             updateStackTable(stackTable, variableTrace, functionPropertyHolderTrace);
 
-            if (tabMustChange != null) {
+            if (tabMustChange !== null) {
                 onFunctionChanged(tabMustChange);
                 tabMustChange = null;
             }
 
             if (simulationInformation instanceof Object) {
-                if (simulationInformation.parameters != undefined) {   // function/procedure call
+                if (simulationInformation.parameters) {   // function/procedure call
                     nextValueTrace.push(simulationInformation.caseId);
                     parameters = simulationInformation.parameters;
 
@@ -212,7 +212,7 @@
                     variableTrace.pop();
                     functionPropertyHolderTrace.pop();
 
-                    if (simulationInformation.codeToExecute != undefined) {  // input or output must be done here in order to have a correct gui (if done before the currently executed IO-Statement would not be marked but the statement before)
+                    if (simulationInformation.codeToExecute) {  // input or output must be done here in order to have a correct gui (if done before the currently executed IO-Statement would not be marked but the statement before)
                         simulationInformation.codeToExecute();
                     }
 
@@ -228,7 +228,7 @@
                     variableTrace.pop();
                     functionPropertyHolderTrace.pop();
 
-                    if (simulationInformation.codeToExecute != undefined) {  // input or output must be done here in order to have a correct gui (if done before the currently executed IO-Statement would not be marked but the statement before)
+                    if (simulationInformation.codeToExecute) {  // input or output must be done here in order to have a correct gui (if done before the currently executed IO-Statement would not be marked but the statement before)
                         simulationInformation.codeToExecute();
                     }
 
@@ -249,7 +249,7 @@
                 else {  // ordinary execution
                     caseId = simulationInformation.caseId;
 
-                    if (simulationInformation.codeToExecute != undefined) {  // input or output must be done here in order to have a correct gui
+                    if (simulationInformation.codeToExecute) {  // input or output must be done here in order to have a correct gui
                         simulationInformation.codeToExecute();
                     }
                 }
@@ -303,7 +303,7 @@
                     var i = 0;
 
                     variables[variable].value.forEach(function (value) {
-                        stackFunctionContainer.append("<tr " + (currentParameter != null && currentParameter.getOnlyIn() === false ? "class='outParameter'" : "") + "><td>" + variable + "[" + i + "]</td><td>" + value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (blockDiagramEditorGlobals.configurations.hideAddressColumn ? "" : "<td>" + decimalToFixedWidthHex(address, 4) + "</td>") + "</tr>");
+                        stackFunctionContainer.append("<tr " + (currentParameter && currentParameter.getOnlyIn() === false ? "class='outParameter'" : "") + "><td>" + variable + "[" + i + "]</td><td>" + value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (blockDiagramEditorGlobals.configurations.hideAddressColumn ? "" : "<td>" + decimalToFixedWidthHex(address, 4) + "</td>") + "</tr>");
 
                         address += 8;
                         i++;
@@ -311,7 +311,7 @@
                     });
                 }
                 else {
-                    stackFunctionContainer.append("<tr " + (currentParameter != null && currentParameter.getOnlyIn() === false ? "class='outParameter'" : "") + "><td>" + variable + "</td><td>" + variables[variable].value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (blockDiagramEditorGlobals.configurations.hideAddressColumn ? "" : "<td>" + variables[variable].address + "</td>") + "</tr>");
+                    stackFunctionContainer.append("<tr " + (currentParameter && currentParameter.getOnlyIn() === false ? "class='outParameter'" : "") + "><td>" + variable + "</td><td>" + variables[variable].value + "</td><td>" + (addFunctionName ? (index > 0 ? functionPropertyHolderTrace[index - 1].getName() : "main") : "") + (blockDiagramEditorGlobals.configurations.hideAddressColumn ? "" : "<td>" + variables[variable].address + "</td>") + "</tr>");
                 }
 
                 addFunctionName = false;
@@ -363,7 +363,7 @@
 
             scopeCreationCode += "generatedFunction = function simulation(caseId, parameters, returnValue) {";
 
-            if (functionPropertyHolder != null && functionPropertyHolder.getParameters().length > 0) {
+            if (functionPropertyHolder && functionPropertyHolder.getParameters().length > 0) {
                 scopeCreationCode += "if (!initialized) {";
                 scopeCreationCode += generateParameterInitializationCode(functionPropertyHolder);
                 scopeCreationCode += "initialized = true;";
@@ -430,7 +430,7 @@
             i++;
         });
 
-        if (functionPropertyHolder != undefined) {
+        if (functionPropertyHolder) {
             functionPropertyHolder.getParameters().forEach(function (parameter) {
                 if (parameter.getOnlyIn() === true) {
                     variableCreationCodes.push(parameter.getName() + ":{value:undefined,address:decimalToFixedWidthHex(nextFreeAddress++ * 8, 4)}");

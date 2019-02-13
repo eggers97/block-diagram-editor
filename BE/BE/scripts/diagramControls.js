@@ -136,15 +136,15 @@
             if (nextStatementsCaseId === -1) {   // container of whole function/procedure/main
                 var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
-                if (functionPropertyHolder != null) {   // it's a function/procedure but not main
-                    if (functionPropertyHolder.getReturnType() != "void") { // it's a function
+                if (functionPropertyHolder) {   // it's a function/procedure but not main
+                    if (functionPropertyHolder.getReturnType() !== "void") { // it's a function
                         nextStatementsCaseId = "[localVariables['result'].value]";  // reuse the nextStatementsCaseId as a way to get the return value out
                     }                                       // used this "hack" because the actual return of the function happens in the last statement so if we wanted to add a property to the return object we would have to check whether it's a function or not in every statement
                 }                                           // embed in array so that the caller can distinguish whether this is a return value or a real nextStatementsCaseId value
             }
 
             if (_statements.some(function (element) {
-                if (element.constructor != CommentStatement) {
+                if (element.constructor !== CommentStatement) {
                     return true;
                 }
 
@@ -152,7 +152,7 @@
             })) {
                 statementsCaseIds.push(statementsCaseId);
                 for (i = 0; i < _statements.length; i++) {
-                    if (_statements[i].constructor != CommentStatement) {
+                    if (_statements[i].constructor !== CommentStatement) {
                         statementsCaseIds.push(nextFreeId.value++);
                     }
                 }
@@ -161,7 +161,7 @@
 
                 i = 0;
                 _statements.forEach(function (statement) {
-                    if (statement.constructor != CommentStatement) {
+                    if (statement.constructor !== CommentStatement) {
                         simulationCode += statement.generateSimulationCode(statementsCaseIds[i], statementsCaseIds[i + 1], nextFreeId);
                         i++;
                     }
@@ -268,7 +268,7 @@
             _statements.forEach(function (statement) {
                 var serializableStatement = statement.toSerializableObject();
 
-                if (serializableStatement != null) {
+                if (serializableStatement) {
                     statementsSerializable.statements.push(serializableStatement);
                 }
             });
@@ -314,7 +314,7 @@
 
             var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
-            if (functionPropertyHolder != null) { // -> it's a function/procedure -> we have to add the parameters
+            if (functionPropertyHolder) { // -> it's a function/procedure -> we have to add the parameters
                 functionPropertyHolder.getParameters().forEach(function (parameter) {
                     variables.push(parameter.getName());
                 });
@@ -327,7 +327,7 @@
             var variableNames = new Array();
             var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
-            if (functionPropertyHolder != null) { // -> it's a function/procedure -> we have to add the parameters
+            if (functionPropertyHolder) { // -> it's a function/procedure -> we have to add the parameters
                 functionPropertyHolder.getParameters().forEach(function (parameter) {
                     if (parameter.getOnlyIn() === false && parameter.getType() === blockDiagramEditorGlobals.languagePack["integer"]) {
                         variableNames.push(parameter.getName());
@@ -337,7 +337,7 @@
 
             var possibleShadowingVariable = "dummy";
 
-            while (possibleShadowingVariable != null && variableNames.length > 0) {
+            while (possibleShadowingVariable !== null && variableNames.length > 0) {
                 possibleShadowingVariable = null;
 
                 codeString = codeString.replace(new RegExp(variableNames.join("|"), "g"), function (match, offset) {
@@ -361,7 +361,7 @@
                     return stringToReplace;
                 });
 
-                if (possibleShadowingVariable != null) {
+                if (possibleShadowingVariable !== null) {
                     variableNames.splice(variableNames.indexOf(possibleShadowingVariable), 1);  // remove the potential shadowing variable
                 }
             }
@@ -373,7 +373,7 @@
             var variableNames = this.getDeclaredVariables();
             var possibleShadowingVariable = "dummy";
 
-            while (possibleShadowingVariable != null && variableNames.length > 0) {
+            while (possibleShadowingVariable !== null && variableNames.length > 0) {
                 possibleShadowingVariable = null;
 
                 codeString = codeString.replace(new RegExp(variableNames.join("|"), "g"), function (match, offset) {
@@ -397,7 +397,7 @@
                     return stringToReplace;
                 });
 
-                if (possibleShadowingVariable != null) {
+                if (possibleShadowingVariable !== null) {
                     variableNames.splice(variableNames.indexOf(possibleShadowingVariable), 1);  // remove the potential shadowing variable
                 }
             }
@@ -415,7 +415,7 @@
             if (!variableType) {
                 var functionPropertyHolder = $(this.getRootElement()).parent().data(blockDiagramEditorGlobals.codebehindObjectName);
 
-                if (functionPropertyHolder != null) { // -> it's a function/procedure -> we have to add the parameters
+                if (functionPropertyHolder) { // -> it's a function/procedure -> we have to add the parameters
                     functionPropertyHolder.getParameters().forEach(function (parameter) {
                         if (parameter.getName() === variableName) {
                             variableType = parameter.getType();
@@ -458,7 +458,7 @@
                     }
                 }
 
-                if (stringComponents != undefined) {
+                if (stringComponents !== undefined) {
                     printfAdditionalArgumentsList.push(stringComponents);
                 }
             }, this);
@@ -491,12 +491,12 @@
                 else if (numOfConditionalOperators === 1) {
                     var conditionalOperator;
 
-                    if (splittedConditionalExpression.indexOf(">") != -1) {
+                    if (splittedConditionalExpression.indexOf(">") !== -1) {
                         var tempSplit = splittedConditionalExpression.split(">");
 
                         cConditionalExpression += "strcmp (" + tempSplit[0] + "," + tempSplit[1] + ") > 0";
                     }
-                    else if (splittedConditionalExpression.indexOf("<") != -1) {
+                    else if (splittedConditionalExpression.indexOf("<") !== -1) {
                         var tempSplit = splittedConditionalExpression.split("<");
 
                         cConditionalExpression += "strcmp (" + tempSplit[0] + "," + tempSplit[1] + ") < 0";
@@ -518,7 +518,7 @@
             var cConditionalExpression;
             var isString;
 
-            if (conditionalExpression.indexOf("==") != -1 || conditionalExpression.indexOf("!=") != -1) {
+            if (conditionalExpression.indexOf("==") !== -1 || conditionalExpression.indexOf("!=") !== -1) {
                 var leftAndRightExpressions = conditionalExpression.split(/==|!=/);
 
                 if (leftAndRightExpressions[0].charAt(0) === "\"") {
@@ -538,7 +538,7 @@
                         cConditionalExpression = "strcmp (" + leftAndRightExpressions[0] + "," + leftAndRightExpressions[1] + ") === 0";
                     }
                     else if (conditionalExpression.indexOf("!=")) {
-                        cConditionalExpression = "strcmp (" + leftAndRightExpressions[0] + "," + leftAndRightExpressions[1] + ") != 0";
+                        cConditionalExpression = "strcmp (" + leftAndRightExpressions[0] + "," + leftAndRightExpressions[1] + ") !== 0";
                     }
                     else {
 
@@ -670,7 +670,7 @@
 
             simulationCode += "}";
 
-            if (_elseStatements != null) {
+            if (_elseStatements) {
                 simulationCode += "else {";
 
                 if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
@@ -699,7 +699,7 @@
 
             simulationCode += _thenStatements.generateSimulationCode(thenStatementsCaseId, nextStatementsCaseId, nextFreeId);
 
-            if (_elseStatements != null) {
+            if (_elseStatements) {
                 simulationCode += _elseStatements.generateSimulationCode(elseStatementsCaseId, nextStatementsCaseId, nextFreeId);
             }
 
@@ -721,7 +721,7 @@
 
             ifStatementSerializable.thenStatements = _thenStatements.toSerializableObject();
 
-            if (_elseStatements != null) {
+            if (_elseStatements) {
                 ifStatementSerializable.elseStatements = _elseStatements.toSerializableObject();
             }
 
@@ -1165,7 +1165,7 @@
                 me.prepareAutogrowInputField(inputField, 10);
             });
 
-            if (_underlyingFunctionPropertyHolder.getReturnType() != "void") {
+            if (_underlyingFunctionPropertyHolder.getReturnType() !== "void") {
                 domElement.find(".statementBorderHelper").prepend('<input type="text" class="variableInput" onchange="$(this).closest(\'.functionCallStatement\').data(\'codebehindObject\').variableNameChanged(this.value);" /><span>=</span>');
 
                 this.prepareAutogrowInputField(domElement.find(".statementBorderHelper").children().first(), 10);
@@ -1228,7 +1228,7 @@
 
             simulationCode += "case " + returnValueAssignmentCaseId + ":";
 
-            if (_underlyingFunctionPropertyHolder.getReturnType() != "void") {  // -> function call (not procedure call) -> return value must be assigned
+            if (_underlyingFunctionPropertyHolder.getReturnType() !== "void") {  // -> function call (not procedure call) -> return value must be assigned
                 simulationCode += this.replaceVariableAccess(_variableName) + " = returnValue;";
             }
 
@@ -1600,7 +1600,7 @@
                 caseStatementsCaseIds.push(caseId);
             }
 
-            if (_elseStatements != null) {
+            if (_elseStatements) {
                 simulationCode += "default:";
 
                 if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
@@ -1625,7 +1625,7 @@
                 simulationCode += _casesStatements[i].caseStatements.generateSimulationCode(caseStatementsCaseIds[i], nextStatementsCaseId, nextFreeId);
             }
 
-            if (_elseStatements != null) {
+            if (_elseStatements) {
                 simulationCode += _elseStatements.generateSimulationCode(defaultCaseId, nextStatementsCaseId, nextFreeId);
             }
 
@@ -1660,7 +1660,7 @@
                 });
             });
 
-            if (_elseStatements != null) {
+            if (_elseStatements) {
                 switchStatementSerializable.elseStatements = _elseStatements.toSerializableObject();
             }
 

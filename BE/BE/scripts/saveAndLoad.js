@@ -10,7 +10,7 @@
         var functionSkeletons = {};
 
         for (var functionName in savedDiagramObject) {  // generate all function codebehind (otherwise generation of CALL-statements would fail)
-            if (functionName != "main") {
+            if (functionName !== "main") {
                 if (functionAlreadyExists(functionName)) {
                     alert("Function '" + functionName + "' could not be loaded because a function with the same name already exists!");
                 }
@@ -61,7 +61,7 @@
         }
 
         for (var functionName in savedDiagramObject) {
-            if (functionName != "main") {
+            if (functionName !== "main") {
                 parseDiagramStatements(savedDiagramObject[functionName].statements, $(functionSkeletons[functionName]).find(".statements"), $(functionSkeletons[functionName]).find(".statements"));
             }
         }
@@ -101,7 +101,7 @@
                 break;
 
             case "IfStatement":
-                if (serializableStatement.condition != null) {
+                if (serializableStatement.condition) {
                     var conditionInput = $($(guiComponent).find("input"));
 
                     conditionInput[0].value = getEmptyStringIfUndefined(serializableStatement.condition);
@@ -112,7 +112,7 @@
 
                 parseDiagramStatements(serializableStatement.thenStatements, $(statements[0]), rootElement);
 
-                if (serializableStatement.elseStatements != null) {
+                if (serializableStatement.elseStatements) {
                     parseDiagramStatements(serializableStatement.elseStatements, $(statements[1]), rootElement);
                 }
                 else {
@@ -124,7 +124,7 @@
                 break;
 
             case "WhileStatement":
-                if (serializableStatement.condition != null) {
+                if (serializableStatement.condition) {
                     var conditionInput = $($(guiComponent).find("input"));
                     conditionInput[0].value = getEmptyStringIfUndefined(serializableStatement.condition);
                     conditionInput.trigger("change");
@@ -137,7 +137,7 @@
                 break;
 
             case "DoWhileStatement":
-                if (serializableStatement.condition != null) {
+                if (serializableStatement.condition) {
                     var conditionInput = $($(guiComponent).children().last().find("input"));
 
                     conditionInput[0].value = getEmptyStringIfUndefined(serializableStatement.condition);
@@ -175,7 +175,7 @@
                 $(guiComponent).find("thead input")[0].value = getEmptyStringIfUndefined(serializableStatement.variableName);
                 $($(guiComponent).find("thead input")[0]).trigger("change");
 
-                if (serializableStatement.elseStatements != null) {
+                if (serializableStatement.elseStatements) {
                     parseDiagramStatements(serializableStatement.elseStatements, $(guiComponent).find("tfoot .statements"), rootElement);
                 }
 
@@ -257,8 +257,8 @@
 
                 var functionPropertyHolder = blockDiagramEditorGlobals.FunctionPropertyHolder.getByName(serializableStatement.functionName);
 
-                if (functionPropertyHolder != null && functionPropertyHolder.getReturnType() != "void") {
-                    if (serializableStatement.variableName != null) {
+                if (functionPropertyHolder && functionPropertyHolder.getReturnType() !== "void") {
+                    if (serializableStatement.variableName) {
                         $(guiComponent).find("input")[0].value = getEmptyStringIfUndefined(serializableStatement.variableName);
                         $(guiComponent).find("input").first().trigger("change");
                     }
