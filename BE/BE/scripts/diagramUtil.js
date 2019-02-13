@@ -27,24 +27,6 @@
         this.getName = function() {
             return _name;
         };
-        /*
-         this.setName = function(name) {
-             var successful = false;
-
-             if (FunctionPropertyHolder.names.findIndex(name) == -1) {
-                 if (_name == null) {
-                     FunctionPropertyHolder.names.push(name);
-                 }
-                 else {
-                     FunctionPropertyHolder.names.splice(FunctionPropertyHolder.names.indexOf(_name), 1, name);
-                 }
-
-                 successful = true;
-                 _name = name;
-             }
-
-             return successful;
-         };*/
 
         this.setName = function (name) {
             _name = name;
