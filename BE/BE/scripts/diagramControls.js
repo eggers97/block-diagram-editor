@@ -987,7 +987,7 @@
             }
 
             return generatedCode;
-        }
+        };
 
         this.toSerializableObject = function () {
             var declarationStatementSerializable;
