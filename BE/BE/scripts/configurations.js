@@ -3,7 +3,8 @@
         // simulation
         simulationDelay: 1000,
         skipLoopChecks: false,
-        hideAddressColumn: true
+        hideAddressColumn: true,
+        currentLanguage: "en-GB"
     };
 
     $.extend(window.blockDiagramEditorGlobals, {

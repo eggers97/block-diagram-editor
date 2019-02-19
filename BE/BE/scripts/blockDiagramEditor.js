@@ -19,7 +19,7 @@
         initialize();
     });
 
-    function initialize() {
+    function initialize(isLanguageChange) {
         var statementInsertionPoint = '<div class="statementInsertionPoint"></div>';
 
         var droppableForIfComponentsParameters = {
@@ -71,12 +71,17 @@
                 return true;
             }
         });
-        $("#tabs").children().last().remove();
 
-        $("#tabs").delegate("span.ui-icon-close", "click", deleteTab);
+        if (!isLanguageChange) {
+            $("#tabs").children().last().remove();
 
-        blockDiagramEditorGlobals.initializeDiagram($("#main"));
-        blockDiagramEditorGlobals.initializeApplication($("#tabs"), $("#main .statements"));
+            $("#tabs").delegate("span.ui-icon-close", "click", deleteTab);
+
+            blockDiagramEditorGlobals.initializeDiagram($("#main"));
+            blockDiagramEditorGlobals.initializeApplication($("#tabs"), $("#main .statements"));
+            buildConfigurationsDialog();
+        }
+
         initializeConfigurations();
         initializeDialogs();
         initializeVisualStackContainer();
@@ -125,11 +130,13 @@
             }
         };
 
-        $("#fileChooser").on("change", function () {
-            $("#loadDialog").dialog("open");
-        });
+        if (!isLanguageChange) {
+            $("#fileChooser").on("change", function () {
+                $("#loadDialog").dialog("open");
+            });
 
-        $("#visualStackContainer table").styleTable();
+            $("#visualStackContainer table").styleTable();
+        }
     }
 
     function initializeVisualStackContainer() {
@@ -164,12 +171,31 @@
         $("#tabs").children("[id^=ui-id-]").remove();
     }
 
+    function buildConfigurationsDialog() {
+        var configurationLabels = $("#configurationsDialog label");
+        var options = "";
+
+        for (var language in blockDiagramEditorGlobals.languagePack.languages) {
+            options += "<option value='" + language + "'>" + blockDiagramEditorGlobals.languagePack.languages[language] + "</option>";
+        }
+        $(configurationLabels[3]).parent().parent().find("select").empty();
+        $(configurationLabels[3]).parent().parent().find("select").append(options);
+    }
+
     function initializeDialogs() {
         var configurationLabels = $("#configurationsDialog label");
 
         $(configurationLabels[0]).text(blockDiagramEditorGlobals.languagePack.simulationDelay);
         $(configurationLabels[1]).text(blockDiagramEditorGlobals.languagePack.skipLoopChecks);
         $(configurationLabels[2]).text(blockDiagramEditorGlobals.languagePack.hideAddressColumn);
+        $(configurationLabels[3]).text(blockDiagramEditorGlobals.languagePack.language);
+
+        var languageSelectionOptions = $("#configurationsdialog select option");
+        var counter = 0;
+        for (var language in blockDiagramEditorGlobals.languagePack.languages) {
+            $(languageSelectionOptions[counter]).text(blockDiagramEditorGlobals.languagePack.languages[language]);
+            $(languageSelectionOptions[counter]).val(language);
+        }
 
         var buttonsObject = {}; // because the attributes must set through []-Syntax (name of attribute is text of button)
 
@@ -183,7 +209,11 @@
             blockDiagramEditorGlobals.configurations.hideAddressColumn = $(configurationRows[2]).find("input")[0].checked;    // update hide address column
             hideAddressColumnChanged();
 
+            blockDiagramEditorGlobals.configurations.currentLanguage = $(configurationRows[3]).find("select")[0].value;
+            blockDiagramEditorGlobals.languagePack = blockDiagramEditorGlobals.languagePacks[blockDiagramEditorGlobals.configurations.currentLanguage];
+
             $(this).dialog("close");
+            initialize(true);
         };
 
         buttonsObject[blockDiagramEditorGlobals.languagePack.cancel] = function () {
@@ -230,6 +260,7 @@
         configsOfGroup = $(configurationsContainer[0]).find("input");
         $(configsOfGroup)[0].value = blockDiagramEditorGlobals.configurations.simulationDelay;
         $(configsOfGroup)[1].checked = blockDiagramEditorGlobals.configurations.skipLoopChecks;
+        $("#configurationsDialog select option[value='" + blockDiagramEditorGlobals.configurations.currentLanguage + "']").prop("selected", true);
     }
 
     function openConfigurationsDialog() {
@@ -246,6 +277,8 @@
         var unfinishDiagramButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.unfinish + '</button>';
         var configurationsButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.configurations + '</button>';
         var helpButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.help + '</button>';
+
+        $("#toolsToolbar").empty();
 
         $(loadButtonSkeleton).click(function() {
             $('#fileChooser').trigger('click');
@@ -526,6 +559,8 @@
             name: blockDiagramEditorGlobals.languagePack["comment"],
             statement: true
         }];
+
+        $("#statementsToolbar").empty();
 
         draggables.forEach(function (draggable) {
             var htmlSkeleton = draggable.statement ? '<button class="statement"></button>' : '<button class="' + draggable.name + 'Component"></button>';

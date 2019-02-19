@@ -998,7 +998,24 @@
             else {
                 declarationStatementSerializable = new DeclarationStatementSerializable();
 
-                declarationStatementSerializable.variableType = _variableType;
+                switch (_variableType) {
+                    case blockDiagramEditorGlobals.languagePack["integer"]:
+                        declarationStatementSerializable.variableType = "integer";
+                        break;
+
+                    case blockDiagramEditorGlobals.languagePack["string"]:
+                        declarationStatementSerializable.variableType = "string";
+                        break;
+
+                    case blockDiagramEditorGlobals.languagePack["integer"] + "[]":
+                        declarationStatementSerializable.variableType = "integer[]";
+                        break;
+
+                    case blockDiagramEditorGlobals.languagePack["string"] + "[]":
+                        declarationStatementSerializable.variableType = "string[]";
+                        break;
+                }
+
                 declarationStatementSerializable.variableName = _variableName;
                 declarationStatementSerializable.initializationValue = _initializationValue;
                 declarationStatementSerializable.arrayLength = _arrayLength;

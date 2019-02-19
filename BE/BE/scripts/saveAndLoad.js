@@ -20,7 +20,7 @@
                     var addParameterButton = $(functionSkeleton).children("button")[1];
                     var currentParameter;
 
-                    $(functionSkeleton).find("input")[0].value = getEmptyStringIfUndefined(savedDiagramObject[functionName].returnType);
+                    $(functionSkeleton).find("input")[0].value = getEmptyStringIfUndefined(blockDiagramEditorGlobals.languagePack[savedDiagramObject[functionName].returnType]);
                     $(functionSkeleton).find("input")[1].value = getEmptyStringIfUndefined(functionName);
 
                     $(functionContainer).append(functionSkeleton);
@@ -32,7 +32,7 @@
                         addParameterButton.click();
                         currentParameter = $(functionSkeleton).find(".parameter:last-child");
 
-                        currentParameter.find("input")[0].value = getEmptyStringIfUndefined(parameter.type);
+                        currentParameter.find("input")[0].value = getEmptyStringIfUndefined(blockDiagramEditorGlobals.languagePack[parameter.type]);
                         currentParameter.find("input").first().trigger("change");
                         currentParameter.find("input")[1].value = getEmptyStringIfUndefined(parameter.name);
                         currentParameter.find("input").first().nextAll("input").first().trigger("change");
@@ -201,7 +201,7 @@
             case "DeclarationStatement":
                 var inputElements = $(guiComponent).find("input");
 
-                inputElements[0].value = getEmptyStringIfUndefined(serializableStatement.variableType);
+                inputElements[0].value = getEmptyStringIfUndefined(blockDiagramEditorGlobals.languagePack[serializableStatement.variableType]);
                 $(inputElements[0]).trigger("change");
                 inputElements[1].value = getEmptyStringIfUndefined(serializableStatement.variableName);
                 $(inputElements[1]).trigger("change");
