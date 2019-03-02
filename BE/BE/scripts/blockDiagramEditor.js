@@ -9,6 +9,7 @@
     var unfinishDiagram;
     var onResultStatementsChanged;
     var currentFileName;
+    var autoSaveStarted = false;
 
     window.addEventListener("beforeunload", function (event) {
         event.preventDefault();
@@ -39,6 +40,7 @@
             hoverClass: "componentsDroppableHovered",
             drop: function (event, ui) {
                 droppedOnIfStatement(ui, this, droppableForStatementsParameters);
+                startAutoSave();
             }
         };
 
@@ -49,6 +51,7 @@
             hoverClass: "componentsDroppableHovered",
             drop: function (event, ui) {
                 droppedOnSwitchStatement(ui, this, droppableForStatementsParameters);
+                startAutoSave();
             }
         };
 
@@ -64,6 +67,7 @@
                 else if ($(this).hasClass("statementInsertionPoint")) {
                     droppedOnStatementInsertionPoint(ui, this, droppableForIfComponentsParameters, droppableForSwitchComponentsParameters, droppableForStatementsParameters, statementInsertionPoint);
                 }
+                startAutoSave();
             }
         };
 
@@ -146,6 +150,17 @@
             });
 
             $("#visualStackContainer table").styleTable();
+        }
+    }
+
+    function startAutoSave() {
+        if (!autoSaveStarted) {
+            setInterval(function () {
+                var diagram = generateBBFileContent();
+
+                localStorage.setItem(blockDiagramEditorGlobals.localStorageFieldNameForAutoSavedDiagram, JSON.stringify(diagram));
+            }, blockDiagramEditorGlobals.autoSaveIntervalLength);
+            autoSaveStarted = true;
         }
     }
 
@@ -288,6 +303,7 @@
         var stopButtonSkeleton = '<button id="stopButton">' + blockDiagramEditorGlobals.languagePack.stop + '</button>';
         var finishDiagramButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.finish + '</button>';
         var unfinishDiagramButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.unfinish + '</button>';
+        var recoverLastDiagramButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.recoverLastDiagram + '</button>';
         var configurationsButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.configurations + '</button>';
         var helpButtonSkeleton = '<button>' + blockDiagramEditorGlobals.languagePack.help + '</button>';
 
@@ -356,6 +372,15 @@
             text: false
         });
 
+        $(recoverLastDiagramButtonSkeleton).click(function() {
+            recoverLastDiagram();
+        }).appendTo("#toolsToolbar").button({
+            icons: {
+                primary: "ui-icon-arrowrefresh-1-e"
+            },
+            text: false
+        });
+
         $(configurationsButtonSkeleton).click(function() {
             openConfigurationsDialog();
         }).appendTo("#toolsToolbar").button({
@@ -373,6 +398,14 @@
             },
             text: false
         });
+    }
+
+    function recoverLastDiagram() {
+        var lastDiagramAsString = localStorage.getItem(blockDiagramEditorGlobals.localStorageFieldNameForAutoSavedDiagram);
+
+        if (lastDiagramAsString !== null) {
+            loadDiagramFromBBContent(lastDiagramAsString, true);
+        }
     }
 
     function generateCCode() {
@@ -405,8 +438,22 @@
     }
 
     function saveDiagram() {
+        var diagram = generateBBFileContent();
+        var filename = window.prompt("Enter filename:", currentFileName);
+
+        if (filename) {
+            filename += ".bb";
+
+            var blob = new Blob([JSON.stringify(diagram)], {
+                type: "text/json;charset=utf-8;"
+            });
+
+            saveAs(blob, filename);
+        }
+    }
+
+    function generateBBFileContent() {
         var diagram = {};
-        var filename;
 
         diagram.main = $("#main .statements").data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject();
 
@@ -436,17 +483,7 @@
             }
         });
 
-        filename = window.prompt("Enter filename:", currentFileName);
-
-        if (filename) {
-            filename += ".bb";
-
-            var blob = new Blob([JSON.stringify(diagram)], {
-                type: "text/json;charset=utf-8;"
-            });
-
-            saveAs(blob, filename);
-        }
+        return diagram;
     }
 
     function loadSelectedDiagram(withMain) {
@@ -456,51 +493,55 @@
         currentFileName = selectedFile.name.substring(0, selectedFile.name.length - 3);
 
         fileReader.onload = function () {
-            var savedDiagram = JSON.parse(this.result);
-
-            if (!withMain) {
-                savedDiagram.main = undefined;
-            }
-            else {
-                blockDiagramEditorGlobals.FunctionPropertyHolder.functions = new Array();
-
-                $("span.ui-icon-close").trigger("click");
-
-                $("#main .statements").remove();
-
-                blockDiagramEditorGlobals.initializeDiagram($("#main"));
-                blockDiagramEditorGlobals.initializeApplication($("#tabs"), $("#main .statements"));
-            }
-
-            blockDiagramEditorGlobals.parseSerializedDiagram(savedDiagram, $("#main .statements"), function (functionName) {
-                $("#tabs").children().first().children().last().before('<li><a href="#' + functionName + '">' + functionName + '</a><span style="float:right" class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>');
-
-                return $("#tabs");
-            }, function () { });
-
-            $("#tabs").children("div").each(function (index, tab) {
-                if ($(tab).prop("id") !== "main" && $(tab).data(blockDiagramEditorGlobals.codebehindObjectName)) {
-                    $(tab).prop("id", $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).getName());
-                    $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = function () {
-                        tabTextContainer.text(this.getName());
-                        $("#" + idBefore).attr("id", this.getName());
-                        $("[href='#" + idBefore + "']").attr("href", "#" + this.getName());
-                        idBefore = this.getName();
-                        $("#tabs").tabs("refresh");
-                        $("#tabs").children("[id^=ui-id-]").remove();
-                    };
-                }
-            });
-
-            $("#tabs").tabs("refresh");
-            $("#tabs").children("[id^=ui-id-]").remove();
-
-            $("#tabs .ui-droppable").droppable("destroy");
-
-            unfinishDiagram();
+            loadDiagramFromBBContent(this.result, withMain);
         };
 
         fileReader.readAsText(selectedFile);
+    }
+
+    function loadDiagramFromBBContent(bbContent, withMain) {
+        var savedDiagram = JSON.parse(bbContent);
+
+        if (!withMain) {
+            savedDiagram.main = undefined;
+        }
+        else {
+            blockDiagramEditorGlobals.FunctionPropertyHolder.functions = new Array();
+
+            $("span.ui-icon-close").trigger("click");
+
+            $("#main .statements").remove();
+
+            blockDiagramEditorGlobals.initializeDiagram($("#main"));
+            blockDiagramEditorGlobals.initializeApplication($("#tabs"), $("#main .statements"));
+        }
+
+        blockDiagramEditorGlobals.parseSerializedDiagram(savedDiagram, $("#main .statements"), function (functionName) {
+            $("#tabs").children().first().children().last().before('<li><a href="#' + functionName + '">' + functionName + '</a><span style="float:right" class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>');
+
+            return $("#tabs");
+        }, function () { });
+
+        $("#tabs").children("div").each(function (index, tab) {
+            if ($(tab).prop("id") !== "main" && $(tab).data(blockDiagramEditorGlobals.codebehindObjectName)) {
+                $(tab).prop("id", $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).getName());
+                $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = function () {
+                    tabTextContainer.text(this.getName());
+                    $("#" + idBefore).attr("id", this.getName());
+                    $("[href='#" + idBefore + "']").attr("href", "#" + this.getName());
+                    idBefore = this.getName();
+                    $("#tabs").tabs("refresh");
+                    $("#tabs").children("[id^=ui-id-]").remove();
+                };
+            }
+        });
+
+        $("#tabs").tabs("refresh");
+        $("#tabs").children("[id^=ui-id-]").remove();
+
+        $("#tabs .ui-droppable").droppable("destroy");
+
+        unfinishDiagram();
     }
 
     function addTab(droppableForStatementsParameters) {
@@ -850,4 +891,9 @@
             $("#visualStackContainer table").styleTable();
         }
     }
+
+    $.extend(window.blockDiagramEditorGlobals, {
+        localStorageFieldNameForAutoSavedDiagram: "autoSavedDiagram",
+        autoSaveIntervalLength: 10000
+    });
 })();

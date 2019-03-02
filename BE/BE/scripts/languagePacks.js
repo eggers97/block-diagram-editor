@@ -83,6 +83,7 @@
             "stop": "Stop",
             "finish": "Leave edit mode",
             "unfinish": "Activate edit mode",
+            "recoverLastDiagram": "Recover last diagram",
             "configurations": "Configurations",
             "help": "Help",
 
@@ -183,6 +184,7 @@
             "stop": "Stopp",
             "finish": "Bearbeitungsmodus verlassen",
             "unfinish": "Bearbeitungsmodus aktivieren",
+            "recoverLastDiagram": "Letztes Diagramm wiederherstellen",
             "configurations": "Konfigurationen",
             "help": "Hilfe",
 
