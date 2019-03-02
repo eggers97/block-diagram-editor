@@ -8,6 +8,7 @@
     };
 
     $.extend(window.blockDiagramEditorGlobals, {
-        configurations: configurations
+        configurations: configurations,
+        localStorageFieldNameForConfigurations: "configurations"
     });
 })();

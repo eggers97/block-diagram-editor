@@ -16,8 +16,18 @@
     });
 
     $(document).ready(function () {
+        loadFromLocalStorage();
         initialize();
     });
+
+    function loadFromLocalStorage() {
+        var storedConfigurations = localStorage.getItem(blockDiagramEditorGlobals.localStorageFieldNameForConfigurations);
+
+        if (storedConfigurations !== null) {
+            blockDiagramEditorGlobals.configurations = JSON.parse(storedConfigurations);
+            blockDiagramEditorGlobals.languagePack = blockDiagramEditorGlobals.languagePacks[blockDiagramEditorGlobals.configurations.currentLanguage];
+        }
+    }
 
     function initialize(isLanguageChange) {
         var statementInsertionPoint = '<div class="statementInsertionPoint"></div>';
@@ -212,6 +222,8 @@
             blockDiagramEditorGlobals.configurations.currentLanguage = $(configurationRows[3]).find("select")[0].value;
             blockDiagramEditorGlobals.languagePack = blockDiagramEditorGlobals.languagePacks[blockDiagramEditorGlobals.configurations.currentLanguage];
 
+            localStorage.setItem(blockDiagramEditorGlobals.localStorageFieldNameForConfigurations, JSON.stringify(blockDiagramEditorGlobals.configurations));
+
             $(this).dialog("close");
             initialize(true);
         };
@@ -260,6 +272,7 @@
         configsOfGroup = $(configurationsContainer[0]).find("input");
         $(configsOfGroup)[0].value = blockDiagramEditorGlobals.configurations.simulationDelay;
         $(configsOfGroup)[1].checked = blockDiagramEditorGlobals.configurations.skipLoopChecks;
+        $(configsOfGroup)[2].checked = blockDiagramEditorGlobals.configurations.hideAddressColumn;
         $("#configurationsDialog select option[value='" + blockDiagramEditorGlobals.configurations.currentLanguage + "']").prop("selected", true);
     }
 
