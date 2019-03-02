@@ -11,11 +11,6 @@
     var currentFileName;
     var autoSaveStarted = false;
 
-    window.addEventListener("beforeunload", function (event) {
-        event.preventDefault();
-        event.returnValue = '';
-    });
-
     $(document).ready(function () {
         loadFromLocalStorage();
         initialize();
