@@ -29,6 +29,8 @@
             "declaration": "DECLARATION",
             "string": "Text",
             "integer": "Number",
+            "string[]": "Text[]",
+            "integer[]": "Number[]",
 
             // assignment
             "assignment": "ASSIGNMENT",
@@ -134,6 +136,8 @@
             "declaration": "DEKLARATION",
             "string": "Text",
             "integer": "Zahl",
+            "string[]": "Text[]",
+            "integer[]": "Zahl[]",
 
             // assignment
             "assignment": "ZUWEISUNG",
