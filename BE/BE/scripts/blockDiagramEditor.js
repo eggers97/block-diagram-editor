@@ -271,6 +271,32 @@
             modal: true,
             buttons: buttonsObject
         });
+
+        initializeRecoverDialog();
+    }
+
+    function initializeRecoverDialog() {
+        var recoverDialogPTag = $("#recoverDialog p");
+
+        recoverDialogPTag.first().text(blockDiagramEditorGlobals.languagePack.recoverDialogWarning);
+
+        var buttonsConfig= {};
+
+        buttonsConfig[blockDiagramEditorGlobals.languagePack.loadAnyway] = function() {
+            $(this).dialog("close");
+            recoverLastDiagram();
+        };
+
+        buttonsConfig[blockDiagramEditorGlobals.languagePack.cancel] = function() {
+            $(this).dialog("close");
+        };
+
+        $("#recoverDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            buttons: buttonsConfig,
+            width: 350
+        });
     }
 
     function initializeConfigurations() {
@@ -368,7 +394,7 @@
         });
 
         $(recoverLastDiagramButtonSkeleton).click(function() {
-            recoverLastDiagram();
+            $("#recoverDialog").dialog("open");
         }).appendTo("#toolsToolbar").button({
             icons: {
                 primary: "ui-icon-arrowrefresh-1-e"

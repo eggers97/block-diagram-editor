@@ -75,6 +75,10 @@
             "wholeDiagram": "Open whole diagram",
             "onlySubprograms": "Open only subprograms",
 
+            // recoverDialog
+            "recoverDialogWarning": "Warning: Recovering the last diagram replaces the current!",
+            "loadAnyway": "Load anyway",
+
             // tools
             "save": "Save",
             "load": "Load",
@@ -175,6 +179,10 @@
             "loadDialogWarning": "Warnung: Das Laden des gesamten Blockbilds ersetzt das aktuelle!",
             "wholeDiagram": "Gesamtes Blockbild laden",
             "onlySubprograms": "Nur die Unterprogramme laden",
+
+            // recoverDialog
+            "recoverDialogWarning": "Warnung: Das Wiederherstellen des letzten Diagramms ersetzt das aktuelle!",
+            "loadAnyway": "Trotzdem wiederherstellen",
 
             // tools
             "save": "Speichern",
