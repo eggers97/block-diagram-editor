@@ -512,6 +512,15 @@
 
         (function () {  // initialize function
             this.prepareAutogrowInput(minWidthValues);
+
+            $(this.getDomElement()).click(function(event) {
+                $(this).toggleClass("statementSelected");
+                event.stopPropagation();
+            });
+
+            $(this.getDomElement()).find("input").click(function (event) {
+                event.stopPropagation();
+            });
         }).call(this);
     }
 

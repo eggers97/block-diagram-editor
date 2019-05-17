@@ -3,6 +3,7 @@
 #tabs input {
     border: 0px;
     padding: 0px;
+    background: transparent;
 }
 
 #tabs input::-ms-clear {
@@ -11,6 +12,10 @@
 
 #tabs input:focus {
     outline-width: 0px;
+}
+
+#tabs .statementSelected {
+    background-color:  	#D3D3D3;
 }
 
 #tabs .statementInsertionPoint {

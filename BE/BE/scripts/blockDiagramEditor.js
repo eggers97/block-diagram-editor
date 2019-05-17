@@ -729,7 +729,17 @@
                 action: function (event, ui) {
                     var closestElement = $(ui.target).closest(otherStatementsSelector);
 
-                    clipboard = blockDiagramEditorGlobals.getWithStatementsSerializableWrapped([ closestElement.data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject() ]);
+                    var statementObjects = [];
+                    $("#tabs .statementSelected").each(function(index, statementGuiElement) {
+                        statementObjects.push($(statementGuiElement).data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject());
+                    });
+
+                    if (statementObjects.length > 0) {  // multiple copy
+                        clipboard = blockDiagramEditorGlobals.getWithStatementsSerializableWrapped(statementObjects);
+                    }
+                    else {  // single copy
+                        clipboard = blockDiagramEditorGlobals.getWithStatementsSerializableWrapped([ closestElement.data(blockDiagramEditorGlobals.codebehindObjectName).toSerializableObject() ]);
+                    }
                 }
             }, {
                title: blockDiagramEditorGlobals.languagePack["paste"],
