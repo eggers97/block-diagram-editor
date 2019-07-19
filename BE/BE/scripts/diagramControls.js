@@ -211,7 +211,7 @@
                     });
 
                     if (functionPropertyHolder.getReturnType() === blockDiagramEditorGlobals.languagePack["integer"]) {
-                        generatedCode += "return result;";
+                        generatedCode += "return " + blockDiagramEditorGlobals.languagePack["result"] + ";";
                     }
                     else if (functionPropertyHolder.getReturnType() === blockDiagramEditorGlobals.languagePack["string"]) {
                         generatedCode += "/* returning a string is not supported */";
