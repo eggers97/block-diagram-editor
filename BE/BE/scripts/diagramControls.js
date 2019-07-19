@@ -427,7 +427,7 @@
                         }
                     });
 
-                    var functionReturnType = functionPropertyHolder.getReturnType();    // if fuction -> result-variable is also available
+                    var functionReturnType = functionPropertyHolder.getReturnType();    // if function -> result-variable is also available
                     if (functionReturnType !== "void" && variableName === "result") {
                         variableType = functionReturnType;
                     }
