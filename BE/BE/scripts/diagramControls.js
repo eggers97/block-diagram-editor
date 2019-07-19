@@ -426,6 +426,11 @@
                             variableType = parameter.getType();
                         }
                     });
+
+                    var functionReturnType = functionPropertyHolder.getReturnType();    // if fuction -> result-variable is also available
+                    if (functionReturnType !== "void" && variableName === "result") {
+                        variableType = functionReturnType;
+                    }
                 }
             }
 
@@ -475,44 +480,44 @@
         };
 
         this.convertToCConditionalExpression = function (conditionalExpression) {
-            var cConditionalExpression;
-            var isString;
+            try {
+                var cConditionalExpression;
+                var isString;
 
-            if (conditionalExpression.indexOf("==") !== -1 || conditionalExpression.indexOf("!=") !== -1) {
-                var leftAndRightExpressions = conditionalExpression.split(/==|!=/);
+                if (conditionalExpression.indexOf("==") !== -1 || conditionalExpression.indexOf("!=") !== -1) {
+                    var leftAndRightExpressions = conditionalExpression.split(/==|!=/);
 
-                if (leftAndRightExpressions[0].charAt(0) === "\"") {
-                    isString = true;
-                }
-                else {
-                    var variableName = leftAndRightExpressions[0].split("[")[0];
-                    var variableType = this.getVariableType(variableName).split("[")[0];
-
-                    if (variableType === blockDiagramEditorGlobals.languagePack["string"]) {
+                    if (leftAndRightExpressions[0].charAt(0) === "\"") {
                         isString = true;
-                    }
-                }
+                    } else {
+                        var variableName = leftAndRightExpressions[0].split("[")[0];
+                        var variableType = this.getVariableType(variableName).split("[")[0];
 
-                if (isString) {
-                    if (conditionalExpression.indexOf("==")) {
-                        cConditionalExpression = "strcmp (" + leftAndRightExpressions[0] + "," + leftAndRightExpressions[1] + ") === 0";
+                        if (variableType === blockDiagramEditorGlobals.languagePack["string"]) {
+                            isString = true;
+                        }
                     }
-                    else if (conditionalExpression.indexOf("!=")) {
-                        cConditionalExpression = "strcmp (" + leftAndRightExpressions[0] + "," + leftAndRightExpressions[1] + ") !== 0";
-                    }
-                    else {
 
+                    if (isString) {
+                        if (conditionalExpression.indexOf("==")) {
+                            cConditionalExpression = "strcmp (" + leftAndRightExpressions[0] + "," + leftAndRightExpressions[1] + ") === 0";
+                        } else if (conditionalExpression.indexOf("!=")) {
+                            cConditionalExpression = "strcmp (" + leftAndRightExpressions[0] + "," + leftAndRightExpressions[1] + ") !== 0";
+                        } else {
+
+                        }
+                    } else {
+                        cConditionalExpression = conditionalExpression;
                     }
-                }
-                else {
+                } else {
                     cConditionalExpression = conditionalExpression;
                 }
-            }
-            else {
-                cConditionalExpression = conditionalExpression;
-            }
 
-            return cConditionalExpression;
+                return cConditionalExpression;
+            }
+            catch (exception) {     // if parsing fails, just return original expression
+                return conditionalExpression;
+            }
         };
 
         (function () {  // initialize function
