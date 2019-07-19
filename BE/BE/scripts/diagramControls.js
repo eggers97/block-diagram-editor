@@ -408,8 +408,13 @@
         this.getVariableType = function (variableName) {
             var variableType;
 
+            var declarationStatementCodebehindObject;
             $(this.getRootElement()).find(".declarationStatement").each(function(index, element) {
-                variables.push($(element).data(blockDiagramEditorGlobals.codebehindObjectName).getVariableName());
+                declarationStatementCodebehindObject = $(element).data(blockDiagramEditorGlobals.codebehindObjectName);
+
+                if (declarationStatementCodebehindObject.getVariableName() === variableName) {
+                    variableType = declarationStatementCodebehindObject.getVariableType();
+                }
             });
 
             if (!variableType) {
@@ -878,6 +883,10 @@
 
         this.getVariableName = function() {
             return _variableName;
+        };
+
+        this.getVariableType = function() {
+            return _variableType;
         };
 
         this.refreshVariableFieldsOfDiagram = function () {
