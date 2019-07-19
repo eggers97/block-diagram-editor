@@ -443,7 +443,7 @@
 
             generatedCode += functionCode;
         });
-        generatedCode = "#include<stdio.h>\n#define MAX_STRING_SIZE 255\n" + functionPrototypesCode + generatedCode;
+        generatedCode = "#include<stdio.h>\n#define MAX_STRING_SIZE 255\n\n" + js_beautify(functionPrototypesCode + generatedCode);
 
         filename = window.prompt("Enter filename:", currentFileName);
 
