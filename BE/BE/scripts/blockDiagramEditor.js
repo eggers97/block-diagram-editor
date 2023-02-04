@@ -210,6 +210,8 @@
         $(configurationLabels[2]).text(blockDiagramEditorGlobals.languagePack.hideAddressColumn);
         $(configurationLabels[3]).text(blockDiagramEditorGlobals.languagePack.language);
 
+        $("#configurationsDialog .version-label").text(blockDiagramEditorGlobals.languagePack.version);
+
         var languageSelectionOptions = $("#configurationsdialog select option");
         var counter = 0;
         for (var language in blockDiagramEditorGlobals.languagePack.languages) {
