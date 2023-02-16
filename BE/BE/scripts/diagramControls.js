@@ -1778,7 +1778,9 @@
             simulationCode += "return {";
             simulationCode += "caseId: " + nextStatementsCaseId + ",";
             simulationCode += "codeToExecute: function(){";
+            simulationCode += "window.setTimeout(function() {";
             simulationCode += "alert (" + this.replaceVariableAccess(_outputString) + ");";
+            simulationCode += "}, 0);";
             simulationCode += "},";
             simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).getPath() + "'";
             simulationCode += "};";
