@@ -1108,7 +1108,7 @@
     <div class="functionCallStatement">\
         <div class="statementBorderHelper"><input type="text" onchange="$(this).closest(\'.functionCallStatement\').data(\'codebehindObject\').functionNameChanged(this.value);" /><span>(</span><span>)</span><span class=\'comment\'></span></div>\
     </div>';
-        var _functionParameters;
+        var _functionParameters = [];
         var _underlyingFunctionPropertyHolder;
         var _variableName;
 
@@ -1125,6 +1125,10 @@
 
                 return false;
             });
+
+            if (_underlyingFunctionPropertyHolder === undefined) {
+                return;
+            }
 
             var domElement = $(this.getDomElement());
             var parameterSkeleton = '<input type="text" class="variableInput" onchange="$(this).data(\'codebehindObject\').value = this.value;" />';
@@ -1273,7 +1277,7 @@
             var functionCallStatementSerializable = new FunctionCallStatementSerializable();
 
             functionCallStatementSerializable.variableName = _variableName;
-            functionCallStatementSerializable.functionName = _underlyingFunctionPropertyHolder.getName();
+            functionCallStatementSerializable.functionName = _underlyingFunctionPropertyHolder?.getName();
             functionCallStatementSerializable.parameters = _functionParameters;
             functionCallStatementSerializable.comment = this.getComment();
 
