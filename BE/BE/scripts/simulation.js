@@ -90,10 +90,6 @@
 
             timer.stop();
 
-            /*resumeSimulation = undefined;
-            pauseSimulation = undefined;
-            stopSimulation = undefined;*/
-
             $(".currentlyExecuted").removeClass("currentlyExecuted");
 
             onStopSimulation();
@@ -148,10 +144,6 @@
 
                 stackTable.find("tbody").remove();
 
-                /*resumeSimulation = undefined;
-                pauseSimulation = undefined;
-                stopSimulation = undefined;*/
-
                 onSimulationEnded();
 
                 timer.stop();
@@ -186,10 +178,6 @@
                         activeGuiComponent.removeClass("currentlyExecuted");
 
                         stackTable.find("tbody").remove();
-
-                        /*resumeSimulation = undefined;
-                        pauseSimulation = undefined;
-                        stopSimulation = undefined;*/
 
                         onSimulationEnded();
 
@@ -258,10 +246,6 @@
                 activeGuiComponent.removeClass("currentlyExecuted");
 
                 stackTable.find("tbody").remove();
-
-                /*resumeSimulation = undefined;
-                pauseSimulation = undefined;
-                stopSimulation = undefined;*/
 
                 onSimulationEnded();
 
