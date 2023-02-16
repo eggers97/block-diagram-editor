@@ -28,9 +28,9 @@
         };
 
         this.setName = function (name) {
+            let oldName = _name;
             _name = name;
-
-            this.onUpdateName();
+            this.onUpdateName(oldName);
         };
 
         this.addParameter = function (parameter) {

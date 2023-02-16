@@ -548,14 +548,7 @@
         $("#tabs").children("div").each(function (index, tab) {
             if ($(tab).prop("id") !== "main" && $(tab).data(blockDiagramEditorGlobals.codebehindObjectName)) {
                 $(tab).prop("id", $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).getName());
-                $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = function () {
-                    tabTextContainer.text(this.getName());
-                    $("#" + idBefore).attr("id", this.getName());
-                    $("[href='#" + idBefore + "']").attr("href", "#" + this.getName());
-                    idBefore = this.getName();
-                    $("#tabs").tabs("refresh");
-                    $("#tabs").children("[id^=ui-id-]").remove();
-                };
+                $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = onFunctionNameUpdated;
             }
         });
 
@@ -565,6 +558,15 @@
         $("#tabs .ui-droppable").droppable("destroy");
 
         unfinishDiagram();
+    }
+
+    function onFunctionNameUpdated(oldName) {
+        let tabTextContainer = $("[href='#" + oldName + "']");
+        tabTextContainer.text(this.getName());
+        $("#" + oldName).attr("id", this.getName());
+        tabTextContainer.attr("href", "#" + this.getName());
+        $("#tabs").tabs("refresh");
+        $("#tabs").children("[id^=ui-id-]").remove();
     }
 
     function addTab(droppableForStatementsParameters) {
@@ -579,19 +581,8 @@
         $("#tabs").tabs("refresh");
         $("#tabs").children("[id^=ui-id-]").remove();
 
-        var idBefore = functionPropertyHolder.getName();
-        var tabTextContainer = $("#tabs").children().first().children().last().prev().children();
-        functionSkeleton.data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = function () {
-            tabTextContainer.text(this.getName());
-            $("#" + idBefore).attr("id", this.getName());
-            $("[href='#" + idBefore + "']").attr("href", "#" + this.getName());
-            idBefore = this.getName();
-            $("#tabs").tabs("refresh");
-            $("#tabs").children("[id^=ui-id-]").remove();
-        };
-
+        functionSkeleton.data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = onFunctionNameUpdated;
         functionSkeleton.find(".statements").droppable(droppableForStatementsParameters);
-
         functionSkeleton.next().remove();
     }
 
