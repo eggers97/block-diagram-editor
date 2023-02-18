@@ -1241,29 +1241,28 @@
             if (_underlyingFunctionPropertyHolder) {
                 generatedCode = _underlyingFunctionPropertyHolder.getName() + "(";
 
-                _functionParameters.forEach(function (parameter, index) {
+                let parametersStrings = _functionParameters.map((parameter, index) => {
                     var parameterType = _underlyingFunctionPropertyHolder.getParameters()[index].getType();
                     var parameterOnlyIn = _underlyingFunctionPropertyHolder.getParameters()[index].getOnlyIn();
-
+                    let parameterString = "";
                     if (parameterType === blockDiagramEditorGlobals.languagePack["string"]) {
-                        generatedCode += parameter.value;
+                        parameterString += parameter.value;
                     }
                     else if (parameterType.charAt(parameterType.length - 1) === "]") {
-                        generatedCode += parameter.value + "," + parameter.value + "Size";
+                        parameterString += parameter.value + "," + parameter.value + "Size";
                     }
                     else if (parameterType === blockDiagramEditorGlobals.languagePack["integer"]) {
                         if (parameterOnlyIn === true) {
-                            generatedCode += this.replaceIntegerOutParameterAccess(parameter.value);
+                            parameterString += this.replaceIntegerOutParameterAccess(parameter.value);
                         }
                         else {
-                            generatedCode += "&" + this.replaceIntegerOutParameterAccess(parameter.value);
+                            parameterString += "&" + this.replaceIntegerOutParameterAccess(parameter.value);
                         }
                     }
-
-                    generatedCode += ",";
+                    return parameterString;
                 }, this);
 
-                generatedCode = generatedCode.substr(0, generatedCode.length - 1) + ");";
+                generatedCode += parametersStrings.join(",") + ");";
 
                 if (_variableName) {
                     generatedCode = _variableName + " = " + generatedCode;
