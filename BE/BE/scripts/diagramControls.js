@@ -574,7 +574,7 @@
         };
 
         this.generateCCode = function () {
-            return "/*" + _comment + "*/";
+            return "\n/*" + _comment + "*/\n";
         };
 
         this.toSerializableObject = function () {
