@@ -1791,7 +1791,7 @@
             var generatedCode = "";
             var printfInformation = this.getPrintfParametersForStringConcatenation(_outputString);
 
-            generatedCode += "printf(\"" + printfInformation.formatString + "\"," + printfInformation.additionalArgumentList.join(",") + ");";
+            generatedCode += "printf(\"" + printfInformation.formatString + "\\n\"," + printfInformation.additionalArgumentList.join(",") + ");";
 
             return generatedCode;
         };
