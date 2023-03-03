@@ -487,7 +487,7 @@
 
                 $(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getParameters().forEach(function (parameter) {
                     parameters.push({
-                        type: parameter.getType(),
+                        type: getTypeFromDisplayName(parameter.getType()),
                         name: parameter.getName(),
                         onlyIn: parameter.getOnlyIn(),
                         documentation: parameter.getDocumentation()
@@ -500,13 +500,28 @@
                 diagram[$(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getName()] = {
                     "parameters": parameters,
                     "statements": statementsSerialized,
-                    "returnType": $(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getReturnType(),
+                    "returnType": getTypeFromDisplayName($(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getReturnType()),
                     "resultInitializationValue": resultInitializationValue
                 };
             }
         });
 
         return diagram;
+    }
+
+    function getTypeFromDisplayName(displayName) {
+        switch (displayName) {
+            case blockDiagramEditorGlobals.languagePack["integer"]:
+                return "integer";
+            case blockDiagramEditorGlobals.languagePack["string"]:
+                return "string";
+            case blockDiagramEditorGlobals.languagePack["integer"] + "[]":
+                return "integer[]";
+            case blockDiagramEditorGlobals.languagePack["string"] + "[]":
+                return "string[]";
+            default:
+                throw "type unknown";
+        }
     }
 
     function loadSelectedDiagram(withMain) {
