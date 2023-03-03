@@ -167,24 +167,6 @@
         var _onlyIn = true;
         var _documentation;
         var _functionPropertyHolder = functionPropertyHolder;
-        /*
-        this.setName = function (name) {
-            var successful = true;
-
-            _functionPropertyHolder.getParameters().forEach(function (parameter) {
-                if (parameter.getName() === name) {
-                    successful = false;
-                }
-
-                return successful;
-            });
-
-            if (successful) {
-                _name = name;
-            }
-
-            return successful;
-        };*/
 
         this.setName = function (name) {
             _name = name;
