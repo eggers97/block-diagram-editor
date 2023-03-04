@@ -267,6 +267,7 @@
                 }
 
                 var inputElements = $(guiComponent).find("input");
+                serializableStatement.parameters ??= [];
                 serializableStatement.parameters.forEach(function (parameter, index) {
                     inputElements[index + inputsBeforeParameters].value = getEmptyStringIfUndefined(parameter.value);
                     $(inputElements[index + inputsBeforeParameters]).trigger("change");

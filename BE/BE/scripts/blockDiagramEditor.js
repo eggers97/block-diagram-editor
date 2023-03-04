@@ -210,6 +210,8 @@
         $(configurationLabels[2]).text(blockDiagramEditorGlobals.languagePack.hideAddressColumn);
         $(configurationLabels[3]).text(blockDiagramEditorGlobals.languagePack.language);
 
+        $("#configurationsDialog .version-label").text(blockDiagramEditorGlobals.languagePack.version);
+
         var languageSelectionOptions = $("#configurationsdialog select option");
         var counter = 0;
         for (var language in blockDiagramEditorGlobals.languagePack.languages) {
@@ -485,7 +487,7 @@
 
                 $(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getParameters().forEach(function (parameter) {
                     parameters.push({
-                        type: parameter.getType(),
+                        type: getTypeFromDisplayName(parameter.getType()),
                         name: parameter.getName(),
                         onlyIn: parameter.getOnlyIn(),
                         documentation: parameter.getDocumentation()
@@ -498,13 +500,28 @@
                 diagram[$(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getName()] = {
                     "parameters": parameters,
                     "statements": statementsSerialized,
-                    "returnType": $(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getReturnType(),
+                    "returnType": getTypeFromDisplayName($(statements).parent().data(blockDiagramEditorGlobals.codebehindObjectName).getReturnType()),
                     "resultInitializationValue": resultInitializationValue
                 };
             }
         });
 
         return diagram;
+    }
+
+    function getTypeFromDisplayName(displayName) {
+        switch (displayName) {
+            case blockDiagramEditorGlobals.languagePack["integer"]:
+                return "integer";
+            case blockDiagramEditorGlobals.languagePack["string"]:
+                return "string";
+            case blockDiagramEditorGlobals.languagePack["integer"] + "[]":
+                return "integer[]";
+            case blockDiagramEditorGlobals.languagePack["string"] + "[]":
+                return "string[]";
+            default:
+                throw "type unknown";
+        }
     }
 
     function loadSelectedDiagram(withMain) {
@@ -546,14 +563,7 @@
         $("#tabs").children("div").each(function (index, tab) {
             if ($(tab).prop("id") !== "main" && $(tab).data(blockDiagramEditorGlobals.codebehindObjectName)) {
                 $(tab).prop("id", $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).getName());
-                $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = function () {
-                    tabTextContainer.text(this.getName());
-                    $("#" + idBefore).attr("id", this.getName());
-                    $("[href='#" + idBefore + "']").attr("href", "#" + this.getName());
-                    idBefore = this.getName();
-                    $("#tabs").tabs("refresh");
-                    $("#tabs").children("[id^=ui-id-]").remove();
-                };
+                $(tab).data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = onFunctionNameUpdated;
             }
         });
 
@@ -563,6 +573,15 @@
         $("#tabs .ui-droppable").droppable("destroy");
 
         unfinishDiagram();
+    }
+
+    function onFunctionNameUpdated(oldName) {
+        let tabTextContainer = $("[href='#" + oldName + "']");
+        tabTextContainer.text(this.getName());
+        $("#" + oldName).attr("id", this.getName());
+        tabTextContainer.attr("href", "#" + this.getName());
+        $("#tabs").tabs("refresh");
+        $("#tabs").children("[id^=ui-id-]").remove();
     }
 
     function addTab(droppableForStatementsParameters) {
@@ -577,19 +596,8 @@
         $("#tabs").tabs("refresh");
         $("#tabs").children("[id^=ui-id-]").remove();
 
-        var idBefore = functionPropertyHolder.getName();
-        var tabTextContainer = $("#tabs").children().first().children().last().prev().children();
-        functionSkeleton.data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = function () {
-            tabTextContainer.text(this.getName());
-            $("#" + idBefore).attr("id", this.getName());
-            $("[href='#" + idBefore + "']").attr("href", "#" + this.getName());
-            idBefore = this.getName();
-            $("#tabs").tabs("refresh");
-            $("#tabs").children("[id^=ui-id-]").remove();
-        };
-
+        functionSkeleton.data(blockDiagramEditorGlobals.codebehindObjectName).onUpdateName = onFunctionNameUpdated;
         functionSkeleton.find(".statements").droppable(droppableForStatementsParameters);
-
         functionSkeleton.next().remove();
     }
 

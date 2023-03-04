@@ -68,6 +68,7 @@
                 "en-GB": "English",
                 "de-DE": "German"
             },
+            "version": "Version:",
             "ok": "Ok",
             "cancel": "Cancel",
 
@@ -175,6 +176,7 @@
                 "en-GB": "Englisch",
                 "de-DE": "Deutsch"
             },
+            "version": "Version:",
             "ok": "Ok",
             "cancel": "Abbrechen",
 

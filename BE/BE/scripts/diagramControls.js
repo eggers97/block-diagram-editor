@@ -574,7 +574,7 @@
         };
 
         this.generateCCode = function () {
-            return "/*" + _comment + "*/";
+            return "\n/*" + _comment + "*/\n";
         };
 
         this.toSerializableObject = function () {
@@ -1108,7 +1108,7 @@
     <div class="functionCallStatement">\
         <div class="statementBorderHelper"><input type="text" onchange="$(this).closest(\'.functionCallStatement\').data(\'codebehindObject\').functionNameChanged(this.value);" /><span>(</span><span>)</span><span class=\'comment\'></span></div>\
     </div>';
-        var _functionParameters;
+        var _functionParameters = [];
         var _underlyingFunctionPropertyHolder;
         var _variableName;
 
@@ -1125,6 +1125,10 @@
 
                 return false;
             });
+
+            if (_underlyingFunctionPropertyHolder === undefined) {
+                return;
+            }
 
             var domElement = $(this.getDomElement());
             var parameterSkeleton = '<input type="text" class="variableInput" onchange="$(this).data(\'codebehindObject\').value = this.value;" />';
@@ -1237,29 +1241,28 @@
             if (_underlyingFunctionPropertyHolder) {
                 generatedCode = _underlyingFunctionPropertyHolder.getName() + "(";
 
-                _functionParameters.forEach(function (parameter, index) {
+                let parametersStrings = _functionParameters.map((parameter, index) => {
                     var parameterType = _underlyingFunctionPropertyHolder.getParameters()[index].getType();
                     var parameterOnlyIn = _underlyingFunctionPropertyHolder.getParameters()[index].getOnlyIn();
-
+                    let parameterString = "";
                     if (parameterType === blockDiagramEditorGlobals.languagePack["string"]) {
-                        generatedCode += parameter.value;
+                        parameterString += parameter.value;
                     }
                     else if (parameterType.charAt(parameterType.length - 1) === "]") {
-                        generatedCode += parameter.value + "," + parameter.value + "Size";
+                        parameterString += parameter.value + "," + parameter.value + "Size";
                     }
                     else if (parameterType === blockDiagramEditorGlobals.languagePack["integer"]) {
                         if (parameterOnlyIn === true) {
-                            generatedCode += this.replaceIntegerOutParameterAccess(parameter.value);
+                            parameterString += this.replaceIntegerOutParameterAccess(parameter.value);
                         }
                         else {
-                            generatedCode += "&" + this.replaceIntegerOutParameterAccess(parameter.value);
+                            parameterString += "&" + this.replaceIntegerOutParameterAccess(parameter.value);
                         }
                     }
-
-                    generatedCode += ",";
+                    return parameterString;
                 }, this);
 
-                generatedCode = generatedCode.substr(0, generatedCode.length - 1) + ");";
+                generatedCode += parametersStrings.join(",") + ");";
 
                 if (_variableName) {
                     generatedCode = _variableName + " = " + generatedCode;
@@ -1273,7 +1276,7 @@
             var functionCallStatementSerializable = new FunctionCallStatementSerializable();
 
             functionCallStatementSerializable.variableName = _variableName;
-            functionCallStatementSerializable.functionName = _underlyingFunctionPropertyHolder.getName();
+            functionCallStatementSerializable.functionName = _underlyingFunctionPropertyHolder?.getName();
             functionCallStatementSerializable.parameters = _functionParameters;
             functionCallStatementSerializable.comment = this.getComment();
 
@@ -1774,7 +1777,9 @@
             simulationCode += "return {";
             simulationCode += "caseId: " + nextStatementsCaseId + ",";
             simulationCode += "codeToExecute: function(){";
+            simulationCode += "window.setTimeout(function() {";
             simulationCode += "alert (" + this.replaceVariableAccess(_outputString) + ");";
+            simulationCode += "}, 0);";
             simulationCode += "},";
             simulationCode += "activeGuiComponentsSelector: '" + $(this.getDomElement()).getPath() + "'";
             simulationCode += "};";
@@ -1786,7 +1791,7 @@
             var generatedCode = "";
             var printfInformation = this.getPrintfParametersForStringConcatenation(_outputString);
 
-            generatedCode += "printf(\"" + printfInformation.formatString + "\"," + printfInformation.additionalArgumentList.join(",") + ");";
+            generatedCode += "printf(\"" + printfInformation.formatString + "\\n\"," + printfInformation.additionalArgumentList.join(",") + ");";
 
             return generatedCode;
         };
