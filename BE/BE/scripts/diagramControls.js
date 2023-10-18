@@ -1300,6 +1300,7 @@
         var _fromValue;
         var _toValue;
         var _counterShift;
+        var _loopCondition = "<=";
 
         VariableSelectableStatement.call(this, statement, insertionMode, _htmlSkeleton, rootElement, [5, 5, 5, 5]);
         CommentAttachableStatement.call(this, $(this.getDomElement()).find(".comment"));
@@ -1318,6 +1319,7 @@
 
         this.counterShiftChanged = function (counterShift) {
             _counterShift = counterShift;
+            _loopCondition = parseInt(_counterShift) >= 0 ? "<=" : ">=";
         };
 
         this.generateSimulationCode = function (statementsCaseId, nextStatementsCaseId, nextFreeId) {
@@ -1340,7 +1342,7 @@
             }
 
             simulationCode += "case " + conditionCheckCaseId + ":";
-            simulationCode += "if (" + this.replaceVariableAccess(_counterName) + "<=" + this.replaceVariableAccess(_toValue) + ") {";
+            simulationCode += "if (" + this.replaceVariableAccess(_counterName) + _loopCondition + this.replaceVariableAccess(_toValue) + ") {";
 
             if (blockDiagramEditorGlobals.configurations.skipLoopChecks) {
                 simulationCode += "return simulation(" + loopStatementsCaseId + ", outParameters, parameters);";
@@ -1386,7 +1388,7 @@
         };
 
         this.generateCCode = function () {
-            return "for (" + this.replaceIntegerOutParameterAccess(_counterName) + "=" + this.replaceIntegerOutParameterAccess(_fromValue) + "; " + this.replaceIntegerOutParameterAccess(_counterName) + "<=" + this.replaceIntegerOutParameterAccess(_toValue) + ";" + this.replaceIntegerOutParameterAccess(_counterName) + "+=" + this.replaceIntegerOutParameterAccess(_counterShift) + ") {" + _loopStatements.generateCCode() + "}";
+            return "for (" + this.replaceIntegerOutParameterAccess(_counterName) + "=" + this.replaceIntegerOutParameterAccess(_fromValue) + "; " + this.replaceIntegerOutParameterAccess(_counterName) + _loopCondition + this.replaceIntegerOutParameterAccess(_toValue) + ";" + this.replaceIntegerOutParameterAccess(_counterName) + "+=" + this.replaceIntegerOutParameterAccess(_counterShift) + ") {" + _loopStatements.generateCCode() + "}";
         };
 
         this.toSerializableObject = function () {
