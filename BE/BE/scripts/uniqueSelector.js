@@ -1,20 +1,20 @@
-﻿/*! jQuery Selectorator - v0.1.5 - 2015-04-10
+﻿/*! jQuery Selectorator - v0.1.5 - 2016-07-06
 * https://github.com/ngs/jquery-selectorator
-* Copyright (c) 2015 Atsushi Nagase; Licensed MIT */
-(function () {
-    (function ($) {
+* Copyright (c) 2016 Atsushi Nagase; Licensed MIT */
+(function() {
+    (function($) {
         var Selectorator, clean, contains, escapeSelector, extend, inArray, map, unique;
         map = $.map;
         extend = $.extend;
         inArray = $.inArray;
-        contains = function (item, array) {
+        contains = function(item, array) {
             return inArray(item, array) !== -1;
         };
-        escapeSelector = function (selector) {
+        escapeSelector = function(selector) {
             return selector.replace(/([\!\"\#\$\%\&'\(\)\*\+\,\.\/\:\;<\=>\?\@\[\\\]\^\`\{\|\}\~])/g, "\\$1");
         };
-        clean = function (arr, reject) {
-            return map(arr, function (item) {
+        clean = function(arr, reject) {
+            return map(arr, function(item) {
                 if (item === reject) {
                     return null;
                 } else {
@@ -22,8 +22,8 @@
                 }
             });
         };
-        unique = function (arr) {
-            return map(arr, function (item, index) {
+        unique = function(arr) {
+            return map(arr, function(item, index) {
                 if (parseInt(index, 10) === parseInt(arr.indexOf(item), 10)) {
                     return item;
                 } else {
@@ -31,19 +31,19 @@
                 }
             });
         };
-        Selectorator = (function () {
+        Selectorator = (function() {
             function Selectorator(element, options) {
                 this.element = element;
                 this.options = extend(extend({}, $.selectorator.options), options);
                 this.cachedResults = {};
             }
 
-            Selectorator.prototype.query = function (selector) {
+            Selectorator.prototype.query = function(selector) {
                 var base;
                 return (base = this.cachedResults)[selector] || (base[selector] = $(selector.replace(/#([^\s]+)/g, "[id='$1']")));
             };
 
-            Selectorator.prototype.getProperTagName = function () {
+            Selectorator.prototype.getProperTagName = function() {
                 if (this.element[0]) {
                     return this.element[0].tagName.toLowerCase();
                 } else {
@@ -51,17 +51,17 @@
                 }
             };
 
-            Selectorator.prototype.hasParent = function () {
-                return this.element && 0 < this.element.parent().size();
+            Selectorator.prototype.hasParent = function() {
+                return this.element && 0 < this.element.parent().length;
             };
 
-            Selectorator.prototype.isElement = function () {
+            Selectorator.prototype.isElement = function() {
                 var node;
                 node = this.element[0];
                 return node && node.nodeType === node.ELEMENT_NODE;
             };
 
-            Selectorator.prototype.validate = function (selector, parentSelector, single, isFirst) {
+            Selectorator.prototype.validate = function(selector, parentSelector, single, isFirst) {
                 var delimiter, element;
                 if (single == null) {
                     single = true;
@@ -70,12 +70,12 @@
                     isFirst = false;
                 }
                 element = this.query(selector);
-                if (single && 1 < element.size() || !single && 0 === element.size()) {
+                if (single && 1 < element.length || !single && 0 === element.length) {
                     if (parentSelector && selector.indexOf(':') === -1) {
                         delimiter = isFirst ? ' > ' : ' ';
                         selector = parentSelector + delimiter + selector;
                         element = this.query(selector);
-                        if (single && 1 < element.size() || !single && 0 === element.size()) {
+                        if (single && 1 < element.length || !single && 0 === element.length) {
                             return null;
                         }
                     } else {
@@ -89,7 +89,7 @@
                 }
             };
 
-            Selectorator.prototype.generate = function () {
+            Selectorator.prototype.generate = function() {
                 var fn, i, len, ref, res;
                 if (!(this.element && this.hasParent() && this.isElement())) {
                     return [''];
@@ -106,7 +106,7 @@
                 return unique(res);
             };
 
-            Selectorator.prototype.generateAncestor = function () {
+            Selectorator.prototype.generateAncestor = function() {
                 var i, isFirst, j, k, len, len1, len2, parent, parentSelector, parentSelectors, ref, results, selector, selectors;
                 results = [];
                 ref = this.element.parents();
@@ -127,19 +127,19 @@
                 return results;
             };
 
-            Selectorator.prototype.generateSimple = function (parentSelector, single, isFirst) {
+            Selectorator.prototype.generateSimple = function(parentSelector, single, isFirst) {
                 var fn, i, len, ref, res, self, tagName, validate;
                 self = this;
                 tagName = self.getProperTagName();
-                validate = function (selector) {
+                validate = function(selector) {
                     return self.validate(selector, parentSelector, single, isFirst);
                 };
                 ref = [
-                  [self.getIdSelector], [self.getClassSelector], [self.getIdSelector, true], [self.getClassSelector, true], [self.getNameSelector], [
-                    function () {
-                        return [self.getProperTagName()];
-                    }
-                  ]
+                    [self.getIdSelector], [self.getClassSelector], [self.getIdSelector, true], [self.getClassSelector, true], [self.getNameSelector], [
+                        function() {
+                            return [self.getProperTagName()];
+                        }
+                    ]
                 ];
                 for (i = 0, len = ref.length; i < len; i++) {
                     fn = ref[i];
@@ -152,7 +152,7 @@
                 return [];
             };
 
-            Selectorator.prototype.generateRecursive = function () {
+            Selectorator.prototype.generateRecursive = function() {
                 var index, parent, parentSelector, selector;
                 selector = this.getProperTagName();
                 if (selector.indexOf(':') !== -1) {
@@ -168,7 +168,7 @@
                 return [selector];
             };
 
-            Selectorator.prototype.getIdSelector = function (tagName) {
+            Selectorator.prototype.getIdSelector = function(tagName) {
                 var id;
                 if (tagName == null) {
                     tagName = false;
@@ -182,7 +182,7 @@
                 }
             };
 
-            Selectorator.prototype.getClassSelector = function (tagName) {
+            Selectorator.prototype.getClassSelector = function(tagName) {
                 var classes, invalidClasses, tn;
                 if (tagName == null) {
                     tagName = false;
@@ -194,7 +194,7 @@
                 tagName = tagName ? tn : '';
                 invalidClasses = this.getIgnore('class');
                 classes = (this.element.attr('class') || '').replace(/\{.*\}/, "").split(/\s/);
-                return map(classes, function (klazz) {
+                return map(classes, function(klazz) {
                     if (klazz && !contains(klazz, invalidClasses)) {
                         return tagName + "." + (escapeSelector(klazz));
                     } else {
@@ -203,7 +203,7 @@
                 });
             };
 
-            Selectorator.prototype.getNameSelector = function () {
+            Selectorator.prototype.getNameSelector = function() {
                 var name, tagName;
                 tagName = this.getProperTagName();
                 name = this.element.attr('name');
@@ -214,7 +214,7 @@
                 }
             };
 
-            Selectorator.prototype.getIgnore = function (key) {
+            Selectorator.prototype.getIgnore = function(key) {
                 var mulkey, opts, vals;
                 opts = this.options.ignore || {};
                 mulkey = key === 'class' ? 'classes' : key + "s";
@@ -235,10 +235,10 @@
             clean: clean,
             escapeSelector: escapeSelector
         };
-        $.fn.selectorator = function (options) {
+        $.fn.selectorator = function(options) {
             return new Selectorator($(this), options);
         };
-        $.fn.getSelector = function (options) {
+        $.fn.getSelector = function(options) {
             return this.selectorator(options).generate();
         };
         return this;
