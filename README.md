@@ -12,10 +12,10 @@ A client-side web application which helps learning programming.
 </ul>
 
 # Demo
-https://editor.noasy.com/
+https://eggers97.github.io/block-diagram-editor/
 
 # Getting started
 Download the repository and open BE/BE/pages/Blocks-Editor.html
 
 Feature requests, bug reports etc. are highly appreciated. 
-You can contact me by email: stefan.egger@noasy.com
+You can contact me by email: blockdiagrameditor@protonmail.com
