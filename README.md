@@ -18,4 +18,4 @@ https://eggers97.github.io/block-diagram-editor/
 Download the repository and open BE/BE/pages/Blocks-Editor.html
 
 Feature requests, bug reports etc. are highly appreciated. 
-You can contact me by email: blockdiagrameditor@protonmail.com
+You can contact me by email: blockdiagrameditor@aol.com
